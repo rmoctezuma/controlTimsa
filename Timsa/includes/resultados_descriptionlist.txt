@@ -1,0 +1,25 @@
+		 <div id="results">
+		 	<hr>
+		 	<dl class="dl-horizontal">
+			  <dt>Agencia</dt>
+			  <dd ><span id="Agencia" class="label label-inverse"> Merx </span> </dd>
+			  <dt> Cliente</dt>
+			  <dd ><span id="Cliente" class="label label-info"> Sin asignar </span></dd>
+			  <dt>Sucursal</dt>
+			  <dd ><span id="Sucursal" class="label label-info"> Sin asignar </span></dd>
+			  <dt>Socio</dt>
+			  <dd > <span id="Socio" class="label label-important"> Sin asignar </span></dd>
+			  <dt>Operador</dt>
+			  <dd ><span id="Operador" class="label label-important"> Sin asignar </span></dd>
+			  <dt>Economico</dt>
+			  <dd ><span id="Economico" class="label label-important"> Sin asignar </span></dd>
+			  <dt>Cuota</dt>
+			  <dd ><span id="Cuota" class="label label-success"> Sin especificar </span></dd>
+			  <dt>Viaje</dt>
+			  <dd ><span id="Viaje" class="label label-success"> Sin especificar </span></dd>
+			  <dt>Tarifa</dt>
+			  <dd ><span id="Tarifa" class="label label-success"> Sin especificar </span></dd>
+
+			</dl>
+
+		 </div>
