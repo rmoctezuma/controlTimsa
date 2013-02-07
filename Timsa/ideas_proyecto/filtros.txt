@@ -1,0 +1,4 @@
+Crear filtros de fletes, segun la agencia, el socio, el operador, o el economico.
+De esta manera se podra clasificar la informacion de una mejor manera.
+Una vez clasificada, seria una buena idea, siempre mostrar en la parte baja de la tabla (en la pagina), informacion del 
+dinero, sumando el total de todas las tarifas.
