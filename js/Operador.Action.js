@@ -18,7 +18,8 @@ $(function(){
 		parametros = {
 			"filtro" : $(this).val(),
 			"economico" : $('#FiltroEconomico').val(),
-			"numero" : $('#NombreOperador').attr('title')
+			"numero" : $('#NombreOperador').attr('title'),
+			"action" : "general"
 		};
 
 		$.ajax({
@@ -40,7 +41,51 @@ $(function(){
 
 	});
 
-	$('#FiltroEconomico').live("change". function(){
+	$('#FiltroEconomico').live("change", function(){
+		var valor = $('input[name=optionsRadios]:checked', '#FormFiltro').val();
+		var filtro;
+		var action;
+
+		if(valor == 1 ){
+			filtro = $('#Filtro').val();
+			action = "general";
+		}
+		else if(valor == 2){
+			filtro = [];
+			action = "rango";
+
+			 $('.Fechas').each(function (index){
+			 	 	filtro[index] = $(this).val();
+			 	 	
+				});
+		}
+		else{
+		}
+		parametros = {
+			"filtro" : filtro,
+			"economico" : $('#FiltroEconomico').val(),
+			"numero" : $('#NombreOperador').attr('title'),
+			"action" : action
+		};
+
+		$.ajax({
+			beforeSend: function(){
+			},
+			cache: false,
+			type: "POST",
+			dataType:"json",
+			url:"../includes/fletes.operador.php",
+			data: parametros,
+			success: function(response){
+				$('#table').empty();
+				$('#table').append(response.results);
+				alert(response.mensaje);
+			},
+			error: function(xhr, ajaxOptions, thrownError){
+					alert("error, comprueba tu conexion a internet" + xhr.responseText);
+			}
+
+		});
 
 	});
 

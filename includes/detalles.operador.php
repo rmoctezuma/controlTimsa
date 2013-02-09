@@ -1,4 +1,7 @@
 <?php
+
+include('../includes/generic.connection.php');
+
 $result = "";
 
 if(isset($_POST) && !empty($_POST)){
@@ -27,7 +30,11 @@ if(isset($_POST) && !empty($_POST)){
 	$result .= '<hr>';
 	$result .= '<h3> Economicos que ha conducido el Operador </h3>';
 
-	$PDOmysql = new PDO('mysql:host=www.timsalzc.com;dbname=timsalzc_ControlTimsa;charset=utf8', 'timsalzc_Raul', 'f203e21387');
+
+	$PDOmysql = consulta();
+
+try {
+	$PDOmysql->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
 	$sql = 'select Economico.Economico, Economico.Placas,Economico.statusA 
 	from Economico,VehiculoDetalle 
@@ -51,6 +58,7 @@ if(isset($_POST) && !empty($_POST)){
 
 	 $resultEconomicosResult = "";
 	 $optionEconomicos = "";
+	 $result .= '<form id="FormFiltro">';
 
 	 foreach ($rows as $row){ 
 	 	$optionEconomicos.= '<option>'. $row['Economico'] .' </option>';
@@ -126,6 +134,8 @@ if(isset($_POST) && !empty($_POST)){
 	 					'.$optionEconomicos.'
 	 			    </select> <br><br>';
 
+	 $resulTable .= '</form>';   //Termina form
+
 	 $resulTable .= '<div id="table">';			    
 	 $resulTable .= '<table class="table-condensed">
 				    <thead>
@@ -170,9 +180,16 @@ else{
 	$result.= "<h4><i>Este Operador no posee fletes Registrados</i></h4>";
 }
  	$result .= '<hr>';
-    $result .= '<button class="btn btn-primary btn-large"> Editar </button>';
-}
+    $result .= '<button class="btn btn-primary btn-large" id="EditarOperador"> Editar </button>';
 
+
+} catch(PDOException $ex) {
+	    //Something went wrong rollback!
+	    $mysqli->rollBack();
+	    echo $ex->getMessage();
+	    $respuestaOK = false;
+	}
+}
 $resultados = array("results" => $result);
 
 echo json_encode($resultados);

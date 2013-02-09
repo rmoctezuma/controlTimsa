@@ -1,5 +1,11 @@
 <?php
 
+$whereEconomico = "";
+$whereFiltro = "";
+$sql = "";
+$mensaje = "";
+$filtro = "";
+
 if(isset($_POST) && !empty($_POST)){
 
 		$statusTipo2 = array("Libre" => "label label-info",
@@ -7,7 +13,6 @@ if(isset($_POST) && !empty($_POST)){
                               "Indispuesto" => "label label-success",
                               "Fallido" => "label label-important"
                               );
-
 
 	 $statusTipo = array("Activo" => "label label-info",
                           "Pendiente Facturacion" => "label label-warning",
@@ -18,26 +23,52 @@ if(isset($_POST) && !empty($_POST)){
 	$filtro = $_POST['filtro'];
 	$economico = $_POST['economico'];
 	$numero = $_POST['numero'];
+	$action = $_POST['action'];
 
 	$whereEconomico = "";
 	$whereFiltro = "";
+
+	switch ($action){
+		case "general":
+		$mensaje = date("Y",strtotime("-1 year"));
+
+			if( strcmp($filtro, 'Todos') == 0  ){
+				}
+			else if(strcmp($filtro,  'Ultima Semana') == 0){
+					$whereFiltro .= 'and Flete.Fecha > '. strtotime('last week');			
+				}
+			else if(strcmp($filtro, 'Ultimo mes') ==0){
+					$whereFiltro .= 'and Flete.Fecha > '. date("Y-m-1", strtotime("-1 month"));
+				}
+			else if(strcmp($filtro, 'Ultimo año') ==0){
+					$whereFiltro .= 'and Flete.Fecha > '. date("Y");
+				}
+
+			break;
+
+		case "rango" :
+		$mensaje .= "Entro a la seccion de rango";
+
+			for ($i=0; $i < count($filtro) ; $i++) { 
+				if($i <3){
+					$fecha1 .= $filtro[$i] . '-';
+				}
+				else{
+					$fecha2 .= $filtro[$i] . '-';
+				}
+			}
+			$fecha1 = substr($fecha1, 0,-1);
+			$fecha2 = substr($fecha2, 0,-1); 
+
+		$whereFiltro .= 'and Flete.Fecha BETWEEN '. $fecha1.' and ' . $fecha2;
+			break;
+	}
+
 
 	if( strcmp($economico, 'Todos') != 0){
 		$whereEconomico .= 'and Flete.Economico = '. $economico;
 	}
 	
-	if( strcmp($filtro, 'Todos') == 0  ){
-	}
-	else if(strcmp($filtro,  'Ultima Semana') == 0){
-			$whereFiltro .= 'and Flete.Fecha > '. strtotime('last week');			
-		}
-	else if(strcmp($filtro, 'Ultimo mes') ==0){
-			$whereFiltro .= 'and Flete.Fecha > '. date("Y-m-1", strtotime("-1 month"));
-		}
-	else if(strcmp($filtro, 'Ultimo año') ==0){
-			$whereFiltro .= 'and Flete.Fecha > '. date("Y",strtotime("-1 year"));
-		}
-
 		$resulTable .= '<table class="table-condensed">
 				    <thead>
 				      <tr>
@@ -68,7 +99,7 @@ if(isset($_POST) && !empty($_POST)){
          and Flete.idFlete = Cuota_Flete.NumFlete and Cuota_Flete.Cliente = Cliente.idCliente and Cuota_Flete.TipoCuota = CuotaDetalle.numero and
           Cuota_Flete.Cuota = CuotaDetalle.Cuota_idCuota and CuotaDetalle.Cuota_idCuota = Cuota.idCuota and Cuota.idCuota = ClienteDireccion.Cuota_idCuota 
           and ClienteDireccion.Cliente_idCliente = Cliente.idCliente and Flete.Operador = :socio
-           '.$whereEconomico . $whereFiltro .'
+            '.$whereEconomico . '    ' . $whereFiltro .'
           ORDER BY idFlete ASC';
 
     $stmt = $PDOmysql->prepare($sql);
@@ -101,9 +132,14 @@ if(isset($_POST) && !empty($_POST)){
 	else{
 		$result.= "<h4><i>Este Operador no posee fletes Registrados con estas caracteristicas</i></h4>";
 	}
+
+	$result.= '<button class="btn btn-primary btn-large" id="EditarOperador"> Editar </button>';
+
 }
 
-$resultados = array("results" => $result);
+$resultados = array("results" => $result,
+					"mensaje" => $sql
+					 );
 
 echo json_encode($resultados);
 
