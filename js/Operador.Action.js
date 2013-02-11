@@ -3,14 +3,51 @@ $(function(){
 	$('#formSocio').validate();
 
 	$("input[type=radio]").live("click", function(){
+		var filtro;
+		var action;
+
 		if($(this).val() == "1"){
 			$('#Filtro').show("slow");
 			$('.Fechas').hide("fade");
+			filtro = $('#Filtro').val();
+			action = "general";
 		}
 		else{
 			$('.Fechas').show("slow");
 			$('#Filtro').hide("fade");
+			filtro = [];
+			action = "rango";
+
+			 $('.Fechas').each(function (index){
+			 	 	filtro[index] = $(this).val();
+			 	 	
+				});
 		}
+		
+		parametros = {
+			"filtro" : filtro,
+			"economico" : $('#FiltroEconomico').val(),
+			"numero" : $('#NombreOperador').attr('title'),
+			"action" : action
+		};
+
+		$.ajax({
+			beforeSend: function(){
+			},
+			cache: false,
+			type: "POST",
+			dataType:"json",
+			url:"../includes/fletes.operador.php",
+			data: parametros,
+			success: function(response){
+				$('#table').empty();
+				$('#table').append(response.results);
+			},
+			error: function(xhr, ajaxOptions, thrownError){
+					alert("error, comprueba tu conexion a internet" + xhr.responseText);
+			}
+
+		});
 	});
 
 	$('#Filtro').live('change', function(){
@@ -79,7 +116,6 @@ $(function(){
 			success: function(response){
 				$('#table').empty();
 				$('#table').append(response.results);
-				alert(response.mensaje);
 			},
 			error: function(xhr, ajaxOptions, thrownError){
 					alert("error, comprueba tu conexion a internet" + xhr.responseText);
@@ -87,6 +123,41 @@ $(function(){
 
 		});
 
+	});
+
+	$('.Fechas').live("change", function(){
+		filtro = [];
+			action = "rango";
+
+			 $('.Fechas').each(function (index){
+			 	 	filtro[index] = $(this).val();
+			 	 	
+				});
+
+		parametros = {
+			"filtro" : filtro,
+			"economico" : $('#FiltroEconomico').val(),
+			"numero" : $('#NombreOperador').attr('title'),
+			"action" : action
+		};
+
+		$.ajax({
+			beforeSend: function(){
+			},
+			cache: false,
+			type: "POST",
+			dataType:"json",
+			url:"../includes/fletes.operador.php",
+			data: parametros,
+			success: function(response){
+				$('#table').empty();
+				$('#table').append(response.results);
+			},
+			error: function(xhr, ajaxOptions, thrownError){
+					alert("error, comprueba tu conexion a internet" + xhr.responseText);
+			}
+
+		});
 	});
 
 	$('#CreacionOperador').hide();

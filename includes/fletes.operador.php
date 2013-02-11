@@ -30,26 +30,25 @@ if(isset($_POST) && !empty($_POST)){
 
 	switch ($action){
 		case "general":
-		$mensaje = date("Y",strtotime("-1 year"));
+		$mensaje = 'and Flete.Fecha > '. date("Y-m-1", strtotime("-1 week"));	
 
 			if( strcmp($filtro, 'Todos') == 0  ){
 				}
 			else if(strcmp($filtro,  'Ultima Semana') == 0){
-					$whereFiltro .= 'and Flete.Fecha > '. strtotime('last week');			
+					$whereFiltro .= 'and Flete.Fecha > date('.  date("Y-m-1", strtotime("-1 week")) . ')';		
 				}
 			else if(strcmp($filtro, 'Ultimo mes') ==0){
-					$whereFiltro .= 'and Flete.Fecha > '. date("Y-m-1", strtotime("-1 month"));
+					$whereFiltro .= 'and Flete.Fecha > date('. date("Y-m-1", strtotime("-1 month")) . ")";
 				}
 			else if(strcmp($filtro, 'Ultimo año') ==0){
-					$whereFiltro .= 'and Flete.Fecha > '. date("Y");
+					$whereFiltro .= 'and Flete.Fecha BETWEEN  date("'. date("Y",strtotime("-1 year")) .'-01-01") and date("'. date("Y",strtotime("+1 year")) .'-01-01")';
 				}
-
 			break;
 
 		case "rango" :
 		$mensaje .= "Entro a la seccion de rango";
 
-			for ($i=0; $i < count($filtro) ; $i++) { 
+			for ($i=count($filtro)-1 ; $i >= 0 ; $i--) { 
 				if($i <3){
 					$fecha1 .= $filtro[$i] . '-';
 				}
@@ -60,7 +59,7 @@ if(isset($_POST) && !empty($_POST)){
 			$fecha1 = substr($fecha1, 0,-1);
 			$fecha2 = substr($fecha2, 0,-1); 
 
-		$whereFiltro .= 'and Flete.Fecha BETWEEN '. $fecha1.' and ' . $fecha2;
+		$whereFiltro .= 'and Flete.Fecha BETWEEN date("'. $fecha1.'") and date("' . $fecha2 . '")';
 			break;
 	}
 
@@ -138,7 +137,7 @@ if(isset($_POST) && !empty($_POST)){
 }
 
 $resultados = array("results" => $result,
-					"mensaje" => $sql
+					"mensaje" => $mensaje
 					 );
 
 echo json_encode($resultados);
