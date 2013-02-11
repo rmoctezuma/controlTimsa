@@ -6,26 +6,11 @@
     <link href="../css/bootstrap.min.css" rel="stylesheet" media="screen">
     <link href="../css/bootstrap-responsive.css" rel="stylesheet">
   <style>
-      body {
-        padding-top: 30px; /* 60px to make the container go all the way to the bottom of the topbar */
-      }
-      </style>
-
       <style >
-      .hero-unit {
-        background-image: url('../images/hero-wide-opt.jpg');
-        color: white;
-        height: 200px;
-        text-align: center;
-        overflow: hidden;
-        background-position: 50% top;
-        background-repeat: no-repeat;
-        background-color: white;
+      body{
+        padding-top: 60px;
       }
       </style>
-
-  </head>
-
   </head>
 
   <body>
@@ -66,70 +51,16 @@
     </div>
   </div>
 
-
-    <div class="hero-unit">
-      <div class="container">
-        <h1>Transportes Integrados de Michoacan </h1>
-        <h2> Control de Economicos</h2>
-      </div>
-      <p ><img src="../images/logo2.png" class="img-rounded"></p> 
-    </div>
 <div class= "container">
-    <div class="page-header"><h1>Movimientos Actuales</h1> 
-      <p>
-        <button class="btn btn-primary" type="button">Nuevo Economico</button>
-    </p>
+    <div class="page-header">
+      <h1>Economicos</h1> 
     </div>
-
-  </div>
+</div>
 
   <div class= "container">
-
-    <?php
-        echo  "<table class='table table-hover'>";
-        echo "<thead>";
-        echo "<tr>";
-        echo "<th>#</th>";
-        echo "<th>Nombre</th>";
-        echo "<th>Telefono</th>";
-        echo "<th>Fecha Incorporacion</th>";
-        echo "</tr></thead>";
-        echo "<tbody>";
-
-
-        $conexion = mysql_connect("localhost","TIMSA","TIMSA");
-
-        if (!$conexion) {
-          echo "Unable to connect to DB: " . mysql_error();
-          exit;
-        }
-
-        if (!mysql_select_db("timsa")) {
-            echo "Unable to select mydbname: " . mysql_error();
-            exit;
-        }
-
-        $sql = "select * from vehiculo";
-        $query = mysql_query($sql);
-
-        if (!$query) {
-           echo "Could not successfully run query ($sql) from DB: " . mysql_error();
-          exit;
-        }
-        while ($fila = mysql_fetch_assoc($query)){
-          echo "<tr>";
-          printf("<td> %s </td>",$fila['Economico']);
-          printf("<td> %s </td>",$fila['Placas']);
-          printf("<td> %s </td>",$fila['Telefono']);
-          printf("<td> %s </td>",$fila['fecha_ingreso']);
-          echo "</tr>";
-        }
-        mysql_free_result($query);
-            echo "</tbody>";
-
-      echo "</table>";
-    ?>
-
-    </div>
+    <dl>
+      <dt> </dt>
+    </dl>
+  </div>
 
 </html>
