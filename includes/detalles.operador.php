@@ -26,7 +26,8 @@ if(isset($_POST) && !empty($_POST)){
 	$result .= '<br>';
 
 
-	$result .= '<h1 title="'.$numero.'" id="NombreOperador">'. $nombre .'</h1>';
+	$result .= '<h1 title="'.$numero.'" id="NombreOperador">'. $nombre .' <button class="btn btn-primary btn-large" id="EditarOperador"> Editar </button></h1>';
+	$result .= '';
 	$result .= '<hr>';
 	$result .= '<h3> Economicos que ha conducido el Operador </h3>';
 
@@ -180,7 +181,7 @@ else{
 	$result.= "<h4><i>Este Operador no posee fletes Registrados</i></h4>";
 }
  	$result .= '<hr>';
-    $result .= '<button class="btn btn-primary btn-large" id="EditarOperador"> Editar </button>';
+    
 
 
 } catch(PDOException $ex) {

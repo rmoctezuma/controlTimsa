@@ -132,7 +132,7 @@ if(isset($_POST) && !empty($_POST)){
 		$result.= "<h4><i>Este Operador no posee fletes Registrados con estas caracteristicas</i></h4>";
 	}
 
-	$result.= '<button class="btn btn-primary btn-large" id="EditarOperador"> Editar </button>';
+	$result .= '<hr>';
 
 }
 
