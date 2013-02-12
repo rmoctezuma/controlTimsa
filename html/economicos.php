@@ -1,3 +1,15 @@
+<?php
+include('../includes/generic.connection.php');
+
+$PDOmysql = consulta();
+
+$statusTipo = array("Ocupado" => "label label-warning",
+                    "Libre" => "label label-success",
+                    "Indispuesto" => "label label-important"
+                    );
+
+?>
+
 <!DOCTYPE html>
 <html>
   <head>
@@ -65,15 +77,51 @@
 </div>
 
   <div class = "container">
+    <?php
+
+      try {
+          $PDOmysql->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+          $sql = 'select Socio.Nombre nombreSocio, Economico.Economico economico, Economico.statusA status
+          from Economico,VehiculoDetalle, Socio
+          where
+          VehiculoDetalle.Economico = Economico.Economico
+           and
+          VehiculoDetalle.Socio = Socio.idSocio';
+
+          $stmt = $PDOmysql->query($sql);
+          $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+          $nombreSocio = "";
+
+          foreach ($rows as $fila){
+            if($nombreSocio != $fila['nombreSocio']){
+              echo '<h4> '. $fila['nombreSocio'] .' </h4>';
+            }
+            echo '  <li class="span2"> 
+                      <span> 
+                        <img src="../img/camion.jpg" class="img-rounded">
+                        <h6> <span class="'. $statusTipo[$fila['status']] .'">'. $fila['economico'] .'</span> </h6> 
+                      </span>
+                    </li>';        
+         }
+
+           }catch(PDOException $ex) {
+                //Something went wrong rollback!
+                $PDOmysql->rollBack();
+                echo $ex->getMessage();
+                $respuestaOK = false;
+            }        
+    ?>
     <h4> Socio 1</h4>
     <ul class="inline"> 
       <li class="span2">      
-           <span> <img src="../images/camion.jpg" class="img-rounded"><h6> Economico numero 1</h6> </span> 
+           <span> <img src="../img/camion.jpg" class="img-rounded"><h6> Economico numero 1</h6> </span> 
       </li> 
       <li class="span2" >
-        <span> <img src="../images/camion.jpg" class="img-rounded"><h6> Economico numero 2</h6> </span> 
+        <span > <img src="../img/camion.jpg" class="img-rounded"><h6> Economico numero 2</h6> </span> 
       </li> 
-      <li > Economico3 </li> 
+      <li > Economico3 </li>
     </ul> 
 
   </div>

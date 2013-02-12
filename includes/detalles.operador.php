@@ -186,7 +186,7 @@ else{
 
 } catch(PDOException $ex) {
 	    //Something went wrong rollback!
-	    $mysqli->rollBack();
+	    $PDOmysql->rollBack();
 	    echo $ex->getMessage();
 	    $respuestaOK = false;
 	}
