@@ -5,12 +5,19 @@
     <title> TIMSA LZC </title>
     <link href="../css/bootstrap.min.css" rel="stylesheet" media="screen">
     <link href="../css/bootstrap-responsive.css" rel="stylesheet">
+
   <style>
-      <style >
-      body{
+      body {
         padding-top: 60px;
       }
-      </style>
+
+    .inline li {
+        display: inline;
+      }
+  </style>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+  <script type="text/javascript" src="../js/jquery.validate.js"></script>
   </head>
 
   <body>
@@ -57,10 +64,20 @@
     </div>
 </div>
 
-  <div class= "container">
-    <dl>
-      <dt> </dt>
-    </dl>
+  <div class = "container">
+    <h4> Socio 1</h4>
+    <ul class="inline"> 
+      <li class="span2">      
+           <span> <img src="../images/camion.jpg" class="img-rounded"><h6> Economico numero 1</h6> </span> 
+      </li> 
+      <li class="span2" >
+        <span> <img src="../images/camion.jpg" class="img-rounded"><h6> Economico numero 2</h6> </span> 
+      </li> 
+      <li > Economico3 </li> 
+    </ul> 
+
   </div>
+
+</body>
 
 </html>
