@@ -76,18 +76,18 @@ $statusTipo = array("Ocupado" => "label label-warning",
     </div>
 </div>
 
-  <div class = "container">
+  <div id="MuestraEconomicos">
     <?php
 
       try {
           $PDOmysql->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-          $sql = 'select Socio.Nombre nombreSocio, Economico.Economico economico, Economico.statusA status
+          $sql = 'select Socio.Nombre nombreSocio, Economico.Economico economico, Economico.Placas placas, Economico.statusA status
           from Economico,VehiculoDetalle, Socio
           where
           VehiculoDetalle.Economico = Economico.Economico
            and
-          VehiculoDetalle.Socio = Socio.idSocio';
+          VehiculoDetalle.Socio = Socio.idSocio order by Socio.idSocio';
 
           $stmt = $PDOmysql->query($sql);
           $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -95,17 +95,26 @@ $statusTipo = array("Ocupado" => "label label-warning",
           $nombreSocio = "";
 
           foreach ($rows as $fila){
+
             if($nombreSocio != $fila['nombreSocio']){
-              echo '<h4> '. $fila['nombreSocio'] .' </h4>';
+              if( strlen($fila['nombreSocio']) > 0 ){
+                echo '</ul>';
+                echo '</div>';
+              }
+
+              $nombreSocio = $fila['nombreSocio'];
+              echo '<div class="container">';
+              echo '<h4> '. $fila['nombreSocio'] .' </h4>
+                    <ul class="inline">';
             }
-            echo '  <li class="span2"> 
-                      <span> 
+
+            echo '<li class="span2">
+                      <span>
                         <img src="../img/camion.jpg" class="img-rounded">
-                        <h6> <span class="'. $statusTipo[$fila['status']] .'">'. $fila['economico'] .'</span> </h6> 
+                         <span class="'. $statusTipo[$fila['status']] .'">'. $fila['economico'] .'</span> <h6>'.$fila['placas'].' </h6> 
                       </span>
                     </li>';        
          }
-
            }catch(PDOException $ex) {
                 //Something went wrong rollback!
                 $PDOmysql->rollBack();
@@ -113,18 +122,7 @@ $statusTipo = array("Ocupado" => "label label-warning",
                 $respuestaOK = false;
             }        
     ?>
-    <h4> Socio 1</h4>
-    <ul class="inline"> 
-      <li class="span2">      
-           <span> <img src="../img/camion.jpg" class="img-rounded"><h6> Economico numero 1</h6> </span> 
-      </li> 
-      <li class="span2" >
-        <span > <img src="../img/camion.jpg" class="img-rounded"><h6> Economico numero 2</h6> </span> 
-      </li> 
-      <li > Economico3 </li>
-    </ul> 
-
-  </div>
+  </div> 
 
 </body>
 
