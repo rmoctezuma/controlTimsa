@@ -57,8 +57,6 @@ function consultaUsers($linkDB){
 
 
 
-
-
 	$statusTipo = array("Activo" => "btn-success",
 						"Suspendido" => "btn-warning");
 

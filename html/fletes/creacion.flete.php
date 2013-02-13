@@ -132,7 +132,7 @@ try {
 	                <div class="tab-pane" id="lB">
 			            
 	                <div class="row-fluid">
-	                <ul class="nav nav-pills nav-stacked span4" id="listaSocios" href="#">
+	                <ul class="nav nav-pills nav-stacked span4" id="listaSocios" href="#" style="width:300px;height:290px;overflow:scroll;">
 	                	<?php
 	                		$sql = 'select idSocio, Nombre from Socio where statusA="Activo"';
 
