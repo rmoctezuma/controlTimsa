@@ -30,6 +30,7 @@ $statusTipo = array("Ocupado" => "label label-warning",
 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
   <script type="text/javascript" src="../js/jquery.validate.js"></script>
+  <script type="text/javascript" src="../js/economico.action.js"></script>
   </head>
 
   <body>
@@ -70,15 +71,14 @@ $statusTipo = array("Ocupado" => "label label-warning",
     </div>
   </div>
 
-<div class= "container">
-    <div class="page-header">
-      <h1>Economicos</h1> 
-    </div>
-</div>
 
   <div id="MuestraEconomicos">
+    <div class= "container">
+        <div class="page-header">
+          <h1>Economicos <button class="btn btn-mini btn-primary"> Crear Nuevo Economico</button></h1> 
+        </div>
+    </div>
     <?php
-
       try {
           $PDOmysql->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
@@ -97,7 +97,7 @@ $statusTipo = array("Ocupado" => "label label-warning",
           foreach ($rows as $fila){
 
             if($nombreSocio != $fila['nombreSocio']){
-              if( strlen($fila['nombreSocio']) > 0 ){
+              if( strlen($nombreSocio) > 0 ){
                 echo '</ul>';
                 echo '</div>';
               }
@@ -109,8 +109,8 @@ $statusTipo = array("Ocupado" => "label label-warning",
             }
 
             echo '<li class="span2">
-                      <span>
-                        <img src="../img/camion.jpg" class="img-rounded">
+                    <span>
+                        <a href="#" class="camiones"><img title="'.$fila['economico'].'" src="../img/camion.jpg" class="img-rounded"></a>
                          <span class="'. $statusTipo[$fila['status']] .'">'. $fila['economico'] .'</span> <h6>'.$fila['placas'].' </h6> 
                       </span>
                     </li>';        
@@ -122,6 +122,10 @@ $statusTipo = array("Ocupado" => "label label-warning",
                 $respuestaOK = false;
             }        
     ?>
+  </div>
+</div>
+
+  <div id ="economicoDetalle" class="container">
   </div> 
 
 </body>

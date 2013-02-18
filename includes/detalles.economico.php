@@ -1,12 +1,14 @@
 <?php
 
+include('../includes/generic.connection.php');
+
 $result = "";
 
 if(isset($_POST) && !empty($_POST)){
-	$numero = $_POST['numero'];
-	$nombre = $_POST['nombre'];
+	$numero = $_POST['economico'];
+	$placas = $_POST['placas'];
 
-	$statusTipo2 = array("Libre" => "label label-info",
+		$statusTipo2 = array("Libre" => "label label-info",
                               "Ocupado" => "label label-warning",
                               "Indispuesto" => "label label-success",
                               "Fallido" => "label label-important"
@@ -19,32 +21,28 @@ if(isset($_POST) && !empty($_POST)){
                           "Fallido" => "label label-important"
                         );
 
-	$result .= '<br>';
-	$result .= '<br>';
-	$result .= '<br>';
-
-
-	$result .= '<h1 title="'.$numero.'" id="NombreOperador">'. $nombre .' <button class="btn btn-primary btn-large" id="EditarOperador"> Editar </button></h1>';
+	$result .= '<h1 title="'.$numero.'" id="NombreOperador"> Economico  '. $numero .' <button class="btn btn-primary btn-large" id="EditarOperador"> Editar </button></h1>';
+	$result .= '<h5>Numero de Placas '.$placas.'</h5>';
 	$result .= '<hr>';
-	$result .= '<h3> Economicos pertenecientes al Socio </h3>';
+	$result .= '<h4> Operadores que han conducido este economico </h4>';
 
 	$PDOmysql = new PDO('mysql:host=www.timsalzc.com;dbname=timsalzc_ControlTimsa;charset=utf8', 'timsalzc_Raul', 'f203e21387');
 
-	$sql = 'select Economico.Economico, Economico.Placas,Economico.statusA 
-	from Economico,VehiculoDetalle 
-	where 
-	VehiculoDetalle.Economico = Economico.Economico
-	 and  
-	 VehiculoDetalle.Socio = :socio ';
+	$sql = 'select Operador.Eco Economico, Operador.Nombre, Operador.ApellidoP, Operador.ApellidoM, Operador.statusA
+	from Operador,VehiculoDetalle
+	where
+	VehiculoDetalle.Operador = Operador.Eco
+	and
+	VehiculoDetalle.Economico = :economico ';
 
 	 $stmt = $PDOmysql->prepare($sql);
-	 $stmt->bindParam(':socio', $numero);
+	 $stmt->bindParam(':economico', $numero);
 	 $stmt->execute();
 	 $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 	 $resultEconomicos .= '<table class="table-condensed">';
 	 $resultEconomicos .= '<thead>';
-	 $resultEconomicos .= '<tr>  <th>Economico </th> <th> Placas </th> <th> Status </th>  </tr>';
+	 $resultEconomicos .= '<tr>  <th>Operador </th> <th>Nombre </th> <th> Status </th>  </tr>';
 	 $resultEconomicos .= '</thead>';
 	 $resultEconomicos .= '<tbody>';
 
@@ -55,7 +53,7 @@ if(isset($_POST) && !empty($_POST)){
 	 	$optionEconomicos.= '<option>'. $row['Economico'] .' </option>';
 
 	 	$resultEconomicosResult .= '<tr> ';   
-		$resultEconomicosResult.=  ' <td>'. $row['Economico'] .' </td>  <td> '. $row['Placas'] .'</td><td> <span class="' . $statusTipo2[$row['statusA']] .'">'. $row['statusA']  .'  </span> </td>';
+		$resultEconomicosResult.=  ' <td>'. $row['Economico'] .' </td>  <td> '. $row['Nombre'] . ' '.$row['ApellidoP'].' '. $row['ApellidoM'].'</td><td> <span class="' . $statusTipo2[$row['statusA']] .'">'. $row['statusA']  .'  </span> </td>';
 	    $resultEconomicosResult .= '</tr>';
 	}
 
@@ -81,15 +79,15 @@ if(isset($_POST) && !empty($_POST)){
          Cuota,Socio,Flete, Operador, Economico, Cliente, CuotaDetalle, ClienteDireccion, Agencia,VehiculoDetalle, Cuota_Flete
          where
          Operador.Eco = VehiculoDetalle.Operador and Economico.Economico = VehiculoDetalle.Economico and Socio.idSocio = VehiculoDetalle.Socio
-         and Flete.Operador = VehiculoDetalle.Operador and Flete.Economico = VehiculoDetalle.Economico and Flete.Socio = VehiculoDetalle.Socio
+         and Flete.Operador = VehiculoDetalle.Operador and Flete.Economico = :economico and Flete.Socio = VehiculoDetalle.Socio
          and Flete.Agencia_idAgente = Agencia.idAgente
          and Flete.idFlete = Cuota_Flete.NumFlete and Cuota_Flete.Cliente = Cliente.idCliente and Cuota_Flete.TipoCuota = CuotaDetalle.numero and
           Cuota_Flete.Cuota = CuotaDetalle.Cuota_idCuota and CuotaDetalle.Cuota_idCuota = Cuota.idCuota and Cuota.idCuota = ClienteDireccion.Cuota_idCuota 
-          and ClienteDireccion.Cliente_idCliente = Cliente.idCliente and Flete.Socio = :socio
+          and ClienteDireccion.Cliente_idCliente = Cliente.idCliente and Flete.Socio = VehiculoDetalle.Socio
           ORDER BY idFlete ASC';
 
      $stmt = $PDOmysql->prepare($sql);
-	 $stmt->bindParam(':socio', $numero);
+	 $stmt->bindParam(':economico', $numero);
 	 $stmt->execute();
 	 $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
@@ -116,21 +114,21 @@ if(isset($_POST) && !empty($_POST)){
 	 $resulTable .= '<select name="dia" class="Fechas">'. consultaDia().'</select>';
 
 	$resulTable .='<select name="mes" class="Fechas">'. consultaMes(). '</select>';
-	$resulTable .='<select name="anio" class="Fechas">'. consultaAnio(). '</select>';
+	$resulTable .='<select name="anio" class="Fechas">'. consultaAnio(). '</select> <br>';
 
     $resulTable .= '<select name="dia2" class="Fechas">'. consultaDia().'</select>';
 
 	$resulTable .='<select name="mes2" class="Fechas">'. consultaMes(). '</select>';
 	$resulTable .='<select name="anio2" class="Fechas">'. consultaAnio(). '</select>';
 
-	 $resulTable .= '<label>Economico </label>';
+	 $resulTable .= '<label>Operador </label>';
 
 	 $resulTable .= '<select id="FiltroEconomico">
 	 					<option>Todos </option>
 	 					'.$optionEconomicos.'
 	 			    </select> <br><br>';
 
-	 $resulTable .= '<div id="table">';	
+     $resulTable .= '<div id="table">';	
 	 $resulTable .= '<table class="table-condensed">
 				    <thead>
 				      <tr>
@@ -171,14 +169,17 @@ if($resulTableResult != ""){
 	$result .= '<div>';
 }
 else{
-	$result.= "<h4><i>Este Socio no posee fletes Registrados</i></h4>";
+		$result.= "<h4><i>Este Economico no posee fletes Registrados</i></h4>";
 }
  	$result .= '<hr>';
+
 }
 
 $resultados = array("results" => $result);
 
 echo json_encode($resultados);
+
+
 
 function consultaDia(){
 	$fecha = "";
@@ -214,5 +215,6 @@ function consultaAnio(){
         }
         return $fecha;
 }
+
 
 ?>
