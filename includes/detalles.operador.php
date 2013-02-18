@@ -115,10 +115,10 @@ try {
 	 					 <option> Ultimo año </option> 
 	 			    </select> <br><br>';
 
-	 $resulTable .= '<label class="radio">Por Rango de Tiempo<input type="radio" name="optionsRadios" value="2">                                                           
+	$resulTable .= '<label class="radio">Por Rango de Tiempo<input type="radio" name="optionsRadios" value="2">                                                           
                     </label>';
 
-	 $resulTable .= '<select name="dia" class="Fechas">'. consultaDia().'</select>';
+	$resulTable .= '<select name="dia" class="Fechas">'. consultaDia().'</select>';
 
 	$resulTable .='<select name="mes" class="Fechas">'. consultaMes(). '</select>';
 	$resulTable .='<select name="anio" class="Fechas">'. consultaAnio(). '</select>';
