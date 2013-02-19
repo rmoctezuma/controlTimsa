@@ -1,5 +1,19 @@
 $(function(){
 
+	$('#formEconomico').hide();
+
+	$('#formEco').validate();
+	
+	$('#nuevoEconomico').click( function(){
+		$('#formEconomico').show();
+		$('#MuestraEconomicos').hide();
+	});
+
+	$('#botonCancelar').click( function(){
+		$('#formEconomico').hide();
+		$('#MuestraEconomicos').show();
+	});
+
 	$('.camiones').live('click', function (e){
 		e.preventDefault();
 		

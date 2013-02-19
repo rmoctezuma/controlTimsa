@@ -75,7 +75,7 @@ $statusTipo = array("Ocupado" => "label label-warning",
   <div id="MuestraEconomicos">
     <div class= "container">
         <div class="page-header">
-          <h1>Economicos <button class="btn btn-mini btn-primary"> Crear Nuevo Economico</button></h1> 
+          <h1>Economicos <button class="btn btn-mini btn-primary" id="nuevoEconomico"> Crear Nuevo Economico</button></h1> 
         </div>
     </div>
     <?php
@@ -126,6 +126,45 @@ $statusTipo = array("Ocupado" => "label label-warning",
 </div>
 
   <div id ="economicoDetalle" class="container">
+  </div>
+
+  <div id="formEconomico" class="container">
+    <br>
+    <h1> Creacion de un Nuevo Economico </h1>
+    <br>
+
+    <form method="POST" action="../includes/crearEconomico.php" enctype="multipart/form-data" id="formEco">
+      <input class="required" type="text" name="Placas" placeholder="Numero de Placas"> <br>
+      <?php
+        echo '<select name="socio">';
+        $sql = 'select Socio.Nombre nombreSocio, Socio.idSocio
+          from  Socio where statusA <> "deprecated" order by Nombre asc';
+
+          $stmt = $PDOmysql->query($sql);
+          $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+          foreach ($rows as $fila) {
+            echo '<option value="'. $fila['idSocio'].'">'.$fila['nombreSocio'].' </option>';
+          }
+
+        echo '</select>';
+        echo '<br>';
+
+        echo '<select name="operador">';
+        $sql = 'select Operador.Nombre nombre, Operador.ApellidoP apellido, Operador.ApellidoM apellidom, Operador.Eco economico
+          from  Operador where statusA <> "deprecated" Order by Nombre asc';
+
+          $stmt = $PDOmysql->query($sql);
+          $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+           foreach ($rows as $fila) {
+            echo '<option value="'. $fila['economico'].'">'.$fila['nombre']. ' '. $fila['apellido'] .' '. $fila['apellidom'] .  ' </option><br>';
+          }
+      ?>
+
+      <input type="submit" name="submit" class="btn btn-primary" name="boton"  id="submit" value="Subir"/> 
+      <button class="btn" type="reset" id="botonCancelar"> Cancelar</button>
+    </form>
   </div> 
 
 </body>
