@@ -34,6 +34,7 @@ $(function(){
 				$('#economicoDetalle').append(response.results);
 				$('.Fechas').hide();
 				$('#Filtro').hide();
+				$('#appendOperador').hide();
 				
 			},
 			error: function(xhr, ajaxOptions, thrownError){
@@ -200,4 +201,33 @@ $(function(){
 
 		});
 	});
+
+	
+
+	$('#EditarOperador').live("click", function(){
+		var economico = $('#NombreOperador').attr("title");
+
+		parametros = {"economico" : economico}
+
+		$('#appendOperador').show();
+	/*		
+		$.ajax({
+			beforeSend: function(){
+			},
+			cache: false,
+			type: "POST",
+			dataType:"json",
+			url:"../includes/editar.economico.php",
+			data: parametros,
+			success: function(response){
+
+			},
+			error: function(xhr, ajaxOptions, thrownError){
+					alert("error, comprueba tu conexion a internet" + xhr.responseText);
+			}
+
+		});
+		*/
+	});
+
 });

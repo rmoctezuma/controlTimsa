@@ -24,9 +24,28 @@ if(isset($_POST) && !empty($_POST)){
 	$result .= '<h1 title="'.$numero.'" id="NombreOperador"> Economico  '. $numero .' <button class="btn btn-primary btn-large" id="EditarOperador"> Editar </button></h1>';
 	$result .= '<h5>Numero de Placas '.$placas.'</h5>';
 	$result .= '<hr>';
-	$result .= '<h4> Operadores que han conducido este economico </h4>';
 
-	$PDOmysql = new PDO('mysql:host=www.timsalzc.com;dbname=timsalzc_ControlTimsa;charset=utf8', 'timsalzc_Raul', 'f203e21387');
+	$result .= '<div id="appendOperador">';
+
+	$result .= '<select name="operador">';
+    $sql = 'select Operador.Nombre nombre, Operador.ApellidoP apellido, Operador.ApellidoM apellidom, Operador.Eco economico
+          from  Operador where statusA <> "deprecated" Order by Nombre asc';
+
+    $PDOmysql = consulta();
+
+    $stmt = $PDOmysql->query($sql);
+    $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    foreach ($rows as $fila) {
+        $result .= '<option value="'. $fila['economico'].'">'.$fila['nombre']. ' '. $fila['apellido'] .' '. $fila['apellidom'] .  ' </option><br>';
+     }
+     $result .= '</select>';
+     $result .=  '<span> <button id="append" class="btn btn-mini btn-primary"> agregar </button></span>';
+     $result .= '<br>';
+     $result .= '</div>';
+     $result .= '<br>'; 
+
+	$result .= '<h4> Operadores que han conducido este economico </h4>';
 
 	$sql = 'select Operador.Eco Economico, Operador.Nombre, Operador.ApellidoP, Operador.ApellidoM, Operador.statusA
 	from Operador,VehiculoDetalle
@@ -68,8 +87,6 @@ if(isset($_POST) && !empty($_POST)){
 	}
 
 	 $result .= '<h3> Fletes de Este Socio </h3>';
-
-	 $PDOmysql = new PDO('mysql:host=www.timsalzc.com;dbname=timsalzc_ControlTimsa;charset=utf8', 'timsalzc_Raul', 'f203e21387');
 
 	 $sql = 'select distinct Flete.idFlete idFlete, Operador.Nombre nombre,
          Operador.ApellidoP apellidop, Operador.ApellidoM apellidom, Economico.Economico economico, Economico.Placas placas, 

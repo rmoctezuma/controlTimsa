@@ -160,6 +160,7 @@ $statusTipo = array("Ocupado" => "label label-warning",
            foreach ($rows as $fila) {
             echo '<option value="'. $fila['economico'].'">'.$fila['nombre']. ' '. $fila['apellido'] .' '. $fila['apellidom'] .  ' </option><br>';
           }
+          echo '</select>';
       ?>
 
       <input type="submit" name="submit" class="btn btn-primary" name="boton"  id="submit" value="Subir"/> 
