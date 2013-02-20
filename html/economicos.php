@@ -127,6 +127,7 @@ $statusTipo = array("Ocupado" => "label label-warning",
 </div>
 
   <div id ="economicoDetalle" class="container">
+    
   </div>
 
   <div id="formEconomico" class="container">

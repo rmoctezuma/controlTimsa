@@ -1,5 +1,4 @@
 <?php
-
 include('../includes/generic.connection.php');
 
 $result = "";
@@ -73,7 +72,7 @@ if(isset($_POST) && !empty($_POST)){
 	 	$optionEconomicos.= '<option>'. $row['Economico'] .' </option>';
 
 	 	$resultEconomicosResult .= '<tr> ';   
-		$resultEconomicosResult.=  ' <td>'. $row['Economico'] .' </td>  <td> '. $row['Nombre'] . ' '.$row['ApellidoP'].' '. $row['ApellidoM'].'</td><td> <span class="' . $statusTipo2[$row['statusA']] .'">'. $row['statusA']  .'  </span> </td>';
+		$resultEconomicosResult.=  '<td>'. $row['Economico'] .' </td>  <td> '. $row['Nombre'] . ' '.$row['ApellidoP'].' '. $row['ApellidoM'].'</td><td> <span class="' . $statusTipo2[$row['statusA']] .'">'. $row['statusA']  .'  </span> </td>';
 	    $resultEconomicosResult .= '</tr>';
 	}
 

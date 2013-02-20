@@ -129,7 +129,7 @@ if(isset($_POST) && !empty($_POST)){
 	$result .= '</tbody> </table>';
 	}
 	else{
-		$result.= "<h4><i>Este Economico no posee fletes Registrados con estas caracteristicas</i></h4>";
+		$result.= '<h4 class="span6"><i>Este Economico no posee fletes Registrados con estas caracteristicas</i></h4>';
 	}
 
 	$result .= '<hr>';
