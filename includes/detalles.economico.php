@@ -21,12 +21,12 @@ if(isset($_POST) && !empty($_POST)){
                           "Fallido" => "label label-important"
                         );
 
-	$result .= '<h1 title="'.$numero.'" id="NombreOperador"> Economico  '. $numero .' <button class="btn btn-primary btn-large" id="EditarOperador"> Editar </button></h1>';
-	$result .= '<h5>Numero de Placas '.$placas.'</h5>';
+	$result .= '<h1 title="'.$numero.'" id="NombreOperador"><img src="../img/logo.png" class="img-rounded"> Economico  '. $numero .' <button class="btn btn-primary btn-large" data-toggle="button" id="EditarOperador"> Editar </button></h1>';
+	$result .= '<h5> Numero de Placas '.$placas.'</h5>';
 	$result .= '<hr>';
 
 	$result .= '<div id="appendOperador">';
-
+	$result .= '<label> Agregar Operador al economico </label> <br>';
 	$result .= '<select name="operador">';
     $sql = 'select Operador.Nombre nombre, Operador.ApellidoP apellido, Operador.ApellidoM apellidom, Operador.Eco economico
           from  Operador where statusA <> "deprecated" Order by Nombre asc';
@@ -42,6 +42,7 @@ if(isset($_POST) && !empty($_POST)){
      $result .= '</select>';
      $result .=  '<span> <button id="append" class="btn btn-mini btn-primary"> agregar </button></span>';
      $result .= '<br>';
+     $result .= '<hr>';
      $result .= '</div>';
      $result .= '<br>'; 
 
@@ -59,7 +60,7 @@ if(isset($_POST) && !empty($_POST)){
 	 $stmt->execute();
 	 $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-	 $resultEconomicos .= '<table class="table-condensed">';
+	 $resultEconomicos .= '<table class="table table-condensed span5">';
 	 $resultEconomicos .= '<thead>';
 	 $resultEconomicos .= '<tr>  <th>Operador </th> <th>Nombre </th> <th> Status </th>  </tr>';
 	 $resultEconomicos .= '</thead>';
@@ -68,7 +69,7 @@ if(isset($_POST) && !empty($_POST)){
 	 $resultEconomicosResult = "";
 	 $optionEconomicos = "";
 
-	 foreach ($rows as $row){ 
+	 foreach ($rows as $row){
 	 	$optionEconomicos.= '<option>'. $row['Economico'] .' </option>';
 
 	 	$resultEconomicosResult .= '<tr> ';   
@@ -80,13 +81,13 @@ if(isset($_POST) && !empty($_POST)){
 		$result .= $resultEconomicos;
 		$result .= $resultEconomicosResult;
 		$result .= '</tbody>';
-	    $result .= '</table>';
+	    $result .= '</table><br>';
 	}
 	else{
 		$result .= '<h4><i>Este Socio no posee ningun Economico</i></h4>';
 	}
 
-	 $result .= '<h3> Fletes de Este Socio </h3>';
+	 $result .= '<br><h3><br> Fletes de Este Socio </h3>';
 
 	 $sql = 'select distinct Flete.idFlete idFlete, Operador.Nombre nombre,
          Operador.ApellidoP apellidop, Operador.ApellidoM apellidom, Economico.Economico economico, Economico.Placas placas, 
@@ -109,11 +110,16 @@ if(isset($_POST) && !empty($_POST)){
 	 $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 	 $resulTable .= "";
+	 $resulTable .= '<div class="span7">';
 
-	 $resulTable .= '<label class="radio">
-                        <input type="radio" name="optionsRadios" value="1">
-                        General                                    
+	 $resulTable .= '<span><label class="radio inline">
+                        <input type="radio" name="optionsRadios" value="1">General                                         
                     </label>';
+
+    $resulTable .= '<label class="radio inline">
+                        <input type="radio" name="optionsRadios" value="2">
+                        Por Rango de Tiempo                                    
+                    </label></span>';
 
 
 	 $resulTable .= '<select id="Filtro">
@@ -122,11 +128,6 @@ if(isset($_POST) && !empty($_POST)){
 	 					 <option> Ultimo mes </option>
 	 					 <option> Ultimo año </option> 
 	 			    </select> <br><br>';
-
-	 $resulTable .= '<label class="radio">
-                        <input type="radio" name="optionsRadios" value="2">
-                        Por Rango de Tiempo                                    
-                    </label>';
 
 	 $resulTable .= '<select name="dia" class="Fechas">'. consultaDia().'</select>';
 
@@ -138,15 +139,18 @@ if(isset($_POST) && !empty($_POST)){
 	$resulTable .='<select name="mes2" class="Fechas">'. consultaMes(). '</select>';
 	$resulTable .='<select name="anio2" class="Fechas">'. consultaAnio(). '</select>';
 
-	 $resulTable .= '<label>Operador </label>';
+	$resulTable .= '</div>';
+	$resulTable .= '<div>';
+
+	 $resulTable .= '<label>Operador ';
 
 	 $resulTable .= '<select id="FiltroEconomico">
 	 					<option>Todos </option>
 	 					'.$optionEconomicos.'
-	 			    </select> <br><br>';
+	 			    </select> </label><br><br>';
 
      $resulTable .= '<div id="table">';	
-	 $resulTable .= '<table class="table-condensed">
+	 $resulTable .= '<table class=" table table-condensed">
 				    <thead>
 				      <tr>
 				        <th>#</th>
@@ -160,6 +164,8 @@ if(isset($_POST) && !empty($_POST)){
 				        <th> </th>
 				        </tr></thead>
 				        <tbody>';
+
+	$resulTable .= '<div>';
 
 	$resulTableResult = "";
 

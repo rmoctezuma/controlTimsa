@@ -41,7 +41,6 @@ $(function(){
 					alert("error, comprueba tu conexion a internet" + xhr.responseText);
 			}
 		});
-
 	});
 
 	$("input[type=radio]").live("click", function(){
@@ -49,14 +48,14 @@ $(function(){
 		var action;
 
 		if($(this).val() == "1"){
-			$('#Filtro').show("slow");
-			$('.Fechas').hide("fade");
+			$('#Filtro').show("fade");
+			$('.Fechas').hide();
 			filtro = $('#Filtro').val();
 			action = "general";
 		}
 		else{
-			$('.Fechas').show("slow");
-			$('#Filtro').hide("fade");
+			$('.Fechas').show("fade");
+			$('#Filtro').hide();
 			filtro = [];
 			action = "rango";
 
@@ -209,7 +208,14 @@ $(function(){
 
 		parametros = {"economico" : economico}
 
-		$('#appendOperador').show();
+		if( $('#EditarOperador').hasClass('active')){
+			$('#appendOperador').show("fade");
+		}
+		else {
+			$('#appendOperador').hide("fade");
+		}
+
+		
 	/*		
 		$.ajax({
 			beforeSend: function(){

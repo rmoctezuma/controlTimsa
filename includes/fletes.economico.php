@@ -68,7 +68,7 @@ if(isset($_POST) && !empty($_POST)){
 		$whereEconomico .= 'and Flete.Operador = '. $economico;
 	}
 	
-		$resulTable .= '<table class="table-condensed">
+		$resulTable .= '<table class=" table table-condensed">
 				    <thead>
 				      <tr>
 				        <th>#</th>

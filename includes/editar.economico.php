@@ -16,8 +16,7 @@ if(isset($_POST) && !empty($_POST)){
 
            foreach ($rows as $fila) {
             $resultado .= '<option value="'. $fila['economico'].'">'.$fila['nombre']. ' '. $fila['apellido'] .' '. $fila['apellidom'] .  ' </option><br>';
-          }
-      ?>
+          }    
 }
 
 ?>
