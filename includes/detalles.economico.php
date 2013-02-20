@@ -20,7 +20,7 @@ if(isset($_POST) && !empty($_POST)){
                           "Fallido" => "label label-important"
                         );
 
-	$result .= '<h1 title="'.$numero.'" id="NombreOperador"><img src="../img/logo.png" class="img-rounded"> Economico  '. $numero .' <button class="btn btn-primary btn-large" data-toggle="button" id="EditarOperador"> Editar </button></h1>';
+	$result .= '<h1 title="'.$numero.'" id="NombreOperador"><a href="#" id="back"><img src="http://control.timsalzc.com/Timsa/img/back-arrow.png" class="img-rounded"></a> <img src="http://control.timsalzc.com/Timsa/img/camion.jpg" class="img-rounded"> Economico  '. $numero .' <button class="btn btn-primary btn-large" data-toggle="button" id="EditarOperador"> Editar </button></h1>';
 	$result .= '<h5> Numero de Placas '.$placas.'</h5>';
 	$result .= '<hr>';
 

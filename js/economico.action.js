@@ -31,6 +31,7 @@ $(function(){
 			success: function(response){
 
 				$('#MuestraEconomicos').hide();
+				$('#economicoDetalle').show("fade");
 				$('#economicoDetalle').append(response.results);
 				$('.Fechas').hide();
 				$('#Filtro').hide();
@@ -199,6 +200,13 @@ $(function(){
 			}
 
 		});
+	});
+
+	$('#back').live("click", function (e){
+		e.preventDefault();
+		$('#economicoDetalle').hide();
+		$('#economicoDetalle').empty();
+		$('#MuestraEconomicos').show("fade");
 	});
 
 	
