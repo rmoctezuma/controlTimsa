@@ -1,3 +1,9 @@
+<?php
+
+include("../includes/generic.connection.php");
+
+?>
+
 <!DOCTYPE html>
 <html>
   <head>
@@ -66,47 +72,13 @@
     </div>
   </div>
 
-
-    <div class="hero-unit">
-      <div class="container">
-        <h1>Transportes Integrados de Michoacan </h1>
-        <h2> Manejo de Cuotas</h2>
-      </div>
-      <p ><img src="../images/logo2.png" class="img-rounded"></p> 
-    </div>
-<div class= "container">
-    <div class="page-header"><h1>Movimientos Actuales</h1> 
-      <p>
-        <button class="btn btn-primary" type="button">Nueva Cuota</button>
-    </p>
-    </div>
-
-    <div class ="container">
-      <?php
-        $PDOmysql = null;
-        $salida="";
-        $statusTipo = array("Libre" => "label label-info",
-                              "Ocupado" => "label label-warning",
-                              "Indispuesto" => "label label-important",
-                              );
-
-        try {
-            $PDOmysql = new PDO('mysql:host=www.timsalzc.com;dbname=timsalzc_ControlTimsa;charset=utf8', 'timsalzc_Raul', 'f203e21387');
-
-
-       $sql = 'SELECT *
-                FROM Flete
-                WHERE DATE(Fecha) > "2013-01-25";';
-
-       foreach ($PDOmysql -> query($sql) as $fila) {
-           $nombre = $fila['Nombre'] .' '. $fila['ApellidoP'] .' '. $fila['ApellidoM'];
-           $telefono = $fila['Telefono'];
-           $status = $fila['statusA'];
-           $ruta = $fila['rutaImagen'];
-         }
-       }
-      ?>
-    </div>
+  <table>
+    <thead>
+    </thead>
+    <tbody>
+    </tbody>
+  </table>
+  
 
 
 </html>
