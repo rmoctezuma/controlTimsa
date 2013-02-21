@@ -89,7 +89,7 @@ if(isset($_POST) && !empty($_POST)){
 		$result .= '<h4><i>Este Socio no posee ningun Economico</i></h4>';
 	}
 		$result .= '<div class="span8">';
-	 $result .= '<br><h3><br> Fletes de Este Socio </h3>';
+	 $result .= '<h3> Fletes de Este Socio </h3>';
 
 	 $sql = 'select distinct Flete.idFlete idFlete, Operador.Nombre nombre,
          Operador.ApellidoP apellidop, Operador.ApellidoM apellidom, Economico.Economico economico, Economico.Placas placas, 

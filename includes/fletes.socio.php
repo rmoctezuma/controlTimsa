@@ -97,7 +97,8 @@ if(isset($_POST) && !empty($_POST)){
          and Flete.Agencia_idAgente = Agencia.idAgente
          and Flete.idFlete = Cuota_Flete.NumFlete and Cuota_Flete.Cliente = Cliente.idCliente and Cuota_Flete.TipoCuota = CuotaDetalle.numero and
           Cuota_Flete.Cuota = CuotaDetalle.Cuota_idCuota and CuotaDetalle.Cuota_idCuota = Cuota.idCuota and Cuota.idCuota = ClienteDireccion.Cuota_idCuota 
-          and ClienteDireccion.Cliente_idCliente = Cliente.idCliente and Flete.Operador = :socio
+          and ClienteDireccion.Cliente_idCliente = Cliente.idCliente and Flete.Operador = VehiculoDetalle.Operador
+          and Flete.Socio = :socio
             '.$whereEconomico . '    ' . $whereFiltro .'
           ORDER BY idFlete ASC';
 

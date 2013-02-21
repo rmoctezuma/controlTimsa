@@ -1,3 +1,9 @@
+<?php
+
+include("../includes/generic.connection.php");
+
+?>
+
 <!DOCTYPE html>
 <html>
   <head>
@@ -66,67 +72,85 @@
     </div>
   </div>
 
+  <div class= "container span2" id="OperadorList">
+  <h1> Operadores </h1>
+  <br>
 
-    <div class="hero-unit">
-      <div class="container">
-        <h1>Transportes Integrados de Michoacan </h1>
-        <h2> Control de Clientes</h2>
-      </div>
-      <p ><img src="../images/logo2.png" class="img-rounded"></p> 
-    </div>
+    <?php
+        $PDOmysql = null;
+        $salida="";
+        $statusTipo = array("Libre" => "label label-info",
+                              "Ocupado" => "label label-warning",
+                              "Indispuesto" => "label label-important",
+                              );
 
-  <div class= "container">
-    <div class="page-header"><h1>Clientes</h1> 
-    </div>
-    <div class="row">
-
-
-
-      <?php
+        try {
+            $PDOmysql = consulta();
 
 
+       $sql = 'select distinct idCliente,NombrestatusA,rutaImagen from Cliente';
 
-        $conexion = mysql_connect("localhost","TIMSA","TIMSA");
+       foreach ($PDOmysql -> query($sql) as $fila) {
+           $nombre = $fila['Nombre'] .' '. $fila['ApellidoP'] .' '. $fila['ApellidoM'];
+           $telefono = $fila['Telefono'];
+           $status = $fila['statusA'];
+           $ruta = $fila['rutaImagen'];
 
-        if (!$conexion) {
-          echo "Unable to connect to DB: " . mysql_error();
-          exit;
+           $salida.=   '<ul class="media-list">
+                          <li class="media" title="'.$fila['Eco'].'">
+                             <a class="pull-left" href="#">
+                              <img class="media-object" data-src="holder.js/64x64" alt="64x64" style="width: 64px; height: 64px;"  src='.$fila['rutaImagen'].'>
+                            </a>
+                            <div class="media-body" id="media">
+                              <h4 class="media-heading">'.$nombre.'</h4>
+                              <p> <small> '.$telefono.' </small> </p>
+                              <p> <span class="'.$statusTipo[$status].'">'.$status.' <span> </p>
+                            </div>
+                          </li>
+                        </ul>';
+       }
+
+       echo $salida;
+
+        } catch(PDOException $ex) {
+          echo "An Error occured!"; //user friendly message
+          echo $ex->getMessage();
+          $salida .= '<tr id="sinDatos">
+                        <td >ERROR AL CONECTAR CON LA BASE DE DATOS</td>
+                      </tr>';
         }
 
-        if (!mysql_select_db("timsa")) {
-            echo "Unable to select mydbname: " . mysql_error();
-            exit;
-        }
+    ?>
 
-        $sql = "SELECT NOMBRE FROM CLIENTE";
-        $query = mysql_query($sql);
+     <button class="btn btn-primary" id="botonCrear"> Crear nuevo Operador</button>
 
-        if (!$query) {
-           echo "Could not successfully run query ($sql) from DB: " . mysql_error();
-          exit;
-        }
+</div>
 
-        echo "<div class=span4>";
-        echo "<ul class='nav nav-list'>";
-        echo "<li class='nav-header'>CLIENTES </li>";
-       
-        
-        while ($fila = mysql_fetch_assoc($query)){
-           printf("<li> %s </li>", $fila['NOMBRE']);
-
-        }
-        mysql_free_result($query);
-            echo "</tbody>";
-
-        echo "</ul>";
-        echo "</div>";
-        echo "<div class='padding-large span6'>";
-        echo "<h2>Nombre Cliente</h2>";
-        echo "</div>";
-    ?> 
-    
-    </div>
+  <div class= "container span7" id="result">
   </div>
+
+<div class="container" id="CreacionOperador">
+    <br>
+    <h1> Creacion de un Nuevo Oprador </h1>
+    <br>
+
+    <form method="POST" action="../includes/crearOperador.php" enctype="multipart/form-data" id="formSocio">
+      <input class="required" type="text" name="NombreSocio" placeholder="Nombre del Operador"> <br>
+      <input class="required" type="text" name="ApellidoSocio" placeholder="Apellido Paterno"> <br>
+      <input class="required" type="text" name="ApellidoMSocio" placeholder="Apellido Materno"> <br>
+
+      <input class="required" type="text" name="telefono" placeholder="Telefono"><br>
+      <input class="required" type="text" name="rc" placeholder="R. C."> <br>
+
+      <input type="file" name="archivo" id="archivo" /><br>
+      <input type="submit" class="btn btn-primary" name="boton" value="Subir" id="submit"/>
+      <button class="btn" type="reset" id="botonCancelar"> Cancelar</button>
+    </form>
+
+  </div>
+
+
+    
 </body>
 
 </html>

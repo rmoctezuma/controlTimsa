@@ -30,7 +30,7 @@ if(isset($_POST) && !empty($_POST)){
 
 	$PDOmysql = new PDO('mysql:host=www.timsalzc.com;dbname=timsalzc_ControlTimsa;charset=utf8', 'timsalzc_Raul', 'f203e21387');
 
-	$sql = 'select Economico.Economico, Economico.Placas,Economico.statusA 
+	$sql = 'select distinct Economico.Economico, Economico.Placas,Economico.statusA 
 	from Economico,VehiculoDetalle 
 	where 
 	VehiculoDetalle.Economico = Economico.Economico
@@ -42,7 +42,7 @@ if(isset($_POST) && !empty($_POST)){
 	 $stmt->execute();
 	 $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-	 $resultEconomicos .= '<table class="table-condensed">';
+	 $resultEconomicos .= '<table class="table table-condensed">';
 	 $resultEconomicos .= '<thead>';
 	 $resultEconomicos .= '<tr>  <th>Economico </th> <th> Placas </th> <th> Status </th>  </tr>';
 	 $resultEconomicos .= '</thead>';
@@ -95,9 +95,14 @@ if(isset($_POST) && !empty($_POST)){
 
 	 $resulTable .= "";
 
-	 $resulTable .= '<label class="radio">
+	 $resulTable .= '<label class="radio inline">
                         <input type="radio" name="optionsRadios" value="1">
                         General                                    
+                    </label>';
+
+    $resulTable .= '<label class="radio inline">
+                        <input type="radio" name="optionsRadios" value="2">
+                        Por Rango de Tiempo                                    
                     </label>';
 
 
@@ -108,10 +113,7 @@ if(isset($_POST) && !empty($_POST)){
 	 					 <option> Ultimo año </option> 
 	 			    </select> <br><br>';
 
-	 $resulTable .= '<label class="radio">
-                        <input type="radio" name="optionsRadios" value="2">
-                        Por Rango de Tiempo                                    
-                    </label>';
+	 
 
 	 $resulTable .= '<select name="dia" class="Fechas">'. consultaDia().'</select>';
 
@@ -130,8 +132,8 @@ if(isset($_POST) && !empty($_POST)){
 	 					'.$optionEconomicos.'
 	 			    </select> <br><br>';
 
-	 $resulTable .= '<div id="table">';	
-	 $resulTable .= '<table class="table-condensed">
+	 $resulTable .= '<div id="table" class="span8">';	
+	 $resulTable .= '<table class="table table-condensed">
 				    <thead>
 				      <tr>
 				        <th>#</th>
@@ -159,7 +161,6 @@ if(isset($_POST) && !empty($_POST)){
                 <td>'. $fila['trafico']  . '  </td>
                 <td>'. $fila['TipoViaje'].'  </td>
                 <td> <span class="'.$statusTipo[$fila['statusA']].'">'.$fila['statusA'] .' </span>  </td>
-                <td>'. $fila['Fecha']    .'  </td>
                 <td> <button class="demo btn btn-success btn-mini" data-toggle="modal" href="#responsive">Detalles</button> <td>
             </tr>';
      }
@@ -168,7 +169,7 @@ if($resulTableResult != ""){
 	$result.= $resulTable;
 	$result.= $resulTableResult;
 	$result .= '</tbody> </table>';
-	$result .= '<div>';
+	$result .= '</div>';
 }
 else{
 	$result.= "<h4><i>Este Socio no posee fletes Registrados</i></h4>";

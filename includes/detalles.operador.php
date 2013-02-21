@@ -37,7 +37,7 @@ if(isset($_POST) && !empty($_POST)){
 try {
 	$PDOmysql->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-	$sql = 'select Economico.Economico, Economico.Placas,Economico.statusA 
+	$sql = 'select distinct Economico.Economico, Economico.Placas,Economico.statusA 
 	from Economico,VehiculoDetalle 
 	where 
 	VehiculoDetalle.Economico = Economico.Economico
@@ -51,7 +51,7 @@ try {
 
 	 $resultEconomicos = "";	
 
-	 $resultEconomicos .= '<table class="table-condensed">';
+	 $resultEconomicos .= '<table class="table table-condensed">';
 	 $resultEconomicos .= '<thead>';
 	 $resultEconomicos .= '<tr>  <th>Economico </th> <th> Placas </th> <th> Status </th>  </tr>';
 	 $resultEconomicos .= '</thead>';
@@ -59,7 +59,6 @@ try {
 
 	 $resultEconomicosResult = "";
 	 $optionEconomicos = "";
-	 $result .= '<form id="FormFiltro">';
 
 	 foreach ($rows as $row){ 
 	 	$optionEconomicos.= '<option>'. $row['Economico'] .' </option>';
@@ -105,8 +104,12 @@ try {
 
 	 $resulTable .= "";
 
-	 $resulTable .= '<label class="radio">
+	 $resulTable .= '<label class="radio inline">
                         <input type="radio" name="optionsRadios" value="1">General</label>';
+
+     $resulTable .= '<label class="radio inline"><input type="radio" name="optionsRadios" value="2">  
+     						Por Rango de Tiempo	                                                         
+                    </label>';
 
 	 $resulTable .= '<select id="Filtro">
 	 					<option> Todos </option>
@@ -114,9 +117,6 @@ try {
 	 					 <option> Ultimo mes </option>
 	 					 <option> Ultimo año </option> 
 	 			    </select> <br><br>';
-
-	$resulTable .= '<label class="radio">Por Rango de Tiempo<input type="radio" name="optionsRadios" value="2">                                                           
-                    </label>';
 
 	$resulTable .= '<select name="dia" class="Fechas">'. consultaDia().'</select>';
 
@@ -135,7 +135,6 @@ try {
 	 					'.$optionEconomicos.'
 	 			    </select> <br><br>';
 
-	 $resulTable .= '</form>';   //Termina form
 
 	 $resulTable .= '<div id="table">';			    
 	 $resulTable .= '<table class="table-condensed">
@@ -175,7 +174,7 @@ if($resulTableResult != ""){
 	$result.= $resulTable;
 	$result.= $resulTableResult;
 	$result .= '</tbody> </table>';
-	$result .= '<div>';
+	$result .= '</div>';
 }
 else{
 	$result.= "<h4><i>Este Operador no posee fletes Registrados</i></h4>";
