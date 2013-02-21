@@ -6,6 +6,7 @@ $result = "";
 if(isset($_POST) && !empty($_POST)){
 	$numero = $_POST['economico'];
 	$placas = $_POST['placas'];
+	$socio = $_POST['socio'];
 
 		$statusTipo2 = array("Libre" => "label label-info",
                               "Ocupado" => "label label-warning",
@@ -21,12 +22,12 @@ if(isset($_POST) && !empty($_POST)){
                         );
 
 	$result .= '<h1 title="'.$numero.'" id="NombreOperador"><a href="#" id="back"><img src="http://control.timsalzc.com/Timsa/img/back-arrow.png" class="img-rounded"></a> <img src="http://control.timsalzc.com/Timsa/img/camion.jpg" class="img-rounded"> Economico  '. $numero .' <button class="btn btn-primary btn-large" data-toggle="button" id="EditarOperador"> Editar </button></h1>';
-	$result .= '<h5> Numero de Placas '.$placas.'</h5>';
+	$result .= '<h5 title="'.$socio.'"> Numero de Placas '.$placas.'</h5>';
 	$result .= '<hr>';
 
 	$result .= '<div id="appendOperador">';
 	$result .= '<label> Agregar Operador al economico </label> <br>';
-	$result .= '<select name="operador">';
+	$result .= '<select id="operador">';
     $sql = 'select Operador.Nombre nombre, Operador.ApellidoP apellido, Operador.ApellidoM apellidom, Operador.Eco economico
           from  Operador where statusA <> "deprecated" Order by Nombre asc';
 

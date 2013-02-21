@@ -6,17 +6,16 @@ include('../includes/generic.connection.php');
 
 if(isset($_POST) && !empty($_POST)){
 	$economico = $_POST['economico'];
+	$operador = $_POST['operador'];
+	$socio = $_POST['socio'];
+	$action = $_POST['action'];
 
-	$resultado .= '<select name="operador">';
-        $sql = 'select Operador.Nombre nombre, Operador.ApellidoP apellido, Operador.ApellidoM apellidom, Operador.Eco economico
-          from  Operador where statusA <> "deprecated" Order by Nombre asc';
+	if($action == 'agregarOperador'){
 
-          $stmt = $PDOmysql->query($sql);
-          $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $sql = 'insert into VehiculoDetalle(Operador,Economico,Socio) values(:operador,:economico, :socio)';
 
-           foreach ($rows as $fila) {
-            $resultado .= '<option value="'. $fila['economico'].'">'.$fila['nombre']. ' '. $fila['apellido'] .' '. $fila['apellidom'] .  ' </option><br>';
-          }    
+
+    }  
 }
 
 ?>

@@ -18,7 +18,8 @@ $(function(){
 		e.preventDefault();
 		
 		var parametros = { "economico" : $(this).children().attr("title"),
-							"placas"   : $(this).parent().children("h6").text()
+							"placas"   : $(this).parent().children("h6").text(),
+							"socio"    : $(this).parent().attr("title")
 						 }		
 		$.ajax({
 			beforeSend: function(){
@@ -242,6 +243,33 @@ $(function(){
 
 		});
 		*/
+	});
+
+	$('#append').live("click", function(){
+		var operadorAgregar = $('#operador').val();
+
+		var parametros = { "operador" : operadorAgregar, 
+						   "economico" : $('#NombreOperador').attr('title'), 
+						   "socio" : $('#NombreOperador h6').attr('title'), 
+						   "action" : "agregarOperador" }
+
+		$.ajax({
+			beforeSend: function(){
+			},
+			cache: false,
+			type: "POST",
+			dataType:"json",
+			url:"../includes/editar.economico.php",
+			data: parametros,
+			success: function(response){
+
+			},
+			error: function(xhr, ajaxOptions, thrownError){
+					alert("error, comprueba tu conexion a internet" + xhr.responseText);
+			}
+
+		});
+
 	});
 
 });

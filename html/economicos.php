@@ -83,7 +83,7 @@ $statusTipo = array("Ocupado" => "label label-warning",
       try {
           $PDOmysql->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-          $sql = 'select Socio.Nombre nombreSocio, Economico.Economico economico, Economico.Placas placas, Economico.statusA status
+          $sql = 'select Socio.idSocio, Socio.Nombre nombreSocio, Economico.Economico economico, Economico.Placas placas, Economico.statusA status
           from Economico,VehiculoDetalle, Socio
           where
           VehiculoDetalle.Economico = Economico.Economico
@@ -110,9 +110,9 @@ $statusTipo = array("Ocupado" => "label label-warning",
             }
 
             echo '<li class="span2">
-                    <span>
+                    <span title="'.$fila['idSocio'].'">
                         <a href="#" class="camiones"><img title="'.$fila['economico'].'" src="../img/camion.jpg" class="img-rounded"></a>
-                         <span class="'. $statusTipo[$fila['status']] .'">'. $fila['economico'] .'</span> <h6>'.$fila['placas'].' </h6> 
+                         <span class="'. $statusTipo[$fila['status']] .'">'. $fila['economico'] .'</span> <h6 >'.$fila['placas'].' </h6> 
                       </span>
                     </li>';        
          }
