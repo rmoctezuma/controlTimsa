@@ -46,7 +46,8 @@ if(isset($_POST) && !empty($_POST)){
      $result .= '</div>';
      $result .= '<br>'; 
 
-	$result .= '<h4> Operadores que han conducido este economico </h4>';
+	$result .= '<h4> Operadores que han conducido este economico </h4> <br>';
+	$result  .= '<div>';
 
 	$sql = 'select Operador.Eco Economico, Operador.Nombre, Operador.ApellidoP, Operador.ApellidoM, Operador.statusA
 	from Operador,VehiculoDetalle
@@ -60,7 +61,7 @@ if(isset($_POST) && !empty($_POST)){
 	 $stmt->execute();
 	 $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-	 $resultEconomicos .= '<table class="table table-condensed span5">';
+	 $resultEconomicos .= '<table id="tableOperadores" class="table table-condensed span5">';
 	 $resultEconomicos .= '<thead>';
 	 $resultEconomicos .= '<tr>  <th>Operador </th> <th>Nombre </th> <th> Status </th>  </tr>';
 	 $resultEconomicos .= '</thead>';
@@ -82,26 +83,53 @@ if(isset($_POST) && !empty($_POST)){
 		$result .= $resultEconomicosResult;
 		$result .= '</tbody>';
 	    $result .= '</table><br>';
+	    $result .= '</div>';
 	}
 	else{
 		$result .= '<h4><i>Este Socio no posee ningun Economico</i></h4>';
 	}
-
+		$result .= '<div class="span8">';
 	 $result .= '<br><h3><br> Fletes de Este Socio </h3>';
 
 	 $sql = 'select distinct Flete.idFlete idFlete, Operador.Nombre nombre,
          Operador.ApellidoP apellidop, Operador.ApellidoM apellidom, Economico.Economico economico, Economico.Placas placas, 
          Cliente.Nombre cliente, ClienteDireccion.Localidad sucursal,Agencia.nombre agencia, CuotaDetalle.Trafico trafico,
          CuotaDetalle.TipoViaje TipoViaje,Flete.Fecha Fecha,Flete.statusA statusA 
-         from 
+         from
          Cuota,Socio,Flete, Operador, Economico, Cliente, CuotaDetalle, ClienteDireccion, Agencia,VehiculoDetalle, Cuota_Flete
          where
-         Operador.Eco = VehiculoDetalle.Operador and Economico.Economico = VehiculoDetalle.Economico and Socio.idSocio = VehiculoDetalle.Socio
-         and Flete.Operador = VehiculoDetalle.Operador and Flete.Economico = :economico and Flete.Socio = VehiculoDetalle.Socio
-         and Flete.Agencia_idAgente = Agencia.idAgente
-         and Flete.idFlete = Cuota_Flete.NumFlete and Cuota_Flete.Cliente = Cliente.idCliente and Cuota_Flete.TipoCuota = CuotaDetalle.numero and
-          Cuota_Flete.Cuota = CuotaDetalle.Cuota_idCuota and CuotaDetalle.Cuota_idCuota = Cuota.idCuota and Cuota.idCuota = ClienteDireccion.Cuota_idCuota 
-          and ClienteDireccion.Cliente_idCliente = Cliente.idCliente and Flete.Socio = VehiculoDetalle.Socio
+
+         Operador.Eco = VehiculoDetalle.Operador 
+         and 
+         Economico.Economico = VehiculoDetalle.Economico
+         and
+          VehiculoDetalle.Economico = Flete.Economico
+         and 
+         Socio.idSocio = VehiculoDetalle.Socio
+         and
+          Flete.Operador = VehiculoDetalle.Operador 
+          and
+           Flete.Economico = :economico 
+          and 
+          Flete.Socio = VehiculoDetalle.Socio
+         and 
+         Flete.Agencia_idAgente = Agencia.idAgente
+         and 
+         Flete.idFlete = Cuota_Flete.NumFlete 
+         and 
+         Cuota_Flete.Cliente = Cliente.idCliente
+          and 
+          Cuota_Flete.TipoCuota = CuotaDetalle.numero
+           and
+          Cuota_Flete.Cuota = CuotaDetalle.Cuota_idCuota 
+          and 
+          CuotaDetalle.Cuota_idCuota = Cuota.idCuota 
+          and 
+          Cuota.idCuota = ClienteDireccion.Cuota_idCuota 
+          and 
+          ClienteDireccion.Cliente_idCliente = Cliente.idCliente 
+          and
+           Flete.Socio = VehiculoDetalle.Socio
           ORDER BY idFlete ASC';
 
      $stmt = $PDOmysql->prepare($sql);
@@ -186,6 +214,7 @@ if(isset($_POST) && !empty($_POST)){
      }
 
 if($resulTableResult != ""){
+	$result .= '</div>';
 	$result.= $resulTable;
 	$result.= $resulTableResult;
 	$result .= '</tbody> </table>';
@@ -195,14 +224,11 @@ else{
 		$result.= "<h4><i>Este Economico no posee fletes Registrados</i></h4>";
 }
  	$result .= '<hr>';
-
 }
 
 $resultados = array("results" => $result);
 
 echo json_encode($resultados);
-
-
 
 function consultaDia(){
 	$fecha = "";

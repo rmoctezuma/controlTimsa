@@ -248,10 +248,10 @@ $(function(){
 	$('#append').live("click", function(){
 		var operadorAgregar = $('#operador').val();
 
-		var parametros = { "operador" : operadorAgregar, 
-						   "economico" : $('#NombreOperador').attr('title'), 
-						   "socio" : $('#NombreOperador h6').attr('title'), 
-						   "action" : "agregarOperador" }
+		var parametros = { "operador" : operadorAgregar,
+						   "economico" : $('#NombreOperador').attr('title'),
+						   "socio" : $('#economicoDetalle h5').attr('title'),
+						   "action" : "agregarOperador"}
 
 		$.ajax({
 			beforeSend: function(){
@@ -262,7 +262,9 @@ $(function(){
 			url:"../includes/editar.economico.php",
 			data: parametros,
 			success: function(response){
-
+				alert(response.results);
+				$('#tableOperadores').empty();
+				$('#tableOperadores').append(response.tablaAppend);
 			},
 			error: function(xhr, ajaxOptions, thrownError){
 					alert("error, comprueba tu conexion a internet" + xhr.responseText);
