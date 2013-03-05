@@ -16,12 +16,14 @@ $(function(){
 
 	$('#botonCrear').click( function (e){
 		$('#SocioList').hide("fade");
-		$('#CreacionSocio').show("slow");
+		$('#result').hide();
+		$('#CreacionSocio').show("fast");
 	});
 
 	$('#botonCancelar').click( function (e){
 		$('#CreacionSocio').hide("slow");
 		$('#SocioList').show("fade");
+		$('#result').show();
 	});
 
 	$('#formSocio').validate();

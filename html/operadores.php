@@ -15,6 +15,27 @@
         overflow:scroll;
       }
   </style>
+
+  <style type="text/css">
+    .containerForm {
+        width: 500px;
+        clear: both;
+    }
+    .containerForm input {
+        width: 98%;
+        clear: both;
+    }
+
+    .containerForm select {
+        width: 100%;
+        clear: both;
+    }
+
+    #botonCancelar {
+        width: 98%;
+        clear: both;
+    }
+  </style>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
   <script type="text/javascript" src="../js/jquery.validate.js"></script>
   <script type="text/javascript" src="../js/Operador.Action.js"></script>
@@ -115,19 +136,24 @@
   <div class= "container span7" id="result">
   </div>
 
-<div class="container" id="CreacionOperador">
+<div class="container containerForm" id="CreacionOperador">
     <br>
-    <h1> Creacion de un Nuevo Oprador </h1>
+    <h1>  Nuevo Operador </h1>
     <br>
 
     <form method="POST" action="../includes/crearOperador.php" enctype="multipart/form-data" id="formSocio">
+      <label> Nombre </label>
       <input class="required" type="text" name="NombreSocio" placeholder="Nombre del Operador"> <br>
+      <label> Apellido Paterno </label>
       <input class="required" type="text" name="ApellidoSocio" placeholder="Apellido Paterno"> <br>
+      <label> Apellido Materno </label>
       <input class="required" type="text" name="ApellidoMSocio" placeholder="Apellido Materno"> <br>
+      <label> Telefono </label>
 
       <input class="required" type="text" name="telefono" placeholder="Telefono"><br>
+      <label> R. C. </label>
       <input class="required" type="text" name="rc" placeholder="R. C."> <br>
-
+      <label> Sube una foto del Operador. Este es un campo opcional. </label>
       <input type="file" name="archivo" id="archivo" /><br>
       <input type="submit" class="btn btn-primary" name="boton" value="Subir" id="submit"/>
       <button class="btn" type="reset" id="botonCancelar"> Cancelar</button>

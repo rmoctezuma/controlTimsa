@@ -8,6 +8,16 @@ $statusTipo = array("Ocupado" => "label label-warning",
                     "Indispuesto" => "label label-important"
                     );
 
+function consultaAnio(){
+  $fecha = "";
+   for($i=date('o') + 1; $i>=1910; $i--){
+            if ($i == date('o') + 1)
+                $fecha.= '<option value="'.$i.'" selected>'.$i.'</option>';
+            else
+               $fecha.='<option value="'.$i.'">'.$i.'</option>';
+        }
+        return $fecha;
+}
 ?>
 
 <!DOCTYPE html>
@@ -17,6 +27,28 @@ $statusTipo = array("Ocupado" => "label label-warning",
     <title> TIMSA LZC </title>
     <link href="../css/bootstrap.min.css" rel="stylesheet" media="screen">
     <link href="../css/bootstrap-responsive.css" rel="stylesheet">
+
+  <style type="text/css">
+    .containerForm {
+        width: 500px;
+        clear: both;
+    }
+    .containerForm input {
+        width: 98%;
+        clear: both;
+    }
+
+    .containerForm select {
+        width: 100%;
+        clear: both;
+    }
+
+    #botonCancelar {
+        width: 98%;
+        clear: both;
+    }
+
+  </style>
 
   <style>
       body {
@@ -130,15 +162,16 @@ $statusTipo = array("Ocupado" => "label label-warning",
     
   </div>
 
-  <div id="formEconomico" class="container">
+  <div id="formEconomico" class="container containerForm">
     <br>
-    <h1> Creacion de un Nuevo Economico </h1>
+    <h1>  Nuevo Economico </h1>
     <br>
 
     <form method="POST" action="../includes/crearEconomico.php" enctype="multipart/form-data" id="formEco">
-      <input class="required" type="text" name="Placas" placeholder="Numero de Placas"> <br>
+      <label> <b>Numero de Economico</b> </label> <input class="required number" type="text" name="numero" placeholder="Numero de Economico"> <br>
+      <label> <b>Placas</b> </label> <input class="required" type="text" name="Placas" placeholder="Numero de Placas"> <br>
       <?php
-        echo '<select name="socio">';
+        echo '<label><b> Socio  </b> </label> <select name="socio">';
         $sql = 'select Socio.Nombre nombreSocio, Socio.idSocio
           from  Socio where statusA <> "deprecated" order by Nombre asc';
 
@@ -152,7 +185,7 @@ $statusTipo = array("Ocupado" => "label label-warning",
         echo '</select>';
         echo '<br>';
 
-        echo '<select name="operador">';
+        echo '<label> <b> Operador </b></label>      <select name="operador">';
         $sql = 'select Operador.Nombre nombre, Operador.ApellidoP apellido, Operador.ApellidoM apellidom, Operador.Eco economico
           from  Operador where statusA <> "deprecated" Order by Nombre asc';
 
@@ -163,9 +196,42 @@ $statusTipo = array("Ocupado" => "label label-warning",
             echo '<option value="'. $fila['economico'].'">'.$fila['nombre']. ' '. $fila['apellido'] .' '. $fila['apellidom'] .  ' </option><br>';
           }
           echo '</select>';
-      ?>
+      ?><br>
 
+      <label> <b>Serie</b> </label> <input type="text" class="required" name="numeroSerie" placeholder="Numero de Serie"> <br>
+      <label> <b>Modelo</b> </label> <select name="modelo" id="Modelo"> <?php echo consultaAnio() ?> </select> <br>
+      <label> <b> Marca </b> </label> 
+      <select name="marca">
+        <?php
+
+          $sql = 'SELECT distinct Nombre, idMarca from Marca';
+
+            $stmt = $PDOmysql->query($sql);
+            $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+            foreach ($rows as $fila) {
+              echo '<option value="'. $fila['idMarca'].'">'.$fila['Nombre'].' </option>';
+            }
+        ?>
+       </select>
+      <label><b> Tipo de Vehiculo </b> </label> 
+      <select name="tipoVehiculo">
+        <?php
+            $sql = 'SELECT distinct Nombre, idTipoVehiculo from TipoVehiculo';
+
+            $stmt = $PDOmysql->query($sql);
+            $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+            foreach ($rows as $fila) {
+              echo '<option value="'. $fila['idTipoVehiculo'].'">'.$fila['Nombre'].' </option>';
+            }
+        ?>
+      </select>
+      
+      <br>
+      <br>
       <input type="submit" name="submit" class="btn btn-primary" name="boton"  id="submit" value="Subir"/> 
+      <br>
       <button class="btn" type="reset" id="botonCancelar"> Cancelar</button>
     </form>
   </div> 

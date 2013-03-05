@@ -20,6 +20,27 @@
       }
       </style>
 
+        <style type="text/css">
+    .containerForm {
+        width: 500px;
+        clear: both;
+    }
+    .containerForm input {
+        width: 98%;
+        clear: both;
+    }
+
+    .containerForm select {
+        width: 100%;
+        clear: both;
+    }
+
+    #botonCancelar {
+        width: 98%;
+        clear: both;
+    }
+  </style>
+
   </head>
 
   </head>
@@ -115,25 +136,25 @@
     <br>
   </div>
 
-  <div class="container" id="CreacionSocio">
+  <div class="container containerForm" id="CreacionSocio">
     <br>
-    <h1> Creacion de Nuevo Socio</h1>
+    <h1> Nuevo Socio</h1>
     <br>
 
     <form method="POST" action="../includes/crearSocio.php" enctype="multipart/form-data" id="formSocio">
+      <label> Nombre del Nuevo Socio </label>
       <input class="required" type="text" name="NombreSocio" placeholder="Nombre del Socio"> <br>
+      <label>Apellido Paterno</label>
       <input class="required" type="text" name="ApellidoSocio" placeholder="Apellido Paterno"> <br>
+      <label>Apellido Materno</label>
       <input class="required" type="text" name="ApellidoMSocio" placeholder="Apellido Materno"> <br>
-
+      <label>Telefono</label>
       <input class="required" type="text" name="telefono" placeholder="Telefono"><br>
-
+      <label> Sube una foto del Operador. Este es un campo opcional.</label>
       <input type="file" name="archivo" id="archivo" /><br>
       <input type="submit" class="btn btn-primary" name="boton" value="Subir" id="submit"/>
       <button class="btn" type="reset" id="botonCancelar"> Cancelar</button>
     </form>
 
   </div>
-
-
-
 </html>

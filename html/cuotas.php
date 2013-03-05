@@ -74,8 +74,14 @@ include("../includes/generic.connection.php");
 
   <table>
     <thead>
+      <tr>
+        <td> Num. Cuota </td>
+        <td> Nombre </td>
+        <td> 
+      </tr>
     </thead>
     <tbody>
+
     </tbody>
   </table>
   

@@ -6,6 +6,11 @@ if(isset($_POST['submit']) && !empty($_POST)){
 	$placas = $_POST['Placas'];
 	$socio = $_POST['socio'];
 	$operador = $_POST['operador'];
+	$serie = $_POST['numeroSerie'];
+	$modelo = $_POST['modelo'];
+	$marca = $_POST['marca'];
+	$tipoVehiculo = $_POST['tipoVehiculo'];
+	$numero = $_POST['numero'];
 
 	try {
 		$PDOmysql = consulta();
@@ -14,10 +19,15 @@ if(isset($_POST['submit']) && !empty($_POST)){
 
 		$PDOmysql->beginTransaction();
 
-		$sql = 'insert into Economico(Placas) values(:placas)';
+		$sql = 'insert into Economico(Economico,Placas,NumeroSerie,Modelo,marca,tipoVehiculo) values(:economico,:placas,:serie,:modelo,:marca,:tipoVehiculo)';
 
 		$stmt = $PDOmysql->prepare($sql);
+		$stmt->bindParam(':economico',$numero);
 		$stmt->bindParam(':placas',$placas);
+		$stmt->bindParam(':serie',$serie);
+		$stmt->bindParam(':modelo',$modelo);
+		$stmt->bindParam(':marca',$marca);
+		$stmt->bindParam(':tipoVehiculo',$tipoVehiculo);
 		$stmt->execute();
 
 		$insertId = $PDOmysql ->lastInsertId();
