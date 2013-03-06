@@ -1,7 +1,7 @@
 <?php
 
 include("../includes/generic.connection.php");
-
+$PDOmysql = consulta();
 ?>
 
 <!DOCTYPE html>
@@ -13,7 +13,8 @@ include("../includes/generic.connection.php");
     <link href="../css/bootstrap-responsive.css" rel="stylesheet">
   <style>
       body {
-        padding-top: 30px; /* 60px to make the container go all the way to the bottom of the topbar */
+        padding-top: 60px;
+       /* 60px to make the container go all the way to the bottom of the topbar */
       }
       </style>
 
@@ -28,6 +29,14 @@ include("../includes/generic.connection.php");
         background-repeat: no-repeat;
         background-color: white;
       }
+
+        .text-center{
+          text-align: center;
+        }
+
+        th {
+          text-align: center;
+        }
       </style>
 
   </head>
@@ -72,19 +81,113 @@ include("../includes/generic.connection.php");
     </div>
   </div>
 
-  <table>
+  <div class="container text-center">
+
+    <h1 class="text-center">Cuotas de Viajes Foraneos</h1>
+    <br>
+
+  <table class="table table-bordered">
     <thead>
       <tr>
-        <td> Num. Cuota </td>
-        <td> Nombre </td>
-        <td> 
-      </tr>
+        <th rowspan=2> Num. Cuota </th>
+        <th rowspan=2> Nombre </th>
+        <th colspan=3 > Sencillo </th>
+        <th colspan=3> Full</th>
+        </tr>
+        <tr>
+          <th> Importacion </th>
+          <th> Exportacion </th>
+          <th> Reutilizado </th>
+
+          <th> Importacion </th>
+          <th> Exportacion </th>
+          <th> Reutilizado </th>
+        </tr>      
+      
     </thead>
     <tbody>
+      <?php
+        try {
+            $PDOmysql->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
+            $sql = 'SELECT distinct Cuota.idCuota num, Cuota.Lugar lugar
+            from Cuota,CuotaDetalle
+            where statusA = "Activo"';
+
+            $stmt = $PDOmysql->query($sql);
+            $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            $lugar = "";
+
+            foreach ($rows as $fila){            
+                echo '<tr>';
+                $numero = $fila['num'];
+                echo '<td> '. $numero .' </td>';
+                echo '<td> '. $fila['lugar'].' </td>';
+
+                  $sql = 'SELECT distinct CuotaDetalle.Tarifa tarifa , CuotaDetalle.Trafico trafico, CuotaDetalle.TipoViaje tipo
+                          from CuotaDetalle
+                          where statusA = "Activo"
+                          and  CuotaDetalle.Cuota_idCuota = :numcuota';
+
+                  $nwestmt = $PDOmysql->prepare($sql);
+                  $nwestmt->bindParam(':numcuota',$numero);
+                  $nwestmt->execute();
+                  $nwerows = $nwestmt->fetchAll(PDO::FETCH_ASSOC);
+
+                    $ImpSen ="";
+                    $ReuSen ="";
+                    $ExpSen ="";
+                    $ImpFull ="";
+                    $ReuFull ="";
+                    $ExpFull ="";
+
+                  foreach ($nwerows as $nwefila){
+                    echo $index;
+
+                    switch ($nwefila['tipo']) {
+                      case 'Sencillo':
+                          switch ($nwefila['trafico']) {
+                            case 'Exportacion':
+                               $ExpSen = $nwefila['tarifa'];
+                              break;
+                            case 'Importacion':
+                              $ImpSen = $nwefila['tarifa'];
+                              break;
+                            case 'Reutilizado':
+                              $ReuSen = $nwefila['tarifa'];
+                              break;
+                          }
+                        break;
+
+                      case 'Full':
+                        switch ($nwefila['trafico']) {
+                              case 'Exportacion':
+                                $ExpFull = $nwefila['tarifa'];
+                                break;
+                              case 'Importacion':
+                                $ImpFull = $nwefila['tarifa'];
+                                break;
+                              case 'Reutilizado':
+                                $ReuFull = $nwefila['tarifa'];
+                                break;
+                            }
+                        break;
+                    }
+                  } 
+                      echo '<td>'. $ImpSen.'</td>';
+                      echo '<td>'. $ExpSen.'</td>';
+                      echo '<td>'.$ReuSen.'</td>';
+                      echo '<td>'.$ImpFull.'</td>';
+                      echo '<td>'.$ExpFull.'</td>';
+                      echo '<td>'.$ReuFull.'</td>';
+                      echo '</tr>';                  
+            }
+          }
+          catch(PDOException $e){
+          }
+      ?>
     </tbody>
   </table>
-  
-
-
+  <buttton class="btn btn-primary"> Nueva Cuota</button>
+  </div>
 </html>
