@@ -11,11 +11,36 @@ $PDOmysql = consulta();
     <title> TIMSA LZC </title>
     <link href="../css/bootstrap.min.css" rel="stylesheet" media="screen">
     <link href="../css/bootstrap-responsive.css" rel="stylesheet">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+    <script type="text/javascript" src="../js/jquery.validate.js"></script>
+    <script type="text/javascript" src="../js/bootstrap.js"></script>
+    <script type="text/javascript" src="../js/cuota.action.js"></script>
+
   <style>
       body {
         padding-top: 60px;
        /* 60px to make the container go all the way to the bottom of the topbar */
       }
+      .containerForm {
+        width: 500px;
+        clear: both;
+    }
+    .containerForm input {
+        width: 98%;
+        clear: both;
+    }
+
+    .containerForm select {
+        width: 100%;
+        clear: both;
+    }
+
+    #botonCancelar {
+        width: 98%;
+        clear: both;
+    }
+
       </style>
 
       <style >
@@ -81,7 +106,7 @@ $PDOmysql = consulta();
     </div>
   </div>
 
-  <div class="container text-center">
+  <div class="container text-center" id="principalForm">
 
     <h1 class="text-center">Cuotas de Viajes Foraneos</h1>
     <br>
@@ -188,6 +213,25 @@ $PDOmysql = consulta();
       ?>
     </tbody>
   </table>
-  <buttton class="btn btn-primary"> Nueva Cuota</button>
+  <buttton class="btn btn-primary" id="nuevaCuota"> Nueva Cuota</button>
   </div>
+
+<div id="formCuota" class="container containerForm">
+  <h1 class="text-center">Nueva Cuota</h1><br>
+    <form method="POST" action="../includes/crearCuota.php" enctype="multipart/form-data" id="formularioCuota">
+
+
+      <label>Lugar</label>
+      <input type="text" class="required number" name="lugar" placeholder="Lugar de la Cuota (Nombre de esta)">
+      <br>
+
+      <label><h4> Viajes Sencillos </h4></label>
+
+      <input type="submit" name="submit" class="btn btn-primary" name="boton"  id="submit" value="Subir"/> 
+      <br>
+      <button class="btn" type="reset" id="botonCancelar"> Cancelar</button>
+    </form>
+  </div> 
+
+
 </html>
