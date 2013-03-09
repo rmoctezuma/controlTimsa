@@ -9,32 +9,25 @@ include("../includes/generic.connection.php");
   <head>
     <meta charset="utf-8">
     <title> TIMSA LZC </title>
+    
     <link href="../css/bootstrap.min.css" rel="stylesheet" media="screen">
     <link href="../css/bootstrap-responsive.css" rel="stylesheet">
-  <style>
-      body {
-        padding-top: 30px; /* 60px to make the container go all the way to the bottom of the topbar */
+   
+    <style type="text/css">
+      html { height: 100% }
+      body { height: 100%; margin: 0; padding: 0;padding-top: 40px; }
       }
       </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+    <script type="text/javascript"
+      src="http://maps.googleapis.com/maps/api/js?key=AIzaSyBtcuK-xlIB2HQfUw9MGxt2boubzDNgALI&sensor=false">
+    </script>
 
-      <style >
-      .hero-unit {
-        background-image: url('../images/hero-wide-opt.jpg');
-        color: white;
-        height: 200px;
-        text-align: center;
-        overflow: hidden;
-        background-position: 50% top;
-        background-repeat: no-repeat;
-        background-color: white;
-      }
-      </style>
-
+      <script type="text/javascript" src="../js/mapa.clientes.js"></script>
   </head>
 
-  </head>
-
-  <body>
+  <body onload="initialize()">
+    <header>
     <div class="navbar navbar-inverse navbar-fixed-top">
       <div class="navbar-inner">
          <div class="container">
@@ -71,40 +64,38 @@ include("../includes/generic.connection.php");
         </div>
     </div>
   </div>
+  </header>
 
-  <div class= "container span2" id="OperadorList">
-  <h1> Operadores </h1>
-  <br>
+  <div class="row" style="width:100%; height:100%">
+  <div id="Mapa" class="span5" style="width:60%; height:100%">
+    
+  </div>
 
+  <div class="span4"> 
+    <h1>Clientes y Lugares</h1>
+    <br>
     <?php
         $PDOmysql = null;
         $salida="";
-        $statusTipo = array("Libre" => "label label-info",
-                              "Ocupado" => "label label-warning",
-                              "Indispuesto" => "label label-important",
-                              );
 
-        try {
-            $PDOmysql = consulta();
+      try {  
 
+       $PDOmysql = consulta();
 
-       $sql = 'select distinct idCliente,NombrestatusA,rutaImagen from Cliente';
+       $sql = 'select distinct idCliente,Nombre,rutaImagen from Cliente where statusA!="Deprecated"';
 
        foreach ($PDOmysql -> query($sql) as $fila) {
-           $nombre = $fila['Nombre'] .' '. $fila['ApellidoP'] .' '. $fila['ApellidoM'];
-           $telefono = $fila['Telefono'];
-           $status = $fila['statusA'];
+           $id= $fila['idCliente'];
+           $nombre = $fila['Nombre'];
            $ruta = $fila['rutaImagen'];
 
            $salida.=   '<ul class="media-list">
-                          <li class="media" title="'.$fila['Eco'].'">
+                          <li class="media" title="'.$id.'">
                              <a class="pull-left" href="#">
                               <img class="media-object" data-src="holder.js/64x64" alt="64x64" style="width: 64px; height: 64px;"  src='.$fila['rutaImagen'].'>
                             </a>
                             <div class="media-body" id="media">
                               <h4 class="media-heading">'.$nombre.'</h4>
-                              <p> <small> '.$telefono.' </small> </p>
-                              <p> <span class="'.$statusTipo[$status].'">'.$status.' <span> </p>
                             </div>
                           </li>
                         </ul>';
@@ -121,35 +112,8 @@ include("../includes/generic.connection.php");
         }
 
     ?>
-
-     <button class="btn btn-primary" id="botonCrear"> Crear nuevo Operador</button>
-
-</div>
-
-  <div class= "container span7" id="result">
   </div>
-
-<div class="container" id="CreacionOperador">
-    <br>
-    <h1> Creacion de un Nuevo Oprador </h1>
-    <br>
-
-    <form method="POST" action="../includes/crearOperador.php" enctype="multipart/form-data" id="formSocio">
-      <input class="required" type="text" name="NombreSocio" placeholder="Nombre del Operador"> <br>
-      <input class="required" type="text" name="ApellidoSocio" placeholder="Apellido Paterno"> <br>
-      <input class="required" type="text" name="ApellidoMSocio" placeholder="Apellido Materno"> <br>
-
-      <input class="required" type="text" name="telefono" placeholder="Telefono"><br>
-      <input class="required" type="text" name="rc" placeholder="R. C."> <br>
-
-      <input type="file" name="archivo" id="archivo" /><br>
-      <input type="submit" class="btn btn-primary" name="boton" value="Subir" id="submit"/>
-      <button class="btn" type="reset" id="botonCancelar"> Cancelar</button>
-    </form>
-
   </div>
-
-
     
 </body>
 

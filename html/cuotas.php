@@ -220,12 +220,41 @@ $PDOmysql = consulta();
   <h1 class="text-center">Nueva Cuota</h1><br>
     <form method="POST" action="../includes/crearCuota.php" enctype="multipart/form-data" id="formularioCuota">
 
-
       <label>Lugar</label>
       <input type="text" class="required number" name="lugar" placeholder="Lugar de la Cuota (Nombre de esta)">
       <br>
-
-      <label><h4> Viajes Sencillos </h4></label>
+      <!-- Aqui estara una tabla formulario, con los tipos de viajes, y su trafico. -->
+      <table>
+        <tbody>
+            <tr>
+             <td><label><h4> Viajes Sencillos </h4></label></td>
+             <td><label><h4> Viajes Full </h4></label></td>
+           </tr>
+           <tr>
+              <td colspan="2">Reutilizado</td>
+           </tr>
+           <tr>
+            <td> <input type="text" class="required number" name="reuSen" placeholder="Reutilizado Sencillo"> </td>
+            <td> <input type="text" class="required number" name="reuFull" placeholder="Reutilizado Full"> </td>
+           </tr>
+           <tr>
+              <td colspan="2">Importacion</td>
+           </tr>
+           <tr>
+            <td> <input type="text" class="required number" name="impSen" placeholder="Importacion Sencillo"> </td>
+            <td> <input type="text" class="required number" name="impFull" placeholder="Importacion Full"> </td>
+           </tr>
+           <tr>
+              <td colspan="2">Exportacion</td>
+           </tr>
+           <tr>
+            <td> <input type="text" class="required number" name="expSen" placeholder="Exportacion Sencillo"> </td>
+            <td> <input type="text" class="required number" name="expFull" placeholder="Exportacion Full"> </td>
+           </tr>
+        </tbody>
+      </table>
+      <br>
+      
 
       <input type="submit" name="submit" class="btn btn-primary" name="boton"  id="submit" value="Subir"/> 
       <br>
