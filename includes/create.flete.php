@@ -49,7 +49,7 @@ $mysqli = consulta();
 			$insertId = $mysqli ->lastInsertId();
 
 
-			$sql = 'insert into Cuota_Flete(NumFlete,Cliente,TipoCuota,Cuota) values(:id,:cliente,:tipocuota,:cuota)';
+			$sql = 'insert into Cuota_Flete(NumFlete,Sucursal,TipoCuota,Cuota) values(:id,:cliente,:tipocuota,:cuota)';
 			$stmt = $mysqli->prepare($sql);
 			$stmt->bindParam(':id', $insertId);
 			$stmt->bindParam(':cliente', $cliente);

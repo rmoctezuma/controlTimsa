@@ -154,6 +154,8 @@ $(function(){
 
 
 	$('#botonGroup button').live("click", function (){
+		$('#Cliente').attr("title", $(this).val());
+
 		$('#listaFlete').removeClass('disabled');
 		$('#listaContenedor').addClass('disabled');
 
@@ -273,7 +275,7 @@ $(function(){
 
 		$('#Cliente').empty();
 		$('#Cliente').append($(this).text());
-		$('#Cliente').attr("title", $(this).attr("href"));
+		
 
 		var parametros = { "value" : $(this).attr("href"),
 							"action" : "Cliente" };

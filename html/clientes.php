@@ -9,21 +9,24 @@ include("../includes/generic.connection.php");
   <head>
     <meta charset="utf-8">
     <title> TIMSA LZC </title>
-    
-    <link href="../css/bootstrap.min.css" rel="stylesheet" media="screen">
+
+    <link href="../css/bootstrap_map.css" rel="stylesheet" media="screen">
     <link href="../css/bootstrap-responsive.css" rel="stylesheet">
-   
+
     <style type="text/css">
       html { height: 100% }
-      body { height: 100%; margin: 0; padding: 0;padding-top: 40px; }
+      body { height: 100%; margin: 0; padding: 0; padding-top: 42px; }
       }
       </style>
+      
+    
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
     <script type="text/javascript"
       src="http://maps.googleapis.com/maps/api/js?key=AIzaSyBtcuK-xlIB2HQfUw9MGxt2boubzDNgALI&sensor=false">
     </script>
 
       <script type="text/javascript" src="../js/mapa.clientes.js"></script>
+      <script type="text/javascript" src="../js/clientes.action.js"></script>
   </head>
 
   <body onload="initialize()">
@@ -66,7 +69,7 @@ include("../includes/generic.connection.php");
   </div>
   </header>
 
-  <div class="row" style="width:100%; height:100%">
+  <div class="row" style="width:100%; height:80%">
   <div id="Mapa" class="span5" style="width:60%; height:100%">
     
   </div>
