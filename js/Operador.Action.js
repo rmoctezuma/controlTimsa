@@ -2,6 +2,8 @@ $(function(){
 
 	$('#formSocio').validate();
 
+	$('#mensajeCreacion').delay(900).fadeOut(300);
+
 	$("input[type=radio]").live("click", function(){
 		var filtro;
 		var action;

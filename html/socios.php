@@ -134,6 +134,18 @@
     <br>
     <br>
     <br>
+    <?php
+    if(isset($_GET['resultado']) && !empty($_GET)){
+        echo '<h2 id= "mensajeCreacion">';
+              if($_GET['resultado'] == "correcto"){
+                  echo ' Socio agregado correctamente';
+                }
+                else{
+                  echo ' El socio no se ha podido agregar';
+                }
+        echo '</h2>';
+    }
+  ?>
   </div>
 
   <div class="container containerForm" id="CreacionSocio">

@@ -61,7 +61,7 @@ function placeMarker(imagen, location, nombreSucursal ,id) {
               infoWindow = new google.maps.InfoWindow();
             }
               
-              var content = '<h5>' +  this.get("nombre") +  ' <img src = "' + this.getIcon().url +'" height="60" width="60" > </h5>';
+              var content = '<h5>' +  this.get("nombre") +  ' <img src = "' + this.getIcon().url +'" height="60" width="60" > </h5> ';
 
               infoWindow.setContent(content);
 

@@ -51,7 +51,11 @@ try {
         echo "An Error occured!"; //user friendly message
         echo $ex->getMessage();
         $respuestaOK = false;
+        header('Location: http://control.timsalzc.com/Timsa/html/socios.php?resultado=incorrecto');
     }
+
+    header('Location: http://control.timsalzc.com/Timsa/html/socios.php?resultado=correcto');
+
 ?>
 
 <html>

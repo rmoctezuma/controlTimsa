@@ -56,6 +56,8 @@ $(function(){
 		});
 	});
 
+	$('#mensajeCreacion').delay(900).fadeOut(300);
+
 	//----------------------------------------------------------------------//
 
 		$("input[type=radio]").live("click", function(){

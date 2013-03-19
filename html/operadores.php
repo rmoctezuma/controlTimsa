@@ -134,6 +134,18 @@
 </div>
 
   <div class= "container span7" id="result">
+    <?php
+          if(isset($_GET['resultado']) && !empty($_GET)){
+            echo '<h2 id= "mensajeCreacion">';
+                  if($_GET['resultado'] == "correcto"){
+                      echo ' Operador agregado correctamente';
+                    }
+                    else{
+                      echo ' El Operador no se ha podido agregar';
+                    }
+            echo '</h2>';
+              }
+    ?>
   </div>
 
 <div class="container containerForm" id="CreacionOperador">
@@ -153,6 +165,8 @@
       <input class="required" type="text" name="telefono" placeholder="Telefono"><br>
       <label> R. C. </label>
       <input class="required" type="text" name="rc" placeholder="R. C."> <br>
+      <label> CURP </label>
+      <input class="required" type="text" name="curp" placeholder="CURP"> <br>
       <label> Sube una foto del Operador. Este es un campo opcional. </label>
       <input type="file" name="archivo" id="archivo" /><br>
       <input type="submit" class="btn btn-primary" name="boton" value="Subir" id="submit"/>

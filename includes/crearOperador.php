@@ -5,6 +5,7 @@ $apellidoP = $_POST['ApellidoSocio'];
 $apellidoM = $_POST['ApellidoMSocio'];
 $telefono = $_POST['telefono'];
 $rc = $_POST['rc'];
+$curp = $_POST['curp'];
 $ruta = "";
 $mensaje = "";
 $mensajeImagen = "";
@@ -41,22 +42,27 @@ try {
 
         $mysqli = new PDO('mysql:host=www.timsalzc.com;dbname=timsalzc_ControlTimsa;charset=utf8', 'timsalzc_Raul', 'f203e21387');
         $mysqli->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        $sql = 'insert into Operador(Nombre, ApellidoP, ApellidoM,rutaImagen,Telefono) values(:nombre, :apellido, :apellidoM,:ruta,:tel);';
+        $sql = 'insert into Operador(Nombre, ApellidoP, ApellidoM,rutaImagen,Telefono, CURP) values(:nombre, :apellido, :apellidoM,:ruta,:tel,:curp);';
         $stmt = $mysqli->prepare($sql);
         $stmt->bindParam(':nombre', $nombre);
         $stmt->bindParam(':apellido', $apellidoP);
         $stmt->bindParam(':apellidoM', $apellidoM);
         $stmt->bindParam(':ruta', $ruta);
         $stmt->bindParam(':tel', $telefono);
+        $stmt->bindParam(':curp', $curp);
         $stmt->execute();
 
         $mensaje.= "<h1> Operador Creado Correctamente </h1>";
+
 
     } catch(PDOException $ex) {
         echo "An Error occured!"; //user friendly message
         echo $ex->getMessage();
         $respuestaOK = false;
+        header('Location: http://control.timsalzc.com/Timsa/html/operadores.php?resultado=incorrecto');
     }
+
+    header('Location: http://control.timsalzc.com/Timsa/html/operadores.php?resultado=correcto');
 ?>
 
 <html>

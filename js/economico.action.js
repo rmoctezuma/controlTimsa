@@ -65,8 +65,7 @@ $(function(){
 			 	 	filtro[index] = $(this).val();
 			 	 	
 				});
-		}
-		
+		}	
 		parametros = {
 			"filtro" : filtro,
 			"economico" : $('#FiltroEconomico').val(),
@@ -210,7 +209,7 @@ $(function(){
 		$('#MuestraEconomicos').show("fade");
 	});
 
-	
+	$('#mensajeCreacion').delay(900).fadeOut(300);
 
 	$('#EditarOperador').live("click", function(){
 		var economico = $('#NombreOperador').attr("title");
@@ -222,9 +221,7 @@ $(function(){
 		}
 		else {
 			$('#appendOperador').hide("fade");
-		}
-
-		
+		}	
 	/*		
 		$.ajax({
 			beforeSend: function(){

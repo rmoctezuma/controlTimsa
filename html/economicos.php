@@ -108,10 +108,22 @@ function consultaAnio(){
   <div id="MuestraEconomicos">
     <div class= "container">
         <div class="page-header">
-          <h1>Economicos <button class="btn btn-mini btn-primary" id="nuevoEconomico"> Crear Nuevo Economico</button></h1> 
+          <h1>Economicos <button class="btn btn-mini btn-primary" id="nuevoEconomico"> Crear Nuevo Economico</button></h1>
+
         </div>
     </div>
     <?php
+      if(isset($_GET['resultado']) && !empty($_GET)){
+        echo '<h2 id= "mensajeCreacion">';
+              if($_GET['resultado'] == "correcto"){
+                  echo ' Economico agregado correctamente';
+                }
+                else{
+                  echo ' El economico no se ha podido agregar';
+                }
+        echo '</h2>';
+              }
+
       try {
           $PDOmysql->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
@@ -184,8 +196,8 @@ function consultaAnio(){
 
         echo '</select>';
         echo '<br>';
-
         echo '<label> <b> Operador </b></label>      <select name="operador">';
+
         $sql = 'select Operador.Nombre nombre, Operador.ApellidoP apellido, Operador.ApellidoM apellidom, Operador.Eco economico
           from  Operador where statusA <> "deprecated" Order by Nombre asc';
 
@@ -200,6 +212,7 @@ function consultaAnio(){
 
       <label> <b>Serie</b> </label> <input type="text" class="required" name="numeroSerie" placeholder="Numero de Serie"> <br>
       <label> <b>Modelo</b> </label> <select name="modelo" id="Modelo"> <?php echo consultaAnio() ?> </select> <br>
+      <label> <b>Transponder</b> </label> <input type="text" name="transponder" placeholder="Numero de Transponder"> <br>
       <label> <b> Marca </b> </label> 
       <select name="marca">
         <?php

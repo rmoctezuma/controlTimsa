@@ -11,6 +11,7 @@ if(isset($_POST['submit']) && !empty($_POST)){
 	$marca = $_POST['marca'];
 	$tipoVehiculo = $_POST['tipoVehiculo'];
 	$numero = $_POST['numero'];
+	$transponder = $_POST['transponder'];
 
 	try {
 		$PDOmysql = consulta();
@@ -19,7 +20,7 @@ if(isset($_POST['submit']) && !empty($_POST)){
 
 		$PDOmysql->beginTransaction();
 
-		$sql = 'insert into Economico(Economico,Placas,NumeroSerie,Modelo,marca,tipoVehiculo) values(:economico,:placas,:serie,:modelo,:marca,:tipoVehiculo)';
+		$sql = 'insert into Economico(Economico,Placas,NumeroSerie,Modelo,marca,tipoVehiculo, Transponder) values(:economico,:placas,:serie,:modelo,:marca,:tipoVehiculo, :transponder)';
 
 		$stmt = $PDOmysql->prepare($sql);
 		$stmt->bindParam(':economico',$numero);
@@ -28,6 +29,7 @@ if(isset($_POST['submit']) && !empty($_POST)){
 		$stmt->bindParam(':modelo',$modelo);
 		$stmt->bindParam(':marca',$marca);
 		$stmt->bindParam(':tipoVehiculo',$tipoVehiculo);
+		$stmt->bindParam(':transponder',$transponder);
 		$stmt->execute();
 
 		$insertId = $PDOmysql ->lastInsertId();
@@ -47,16 +49,21 @@ if(isset($_POST['submit']) && !empty($_POST)){
 		    //Something went wrong rollback!
 		    $PDOmysql->rollBack();
 		    $resultados = 'Error en la creacion de el economico';
+		    header('Location: http://control.timsalzc.com/Timsa/html/economicos.php?resultado=incorrecto');
 		}
 		catch(Exception $e){
 			$PDOmysql->rollBack();
 		    $resultados = 'Error en la creacion de el economico';
+		    header('Location: http://control.timsalzc.com/Timsa/html/economicos.php?resultado=incorrecto');
 		}	
 }
+
+header('Location: http://control.timsalzc.com/Timsa/html/economicos.php?resultado=correcto');
 
 ?>
 <link href="../css/bootstrap.min.css" rel="stylesheet" media="screen">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+
 <script>
 	$(function(){
 		$('#volver').click(function(){
