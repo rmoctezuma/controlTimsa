@@ -21,6 +21,7 @@ include("../includes/generic.connection.php");
       
     
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+    <script type="text/javascript" src="../js/bootstrap.js"></script>
     <script type="text/javascript"
       src="http://maps.googleapis.com/maps/api/js?key=AIzaSyBtcuK-xlIB2HQfUw9MGxt2boubzDNgALI&sensor=false">
     </script>
@@ -117,6 +118,20 @@ include("../includes/generic.connection.php");
     ?>
   </div>
   </div>
+
+  <div class="container" id="Sucursal">
+    <div id="EspecificacionesSucursales">
+      <h2>Especificaciones de Sucursal</h2>
+    </div>
+
+    <div>
+      <button class="btn" data-toggle="button" id="DetallesRutas"> Mostar Ruta </button>
+    </div>
+
+    <div id="Rutas">
+       <h3>Ruta desde </h3>
+    </div>
+</div>
     
 </body>
 

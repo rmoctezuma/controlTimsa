@@ -221,7 +221,7 @@ $PDOmysql = consulta();
     <form method="POST" action="../includes/crearCuota.php" enctype="multipart/form-data" id="formularioCuota">
 
       <label>Lugar</label>
-      <input type="text" class="required number" name="lugar" placeholder="Lugar de la Cuota (Nombre de esta)">
+      <input type="text" class="required" name="lugar" placeholder="Lugar de la Cuota (Nombre de esta)">
       <br>
       <!-- Aqui estara una tabla formulario, con los tipos de viajes, y su trafico. -->
       <table>

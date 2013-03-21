@@ -169,7 +169,6 @@ try {
             </tr>';
      }
 
-
 if($resulTableResult != ""){
 	$result.= $resulTable;
 	$result.= $resulTableResult;

@@ -1,8 +1,16 @@
 var mexico = new google.maps.LatLng(22.850033, -101.6500523);
+var lazaro = new google.maps.LatLng(17.951602405802202, -102.19574004062497);
 var map;
 var markerOptions;
 var markersArray = [];
 var infoWindow;
+var directionsService = new google.maps.DirectionsService();
+var rendererOptions = {
+  draggable: true
+};
+var directionsDisplay = new google.maps.DirectionsRenderer(rendererOptions);
+var sucursalActual;
+var content;
 
 function initialize() {
   var mapDiv = document.getElementById('Mapa');
@@ -13,6 +21,7 @@ function initialize() {
   };
 
   map = new google.maps.Map(mapDiv, mapOptions);
+  directionsDisplay.setMap(map);
 }
   /*
 
@@ -52,6 +61,7 @@ function placeMarker(imagen, location, nombreSucursal ,id) {
   }
 
   function showSucursales(){ 
+    directionsDisplay.setMap(null);
     if (markersArray) {
       for (i in markersArray) {
         markersArray[i].setMap(map);
@@ -60,13 +70,61 @@ function placeMarker(imagen, location, nombreSucursal ,id) {
             if (!infoWindow) {
               infoWindow = new google.maps.InfoWindow();
             }
-              
-              var content = '<h5>' +  this.get("nombre") +  ' <img src = "' + this.getIcon().url +'" height="60" width="60" > </h5> ';
+              directionsDisplay.setMap(null);
 
-              infoWindow.setContent(content);
+              parametros = {"key" : this.get("value")};
+              var objeto = this;
 
-              infoWindow.open(map, this);
+              $.ajax({
+                beforeSend: function(){
+                },
+                cache    : false,
+                type     : "POST",
+                dataType : "json",
+                url      : "../includes/detalles.sucursal.php",
+                data : parametros,
+                success: function(response){
+                  content = '<h5>' +  objeto.get("nombre") +  ' <img src = "' + objeto.getIcon().url +'" height="60" width="60" > </h5> <h5>' + response.results + '</h5> ';   
+                   infoWindow.setContent(content);
+                   infoWindow.open(map, objeto);              
+                },
+                error : function(xhr, ajaxOptions, thrownError){
+                    alert("error, comprueba tu conexion a internet" + xhr.responseText);
+                  content = '<h5>' +  objeto.get("nombre") +  ' <img src = "' + objeto.getIcon().url +'" height="60" width="60" > </h5> ';
+                  infoWindow.setContent(content);
+                   infoWindow.open(map, objeto);
+                }
+              });
+
+              $('#Sucursal').show();
+              sucursalActual = this;
+              $('#DetallesRutas').attr("class", "btn");            
           });
       }
     }
+  }
+
+  function requestRoute(){
+      var request = {
+          origin      :  lazaro,
+          destination :  sucursalActual.getPosition(),
+          travelMode  :  google.maps.TravelMode.DRIVING
+      };
+
+      directionsService.route(request, function(result, status) {
+          if (status == google.maps.DirectionsStatus.OK) {
+            directionsDisplay.setMap(map);
+            directionsDisplay.setDirections(result);
+            $('#Rutas').empty();
+            directionsDisplay.setPanel(document.getElementById("Rutas"));
+          }
+          else{
+            $('#Rutas').empty();
+            $('#Rutas').append('<h4> No se ha podido generar una ruta para esta ubicacion </h4>');
+          }
+        });
+  }
+
+  function removeRoute(){
+    directionsDisplay.setMap(null);
   }

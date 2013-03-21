@@ -26,6 +26,7 @@ $(function(){
 				};
 
 				showSucursales();
+				$('#Sucursal').hide();
 			},
 			error: function(xhr, ajaxOptions, thrownError){
 					alert("error, comprueba tu conexion a internet" + xhr.responseText);
@@ -33,5 +34,22 @@ $(function(){
 
 		});
 	});
+
+	$('#Sucursal').hide();
+
+	$('#DetallesRutas').live("click", function(){
+		var economico = $('#NombreOperador').attr("title");
+
+		parametros = {"economico" : economico}
+
+		if( $('#DetallesRutas').hasClass('active')){
+			$('#Rutas').show("fade");
+			requestRoute();
+		}
+		else {
+			$('#Rutas').hide("fade");
+			removeRoute();
+		}
+	});	
 
 });
