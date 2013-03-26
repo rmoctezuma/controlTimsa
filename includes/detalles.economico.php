@@ -91,14 +91,13 @@ if(isset($_POST) && !empty($_POST)){
 		$result .= '<div class="span8">';
 	 $result .= '<h3> Fletes de Este Socio </h3>';
 
-	 $sql = 'select distinct Flete.idFlete idFlete, Operador.Nombre nombre,
+	 $sql ='select distinct Flete.idFlete idFlete, Operador.Nombre nombre,
          Operador.ApellidoP apellidop, Operador.ApellidoM apellidom, Economico.Economico economico, Economico.Placas placas, 
          Cliente.Nombre cliente, ClienteDireccion.Localidad sucursal,Agencia.nombre agencia, CuotaDetalle.Trafico trafico,
          CuotaDetalle.TipoViaje TipoViaje,Flete.Fecha Fecha,Flete.statusA statusA 
          from
          Cuota,Socio,Flete, Operador, Economico, Cliente, CuotaDetalle, ClienteDireccion, Agencia,VehiculoDetalle, Cuota_Flete
          where
-
          Operador.Eco = VehiculoDetalle.Operador 
          and 
          Economico.Economico = VehiculoDetalle.Economico
@@ -117,7 +116,7 @@ if(isset($_POST) && !empty($_POST)){
          and 
          Flete.idFlete = Cuota_Flete.NumFlete 
          and 
-         Cuota_Flete.Cliente = Cliente.idCliente
+         Cuota_Flete.Sucursal = ClienteDireccion.Sucursal
           and 
           Cuota_Flete.TipoCuota = CuotaDetalle.numero
            and

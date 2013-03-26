@@ -2,6 +2,7 @@
 
 include("../includes/generic.connection.php");
 
+
 ?>
 
 <!DOCTYPE html>
@@ -16,11 +17,13 @@ include("../includes/generic.connection.php");
     <style type="text/css">
       html { height: 100% }
       body { height: 100%; margin: 0; padding: 0; padding-top: 42px; }
+      #busqueda {width: 360px;}
       }
       </style>
       
     
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+    <script type="text/javascript" src="../js/jquery.validate.js"></script>
     <script type="text/javascript" src="../js/bootstrap.js"></script>
     <script type="text/javascript"
       src="http://maps.googleapis.com/maps/api/js?key=AIzaSyBtcuK-xlIB2HQfUw9MGxt2boubzDNgALI&sensor=false">
@@ -75,7 +78,33 @@ include("../includes/generic.connection.php");
     
   </div>
 
-  <div class="span4"> 
+  <div class="span4" id="ListaClientes">
+    <?php
+          if(isset($_GET['sucursal']) && !empty($_GET)){
+            echo '<h2 id= "mensajeCreacion">';
+                  if($_GET['sucursal'] == "agregada"){
+                      echo ' Sucursal agregada correctamente';
+                    }
+                    else{
+                      echo ' La Sucursal no se ha podido agregar';
+                    }
+            echo '</h2>';
+              }
+  ?>
+
+      <?php
+          if(isset($_GET['resultado']) && !empty($_GET)){
+            echo '<h2 id= "mensajeCreacion">';
+                  if($_GET['resultado'] == "correcto"){
+                      echo ' Cliente agregado correctamente';
+                    }
+                    else{
+                      echo 'El cliente no se ha podido agregar';
+                    }
+            echo '</h2>';
+              }
+    ?>
+
     <h1>Clientes y Lugares</h1>
     <br>
     <?php
@@ -100,6 +129,7 @@ include("../includes/generic.connection.php");
                             </a>
                             <div class="media-body" id="media">
                               <h4 class="media-heading">'.$nombre.'</h4>
+                              <button class="NuevaSucursal btn btn-primary btn-mini"> Nueva Sucursal</button>
                             </div>
                           </li>
                         </ul>';
@@ -116,7 +146,36 @@ include("../includes/generic.connection.php");
         }
 
     ?>
+
+    <button class="btn" id="AgregarCliente"> Agregar cliente</button>
   </div>
+
+    <div id="NuevoFlete" class="span4">
+      <h3>Crear un nuevo Cliente</h3>
+
+    <form method="POST" action="../includes/crear.cliente.php"  enctype="multipart/form-data" id="nuevaCreacionCliente">
+      <label> <b>Nombre</b> </label> <input type="text" class="required" name="nombre" placeholder="Nombre del Cliente"> <br>
+      <label> Sube una foto del Cliente. Este es un campo opcional, pero es la imagen que aparecera en el mapa para definir sucursales. </label>
+      <input type="file" name="archivo" id="archivo" /><br>
+      <button class="btn btn-primary" type="submit"> Crear </button>
+      <button class="btn" id="cancelarCreacion"> Cancelar</button>
+    </form>
+    </div>
+
+    <div id="InfoNueva-Sucursal" class="span4">
+      <h1 id="tituloSucursal">Creacion de nueva Sucursal</h1>
+      <h5>
+        Seleccione en el mapa, el lugar donde quiere colocar la nueva sucursal.
+        Especifique sus datos, y seleccione la cuota que la sucursal necesite.
+        Si posee la direccion, puede insertarla en el campo siguiente, para localizar 
+        el punto exacto en el mapa. 
+      </h5>
+      <label> Busqueda </label><br>
+       <input type="text"  id="busqueda" placeholder="Ejemplo: Morelos, Ciudad Lázaro Cárdenas, Michocan">
+       <button class="btn btn-mini btn-primary" id="buscar">Buscar</button> <br><br>
+      <button class="btn btn-large" id="cancelarCreacion-Sucursales"> Cancelar creacion. </button>
+    </div>
+
   </div>
 
   <div class="container" id="Sucursal">

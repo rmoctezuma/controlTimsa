@@ -198,7 +198,7 @@ $PDOmysql = consulta();
                             }
                         break;
                     }
-                  } 
+                  }
                       echo '<td>'. $ImpSen.'</td>';
                       echo '<td>'. $ExpSen.'</td>';
                       echo '<td>'.$ReuSen.'</td>';

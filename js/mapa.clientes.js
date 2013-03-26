@@ -11,6 +11,8 @@ var rendererOptions = {
 var directionsDisplay = new google.maps.DirectionsRenderer(rendererOptions);
 var sucursalActual;
 var content;
+var temporalMarker;
+var geocoder = new google.maps.Geocoder();
 
 function initialize() {
   var mapDiv = document.getElementById('Mapa');
@@ -46,7 +48,7 @@ function placeMarker(imagen, location, nombreSucursal ,id) {
   });
 
   marker.set("value" , id);
-  marker.set("nombre", nombreSucursal)
+  marker.set("nombre", nombreSucursal);
 
   return marker;
   }
@@ -127,4 +129,154 @@ function placeMarker(imagen, location, nombreSucursal ,id) {
 
   function removeRoute(){
     directionsDisplay.setMap(null);
+  }
+
+  function addNewListener(idCliente){
+    google.maps.event.addListenerOnce(map,'click', function (evento){
+         temporalMarker = new google.maps.Marker({
+            position : evento.latLng,
+            map      : map,
+            draggable : true
+        });
+
+         temporalMarker.set("value" , idCliente);
+
+         var html = "<h5> DATOS NUEVA SUCURSAL </h5> <label> Nombre </label> <input type='text' class='required' id='nombre' placeholder='Nombre de la sucursal'> <br> <label>Telefono</label><input type='text' class='required' id='telefono' placeholder='Telefono de la sucursal'>  <label><b>Direccion</b></label>";
+         var html2 = "<br><button class='btn btn-primary' id='newSucursal' type='submit'> Crear </button>";
+
+         geocoder.geocode({'latLng': temporalMarker.getPosition()}, function(result, status){
+                  if(status == google.maps.GeocoderStatus.OK){
+
+                      var contenidoNuevo = result[0].formatted_address;
+                      var newhtml = "";  
+
+                      $.get("../includes/cuotas.sucursales.php",
+                         function(data) {
+                            newhtml =  html+ contenidoNuevo + data.respuesta + html2;
+                            temporalInfoWindow = new google.maps.InfoWindow({
+                            content : newhtml
+                          });
+
+                            temporalInfoWindow.open(map,temporalMarker);
+
+                            parametros = {"value" : $('#cuotas').val()};
+                            $.ajax({
+                                beforeSend: function(){
+                                },
+                                cache: false,
+                                type: "POST",
+                                dataType:"json",
+                                url:"../includes/precio.cuotaSucursal.php",
+                                data: parametros,
+                                success: function(response){
+                                  $('#detallesPrecios').empty();
+                                  $('#detallesPrecios').append(response.resultado);
+                                },
+                                error: function(xhr, ajaxOptions, thrownError){
+                                    alert("error, comprueba tu conexion a internet" + xhr.responseText);
+                                }
+                            });  
+                         }, "json");
+                  }
+          });
+
+         google.maps.event.addListener(temporalMarker, 'click', function(){
+              geocoder.geocode({'latLng': temporalMarker.getPosition()}, function(result, status){
+                  if(status == google.maps.GeocoderStatus.OK){
+                      contenidoNuevo = result[0].formatted_address;
+
+                       $.get("../includes/cuotas.sucursales.php",
+                         function(data) {
+                            newhtml = html + contenidoNuevo  +  data.respuesta + html2;
+                            temporalInfoWindow.setContent(newhtml);
+                            temporalInfoWindow.open(map,temporalMarker);
+
+                            parametros = {"value" : $('#cuotas').val()};
+                            $.ajax({
+                                beforeSend: function(){
+                                },
+                                cache: false,
+                                type: "POST",
+                                dataType:"json",
+                                url:"../includes/precio.cuotaSucursal.php",
+                                data: parametros,
+                                success: function(response){
+                                  $('#detallesPrecios').empty();
+                                  $('#detallesPrecios').append(response.resultado);
+                                },
+                                error: function(xhr, ajaxOptions, thrownError){
+                                    alert("error, comprueba tu conexion a internet" + xhr.responseText);
+                                }
+                            });  
+                          }, "json");
+                  }
+              });
+         });
+
+         google.maps.event.addListener(temporalMarker, 'dragend', function(){
+              geocoder.geocode({'latLng': temporalMarker.getPosition()}, function(result, status){
+                  if(status == google.maps.GeocoderStatus.OK){
+                      contenidoNuevo = result[0].formatted_address;
+
+                      $.get("../includes/cuotas.sucursales.php",
+                         function(data) {
+                            newhtml = html + contenidoNuevo  +  data.respuesta + html2;
+                            temporalInfoWindow.setContent(newhtml);
+                            temporalInfoWindow.open(map,temporalMarker);
+
+                            parametros = {"value" : $('#cuotas').val()};
+                            $.ajax({
+                                beforeSend: function(){
+                                },
+                                cache: false,
+                                type: "POST",
+                                dataType:"json",
+                                url:"../includes/precio.cuotaSucursal.php",
+                                data: parametros,
+                                success: function(response){
+                                  $('#detallesPrecios').empty();
+                                  $('#detallesPrecios').append(response.resultado);
+                                },
+                                error: function(xhr, ajaxOptions, thrownError){
+                                    alert("error, comprueba tu conexion a internet" + xhr.responseText);
+                                }
+                            });  
+                          }, "json"); 
+                  }
+                  else{
+                     temporalInfoWindow.close();
+                  }
+              }); 
+         });
+
+  });
+}
+
+  function removeListener(){
+    google.maps.event.clearListeners(map, 'click');
+    temporalMarker.setMap(null);
+  }
+
+  function buscarUbicacion(ubicacion){
+      geocoder.geocode({'address' : ubicacion}, function(result, status){
+        if(status = google.maps.GeocoderStatus.OK){
+            map.setCenter(result[0].geometry.location);
+            map.fitBounds(result[0].geometry.viewport);
+        }
+        else{
+          alert("No se ha encontrado la localizacion");
+        }
+      });
+  }
+
+  function getIdFromMarker(){
+    return temporalMarker.get('value');
+  }
+
+  function getLatLongTemporal(){
+    return temporalMarker.getPosition();
+  }
+
+    function getLngTemporal(){
+    return temporalMarker.getPosition().lng();
   }

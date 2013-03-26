@@ -1,3 +1,7 @@
+<?php
+header('Location: http://control.timsalzc.com/Timsa/html/TIMSA.php');
+?>
+
 <!DOCTYPE html>
 <html>
   <head>
@@ -5,6 +9,7 @@
     <title> TIMSA LZC </title>
     <link href="../css/bootstrap.min.css" rel="stylesheet" media="screen">
     <link href="../css/bootstrap-responsive.css" rel="stylesheet">
+
   <style>
       body {
         padding-top: 30px; /* 60px to make the container go all the way to the bottom of the topbar */

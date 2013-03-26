@@ -12,12 +12,12 @@ if(isset($_POST) && !empty($_POST)){
         if($_POST['action'] == "Cliente"){
           $mysqli = consulta();
 
-          $sql= 'select Sucursal,Ciudad,Localidad,Cuota_idCuota from ClienteDireccion where Cliente_idCliente = '.$value.' and StatusA = "Activo"';
+          $sql= 'select Sucursal,NombreSucursal,Ciudad,Localidad,Cuota_idCuota from ClienteDireccion where Cliente_idCliente = '.$value.' and StatusA = "Activo"';
 
-          $contenido .= '<div id="botonGroup" class="btn-group" data-toggle="buttons-radio">';
+          $contenido .= '<div id="botonGroup"  style ="display: block"  " class="btn-group" data-toggle="buttons-radio">';
 
           foreach ($mysqli -> query($sql) as $fila) {
-          	$contenido .= '<button value="'.$fila['Sucursal'].'" type="button" title="'.$fila['Cuota_idCuota'].'" class="btn span3" data-toggle="button">'.$fila['Localidad'].' , '.  $fila['Ciudad']. '</button>';
+          	$contenido .= '<button value="'.$fila['Sucursal'].'" type="button" title="'.$fila['Cuota_idCuota'].'" class="btn span3" data-toggle="button">'.$fila['NombreSucursal']. '</button>';
           }
 
           $contenido .= '</div>';

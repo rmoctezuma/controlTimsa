@@ -43,25 +43,21 @@ $contenidoOK = "";
         // FALTA AJUSTAR LA QUERY, PARA SELECCIONAR LA ULTIMA FECHA DE CADA LICENCIA.
 
         $sql = 'select distinct Operador.Nombre nombre,
-         Operador.ApellidoP apellidop, Operador.ApellidoM apellidom, 
-         Licencia_detalle.Licencia licencia, Licencia_detalle.FechaTerminoVigencia fechalicencia,
-         Operador.Telefono tel, Operador.fecha_ingreso ingreso,
-          Economico.Economico economico, Economico.Placas placas, GPS_Detalle.NumeroGPS GPS,
-
-         Cliente.Nombre cliente,Cliente.fecha_ingreso ingreso_cliente, ClienteDireccion.Calle calle,  ClienteDireccion.Numero numero,
-          ClienteDireccion.Colonia colonia,  ClienteDireccion.Localidad localidad ,  ClienteDireccion.Ciudad sucursal,
-           ClienteDireccion.Estado estado,  ClienteDireccion.Telefono telf,
+         Operador.ApellidoP apellidop, Operador.ApellidoM apellidom, Operador.fecha_ingreso ingreso,
+          Economico.Economico economico, Economico.Placas placas,
 
          Agencia.nombre agencia, CuotaDetalle.Trafico trafico, Socio.Nombre socio,
 
 
          CuotaDetalle.Tarifa tarifa, CuotaDetalle.TipoViaje TipoViaje,Flete.Fecha Fecha,Flete.statusA statusA, Flete.comentarios comentarios, Flete.fecha_llegada llegada, 
-         Flete.fecha_facturacion fact
+         Flete.fecha_facturacion fact, 
+
+         ClienteDireccion.NombreSucursal
 
          from 
 
          Cuota,Socio,Flete, Operador, Economico, Cliente, CuotaDetalle, ClienteDireccion, 
-         Agencia,VehiculoDetalle, Cuota_Flete, Licencia_detalle, GPS_Detalle
+         Agencia,VehiculoDetalle, Cuota_Flete
 
          where
 
@@ -75,9 +71,8 @@ $contenidoOK = "";
           Cuota_Flete.Cuota = CuotaDetalle.Cuota_idCuota and CuotaDetalle.Cuota_idCuota = Cuota.idCuota and 
           Cuota.idCuota = ClienteDireccion.Cuota_idCuota 
           and ClienteDireccion.Cliente_idCliente = Cliente.idCliente and ClienteDireccion.Cuota_idCuota = Cuota.idCuota
-          and ClienteDireccion.Cliente_idCliente = Cuota_Flete.Cliente and ClienteDireccion.Cuota_idCuota = Cuota_Flete.Cuota
-          and ClienteDireccion.Cliente_idCliente = Cliente.idCliente and GPS_Detalle.Economico = Economico.Economico and
-           Licencia_detalle.Operador_Eco = Operador.Eco and Flete.idFlete = '.$value.';';
+          and ClienteDireccion.Sucursal = Cuota_Flete.Sucursal and ClienteDireccion.Cuota_idCuota = Cuota_Flete.Cuota
+          and Flete.idFlete = 113';
 
 
           //$fila =  $mysqli->query($sql);
@@ -251,7 +246,7 @@ $contenidoOK = "";
                          <pre> '. $fila['tarifa']. '  </pre>
                       </dd>
                           <dt>
-                        Sucio 
+                        Socio 
                       </dt>
                       <dd>
                          <pre>'. $fila['socio']. '</pre>
@@ -260,6 +255,8 @@ $contenidoOK = "";
                   </div>
                 </div>
               </div>';
+
+              echo '<div> <button id="finalizarFlete"> Terminar Flete </button> </div>';
           }        
            
 }

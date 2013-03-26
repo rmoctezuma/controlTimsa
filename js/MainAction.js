@@ -42,7 +42,6 @@ $(function(){
 		            }
 		        });
 
-
 			$('#detalleFlete').show("slow");
 			$('#tabla').slideUp();
 		});
@@ -74,6 +73,27 @@ $(function(){
 			// Abrimos el Formulario
 
 		});	
+
+	$('#finalizarFlete').live('click', function(){
+		var parametros = { "value" : $value};
+
+			$.ajax({
+		        beforeSend: function(){
+		        },
+		            cache: false,
+		            type: "POST",
+		            dataType: "json",
+		            url:"../includes/finalizar.flete.php",
+		            data: parametros,
+		            success: function(response){
+		            	alert("Flete Finalizado");
+		            },
+		            error:function(xhr, ajaxOptions, thrownError){	
+		                alert("Error");               
+		            }
+		        });
+
+	});
 
 });
 

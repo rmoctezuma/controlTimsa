@@ -57,7 +57,6 @@ $mysqli = consulta();
 			$stmt->bindParam(':cuota', $cuota);
 			$stmt->execute();
 
-
 			for($contador = 0; $contador < count($contenedor); $contador++){
 
 						$sql = 'select idContenedor from Contenedor where idContenedor = :contenedor';
@@ -69,6 +68,18 @@ $mysqli = consulta();
 
 						}
 						else{
+
+								$contenedorTemporal = "";
+								if($contenedor[$contador] == " Sin especificar "){
+									$contenedorTemporal = $insertId;
+
+									if($contador > 0){
+										$contenedorTemporal = $insertId . chr(65);
+									}
+								}
+
+								$contenedor[$contador] = $contenedorTemporal;
+
 								$sql = 'insert into Contenedor(idContenedor,Tipo) values(:contenedor, :tipo);';
 								$stmt = $mysqli->prepare($sql);
 								$stmt->bindParam(':contenedor', $contenedor[$contador]);
