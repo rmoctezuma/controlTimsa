@@ -78,6 +78,10 @@ include("../includes/generic.connection.php");
     
   </div>
 
+  <div id="mensajes" class="span4">
+    <h1 id= "mensajeSucursal">Mensaje</h1>
+  </div>
+
   <div class="span4" id="ListaClientes">
     <?php
           if(isset($_GET['sucursal']) && !empty($_GET)){

@@ -588,5 +588,24 @@ $(function(){
 
 	});
 
+//esconde la busqueda de socios, ya que es una busqueda opcional.
 
+$('#busquedaSocios').hide();
+
+//Accion de Select, que modifica el tipo de seleccion. Oculta las opciones necesarias y muestra otras.
+
+	$('#optionVal').change( function(){
+		if($(this).val() == 0){
+			$('#busquedaSocios').fadeOut();
+			$('#busquedaEconomico').fadeIn();
+			
+		}
+		else{
+			$('#busquedaEconomico').fadeOut();
+			$('#busquedaSocios').fadeIn();
+			
+		}
+	});
+
+//termina On document Ready
 });

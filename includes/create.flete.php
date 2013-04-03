@@ -63,23 +63,12 @@ $mysqli = consulta();
 						$stmt = $mysqli->prepare($sql);
 						$stmt->bindParam(':contenedor', $contenedor[$contador]);
 						$stmt->execute();
+						$rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-						if($data = $stmt->fetch()){
+						if($rows != null){
 
 						}
 						else{
-
-								$contenedorTemporal = "";
-								if($contenedor[$contador] == " Sin especificar "){
-									$contenedorTemporal = $insertId;
-
-									if($contador > 0){
-										$contenedorTemporal = $insertId . chr(65);
-									}
-								}
-
-								$contenedor[$contador] = $contenedorTemporal;
-
 								$sql = 'insert into Contenedor(idContenedor,Tipo) values(:contenedor, :tipo);';
 								$stmt = $mysqli->prepare($sql);
 								$stmt->bindParam(':contenedor', $contenedor[$contador]);

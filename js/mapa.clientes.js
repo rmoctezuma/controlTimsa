@@ -141,21 +141,21 @@ function placeMarker(imagen, location, nombreSucursal ,id) {
 
          temporalMarker.set("value" , idCliente);
 
-         var html = "<h5> DATOS NUEVA SUCURSAL </h5> <label> Nombre </label> <input type='text' class='required' id='nombre' placeholder='Nombre de la sucursal'> <br> <label>Telefono</label><input type='text' class='required' id='telefono' placeholder='Telefono de la sucursal'>  <label><b>Direccion</b></label>";
-         var html2 = "<br><button class='btn btn-primary' id='newSucursal' type='submit'> Crear </button>";
+         var html = "<h5> DATOS NUEVA SUCURSAL </h5> <form id='formSucursal'> <label> Nombre </label> <input type='text' class='required' id='nombre' placeholder='Nombre de la sucursal'> <br> <label>Telefono</label><input type='text' class='required' id='telefono' placeholder='Telefono de la sucursal'>  <label><b>Direccion</b></label>";
+         var html2 = "<hr style='height:70px; width: 280px'><button class='btn btn-primary' id='newSucursal' type='submit'> Crear </button></form>";
 
          geocoder.geocode({'latLng': temporalMarker.getPosition()}, function(result, status){
                   if(status == google.maps.GeocoderStatus.OK){
 
                       var contenidoNuevo = result[0].formatted_address;
-                      var newhtml = "";  
+                      var newhtml = ""; 
 
                       $.get("../includes/cuotas.sucursales.php",
                          function(data) {
                             newhtml =  html+ contenidoNuevo + data.respuesta + html2;
                             temporalInfoWindow = new google.maps.InfoWindow({
                             content : newhtml
-                          });
+                            });
 
                             temporalInfoWindow.open(map,temporalMarker);
 
@@ -169,14 +169,31 @@ function placeMarker(imagen, location, nombreSucursal ,id) {
                                 url:"../includes/precio.cuotaSucursal.php",
                                 data: parametros,
                                 success: function(response){
-                                  $('#detallesPrecios').empty();
-                                  $('#detallesPrecios').append(response.resultado);
+                                    if(response.resultado == false ){
+                                      $('#detallesPrecios').empty();
+                                      $('#detallesPrecios').append("<h4>Sin cuotas Disponibles</h4>");
+                                      $('#newSucursal').attr('disabled', 'disabled');
+                                      $('#newSucursal').addClass('disabled');
+                                    }
+                                    else{
+                                      $('#detallesPrecios').empty();
+                                      $('#detallesPrecios').append(response.resultado);
+                                      $('#newSucursal').attr('disabled', false);
+                                      $('#newSucursal').removeClass('disabled');
+                                    }
                                 },
                                 error: function(xhr, ajaxOptions, thrownError){
                                     alert("error, comprueba tu conexion a internet" + xhr.responseText);
                                 }
                             });  
                          }, "json");
+                  }
+                  else{
+                    temporalInfoWindow = new google.maps.InfoWindow({
+                            content : "<h4>Ubicacion no Valida</h4>"
+                            });
+
+                    temporalInfoWindow.open(map,temporalMarker);
                   }
           });
 
@@ -201,14 +218,27 @@ function placeMarker(imagen, location, nombreSucursal ,id) {
                                 url:"../includes/precio.cuotaSucursal.php",
                                 data: parametros,
                                 success: function(response){
-                                  $('#detallesPrecios').empty();
-                                  $('#detallesPrecios').append(response.resultado);
+                                        if(response.resultado == false ){
+                                          $('#detallesPrecios').empty();
+                                          $('#detallesPrecios').append("<h4>Sin cuotas Disponibles</h4>");
+                                          $('#newSucursal').attr('disabled', 'disabled');
+                                          $('#newSucursal').addClass('disabled');
+                                        }
+                                        else{
+                                          $('#detallesPrecios').empty();
+                                          $('#detallesPrecios').append(response.resultado);
+                                          $('#newSucursal').attr('disabled', false);
+                                          $('#newSucursal').removeClass('disabled');
+                                        }
                                 },
                                 error: function(xhr, ajaxOptions, thrownError){
                                     alert("error, comprueba tu conexion a internet" + xhr.responseText);
                                 }
                             });  
                           }, "json");
+                  }
+                  else{
+                     temporalInfoWindow.setContent("<h4>Ubicacion no Valida</h4>");
                   }
               });
          });
@@ -234,8 +264,18 @@ function placeMarker(imagen, location, nombreSucursal ,id) {
                                 url:"../includes/precio.cuotaSucursal.php",
                                 data: parametros,
                                 success: function(response){
-                                  $('#detallesPrecios').empty();
-                                  $('#detallesPrecios').append(response.resultado);
+                                    if(response.resultado == false ){
+                                      $('#detallesPrecios').empty();
+                                      $('#detallesPrecios').append("<h4>Sin cuotas Disponibles</h4>");
+                                      $('#newSucursal').attr('disabled', 'disabled');
+                                      $('#newSucursal').addClass('disabled');
+                                    }
+                                    else{
+                                      $('#detallesPrecios').empty();
+                                      $('#detallesPrecios').append(response.resultado);
+                                      $('#newSucursal').attr('disabled', false);
+                                      $('#newSucursal').removeClass('disabled');
+                                    }
                                 },
                                 error: function(xhr, ajaxOptions, thrownError){
                                     alert("error, comprueba tu conexion a internet" + xhr.responseText);
@@ -244,7 +284,7 @@ function placeMarker(imagen, location, nombreSucursal ,id) {
                           }, "json"); 
                   }
                   else{
-                     temporalInfoWindow.close();
+                     temporalInfoWindow.setContent("<h4>Ubicacion no Valida</h4>");
                   }
               }); 
          });

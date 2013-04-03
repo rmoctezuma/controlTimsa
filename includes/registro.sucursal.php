@@ -11,6 +11,8 @@ include('../includes/generic.connection.php');
 		$lat  = $_POST['Lat'];
 		$long = $_POST['Long'];
 
+		if($nombre != null && $telefono != null && $cliente != null && $cuota != null && $lat != null && $long != null){
+
 		try {
 			$PDOmysql = consulta();
 			$PDOmysql->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -37,6 +39,10 @@ include('../includes/generic.connection.php');
 		    $PDOmysql->rollBack();
 		    echo $ex->getMessage();
 		    $respuestaOK = false;
+		} 
+		}
+		else {
+			$result = "error";
 		}
 	}
 

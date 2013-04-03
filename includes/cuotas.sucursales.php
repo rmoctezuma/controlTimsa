@@ -32,7 +32,7 @@ try {
 	    $respuestaOK = false;
 	}
 
-$salidaJson = array("respuesta" => $result );
+$salidaJson = array("respuesta" => $result);
 
 echo json_encode($salidaJson);
 

@@ -7,10 +7,13 @@ $ruta = "";
 
 	$nombre   = $_POST['nombre'];
 
+	if($nombre != null ){
+
 	try {
 
 		if ((($_FILES["archivo"]["type"] == "image/gif") ||
 		    ($_FILES["archivo"]["type"] == "image/jpeg") ||
+		    ($_FILES["archivo"]["type"] == "image/png") ||
 		    ($_FILES["archivo"]["type"] == "image/pjpeg")) &&
 		    ($_FILES["archivo"]["size"] < 6000000000)) {
 
@@ -63,10 +66,16 @@ $ruta = "";
 			$PDOmysql->rollBack();
 		    $resultados = 'Error en la creacion de el economico';
 		    header('Location: http://control.timsalzc.com/Timsa/html/cuotas.php?resultado=incorrecto&laimagen=mensaje');
+		}
+
+		header('Location: http://control.timsalzc.com/Timsa/html/clientes.php?resultado=correcto&laimagen='. $nombre);
+
+
+		}
+		else{
+			header('Location: http://control.timsalzc.com/Timsa/html/clientes.php?resultado=incorrecto&laimagen='. $nombre);
 		}	
 
-
-header('Location: http://control.timsalzc.com/Timsa/html/clientes.php?resultado=correcto&laimagen='. $nombre);
 
 
 ?>

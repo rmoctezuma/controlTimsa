@@ -132,6 +132,19 @@ try {
 	                <div class="tab-pane" id="lB">
 			            
 	                <div class="row-fluid">
+
+	                	<select id="optionVal">
+	                		<option value ="0"> Via Economico</option>
+	                		<option value = "1"> Via Socio</option>
+	                	</select>
+
+	                	<div id="busquedaEconomico">
+							<input type="text" class="input-medium search-query">
+  							<button type="submit" class="btn">Search</button>
+  						</div>
+
+
+  					<div id="busquedaSocios">
 	                <ul class="nav nav-pills nav-stacked span4" id="listaSocios" href="#" style="width:300px;height:290px;overflow:scroll;">
 	                	<?php
 	                		$sql = 'select idSocio, Nombre from Socio where statusA="Activo"';
@@ -141,6 +154,7 @@ try {
 	                				}
 	                			?>
 					  </ul> 
+					 </div>
 
 					   <div  id='EconomicoTab' class="span3">
 				          </div>

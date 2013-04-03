@@ -1,0 +1,12 @@
+F78TP-NQVG7-VMHQK-VMMX7-R89KR
+
+								$contenedorTemporal = "";
+								if($contenedor[$contador] == " Sin especificar "){
+									$contenedorTemporal = $insertId;
+
+									if($contador > 0){
+										$contenedorTemporal = $insertId . chr(65);
+									}
+								}
+
+								$contenedor[$contador] = $contenedorTemporal;
