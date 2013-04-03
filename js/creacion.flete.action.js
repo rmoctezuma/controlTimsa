@@ -596,16 +596,97 @@ $('#busquedaSocios').hide();
 
 	$('#optionVal').change( function(){
 		if($(this).val() == 0){
+			// Si es una busqueda via economico, habilita lo necesario
 			$('#busquedaSocios').fadeOut();
 			$('#busquedaEconomico').fadeIn();
+			$('#EconomicoTab').empty();
+			$('#OperadorTab').empty();
+
+			// Limpia los valores en la tabla de resultados, para que no se vean afectados
+			// al momento de crear el flete.
+
+			$('#Socio').empty();
+			$('#Socio').append("Sin especificar");
+			$('#Socio').attr("title","");
+
+			$('#Economico').empty();
+			$('#Economico').append("Sin especificar");
+			$('#Economico').attr("title","");
+
+			$('#Operador').empty();
+			$('#Operador').append("Sin especificar");
+			$('#Operador').attr("title","");
 			
 		}
 		else{
+			// Si es una busqueda via Socio, habilita y deshabilita lo necesario
 			$('#busquedaEconomico').fadeOut();
 			$('#busquedaSocios').fadeIn();
-			
+			$('#EconomicoTab').empty();
+			$('#OperadorTab').empty();
+
+			// Limpia los valores en la tabla de resultados, para que no se vean afectados
+			// al momento de crear el flete.
+
+			$('#Socio').empty();
+			$('#Socio').append("Sin especificar");
+			$('#Socio').attr("title","");
+
+			$('#Economico').empty();
+			$('#Economico').append("Sin especificar");
+			$('#Economico').attr("title","");
+
+			$('#Operador').empty();
+			$('#Operador').append("Sin especificar");
+			$('#Operador').attr("title","");
 		}
 	});
+
+	$('#buscar').click(function(){
+		var economico = $(this).parent().children('input').val();
+
+	});
+
+	$('#busquedaTecla').keyup(function(){
+		var economico = $(this).val();
+
+		var parametros = { "economico" : economico, "action" : "economico"};
+
+		$('#OperadorTab').empty();
+		$('#EconomicoTab').empty();
+		$("#Economico").empty();
+		$('#Economico').attr("title","");
+		$("#Economico").append("Sin asignar");
+		$('#Socio').empty();
+		$('#Socio').append("Sin asignar");
+		$('#Socio').attr("title","");
+		$('#Operador').empty();
+		$('#Operador').append("Sin asignar");
+		$('#Operador').attr("title","");
+
+		$.ajax({
+			beforeSend : function(){			
+			},
+			cache : false,
+			type  : 'POST',
+			dataType : 'json',
+			url   : '../../includes/busqueda.economico.php',
+			data  : parametros,
+			success : function(response){
+				if(response.contenido.length == 74){
+		            			$('#EconomicoTab').append("<h1> Este Socio no Posee economicos </h1>");
+		            		}
+		            		else
+		            			{
+		            			$('#EconomicoTab').append(response.contenido);
+		            		  }
+			},
+			error : function(xhr, ajaxOptions, thrownError){
+					alert("error, comprueba tu conexion a internet");
+			}
+		});
+	});
+
 
 //termina On document Ready
 });

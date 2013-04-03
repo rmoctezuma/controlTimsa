@@ -139,8 +139,10 @@ try {
 	                	</select>
 
 	                	<div id="busquedaEconomico">
-							<input type="text" class="input-medium search-query">
-  							<button type="submit" class="btn">Search</button>
+							<input id="busquedaTecla" type="text" class="input-medium search-query">
+  							<button type="submit" id="buscar" class="btn">Search</button>
+  							<br>
+  							<br>
   						</div>
 
 
