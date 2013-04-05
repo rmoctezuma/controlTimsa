@@ -72,8 +72,9 @@ try {
 		    </div>
 		  </div>
 
-
 		  <div class= "container">
+		  	<form id="FormFlete">
+		  		
 		    <div class="page-header">
 		    	<p>
 		    	<h1 id="title">Flete MAERSK</h1> 
@@ -272,7 +273,7 @@ try {
 
 
 
-
+		</form>
 		 </div>
 
 	</body>

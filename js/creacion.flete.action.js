@@ -101,13 +101,14 @@ $(function(){
 	      }
 	   });
 
+//Botones de busqueda de economico, via Socio. Toman los datos de los botones,
+//para buscar a los operadores que han conducido dichos economicos.
  	$('#botonGroupEconomico button').live("click", function (){
 		$('#Economico').empty();
 		$('#Economico').append($(this).text());
 		$('#Economico').attr("title", $(this).attr("title"));
 
 		$('#OperadorTab').empty();
-
 
 		var parametros = { "value" : $(this).attr("title"),
 							"action" : "Operador",
@@ -499,7 +500,14 @@ $(function(){
 
 		$( "#Contenedor td" ).each(function(index, value) {
 			if(index != 0){
-				arrayContenedor[index-1] = $(this).text();
+				var contenedor = $(this).text();
+				// Si el contenedor se encuentra sin especificar, se coloca a null.
+				if(contenedor.indexOf("Sin especificar") !== -1){
+					contenedor = null;
+				}
+				else{
+				}
+				arrayContenedor[index-1] = contenedor;
 			} 
 		});
 
@@ -568,12 +576,8 @@ $(function(){
 			url:"../../includes/create.flete.php",
 			data: parametros,
 			success: function(response){
-				if(response.respuesta == false){
-					alert("Error :/");
-				}
-				else{
+
 					window.location = "http://control.timsalzc.com/Timsa/html/TIMSA.php";
-				}
 			},
 			error: function(xhr, ajaxOptions, thrownError){
 					alert("error, comprueba tu conexion a internet" + xhr.responseText);
@@ -583,8 +587,6 @@ $(function(){
 
 		$('#createFlete button').addClass("disabled");
 		$('#createFlete button').attr("disabled",false);
-
-
 
 	});
 
@@ -645,11 +647,6 @@ $('#busquedaSocios').hide();
 	$('#buscar').click(function(){
 		var economico = $(this).parent().children('input').val();
 
-	});
-
-	$('#busquedaTecla').keyup(function(){
-		var economico = $(this).val();
-
 		var parametros = { "economico" : economico, "action" : "economico"};
 
 		$('#OperadorTab').empty();
@@ -685,8 +682,84 @@ $('#busquedaSocios').hide();
 					alert("error, comprueba tu conexion a internet");
 			}
 		});
+
 	});
 
+	$('#busquedaTecla').keyup(function(){
+
+		var economico = $(this).val();
+
+		var parametros = { "economico" : economico, "action" : "economico"};
+
+		$('#OperadorTab').empty();
+		$('#EconomicoTab').empty();
+		$("#Economico").empty();
+		$('#Economico').attr("title","");
+		$("#Economico").append("Sin asignar");
+		$('#Socio').empty();
+		$('#Socio').append("Sin asignar");
+		$('#Socio').attr("title","");
+		$('#Operador').empty();
+		$('#Operador').append("Sin asignar");
+		$('#Operador').attr("title","");
+
+		$.ajax({
+			beforeSend : function(){			
+			},
+			cache : false,
+			type  : 'POST',
+			dataType : 'json',
+			url   : '../../includes/busqueda.economico.php',
+			data  : parametros,
+			success : function(response){
+				if(! (response.socio == "correcto")){
+		            			$('#EconomicoTab').append("<h4> No se encuentran economicos </h4>");
+		            		}
+		            		else
+		            			{
+		            			$('#EconomicoTab').append(response.contenido);
+		            		  }
+			},
+			error : function(xhr, ajaxOptions, thrownError){
+					alert("error, comprueba tu conexion a internet");
+			}
+		});
+	});
+
+$('#botonGroupEconomicoViaNumeroEconomico button').live("click", function (){
+		$('#Economico').empty();
+		$('#Economico').append($(this).attr("title"));
+		$('#Economico').attr("title", $(this).text());
+
+		$('#OperadorTab').empty();
+
+		var parametros = { "economico" : $(this).text(),
+							"Socio"    : $(this).attr("val"),
+							"action"   : "buscarEconomico"
+						};
+		$.ajax({
+		        beforeSend: function(){
+		        },
+		            cache: false,
+		            type: "POST",
+		            dataType: "json",
+		            url:"../../includes/busqueda.economico.php",
+		            data: parametros,
+		            success: function(response){
+		            			$('#OperadorTab').append(response.contenido);
+		            			$('#Socio').empty();
+		            			$('#Socio').append(response.socio);
+		            			$('#Socio').attr("title", parametros['Socio']);              	           	
+		            },
+		            error:function(xhr, ajaxOptions, thrownError){
+		            	alert("error, comprueba tu conexion a internet");
+		                $('#EconomicoTab').append(xhr.responseText);            
+		            }
+		        });
+	});
+
+
+	
 
 //termina On document Ready
 });
