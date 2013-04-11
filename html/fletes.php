@@ -1,20 +1,6 @@
 <?php
-require("../includes/Paginacion.php");
-include('../includes/generic.connection.php');
-
-$PDOmysql = consulta();
-
-$sql = 'SELECT COUNT(*) FROM Flete';
-
-$stmt = $PDOmysql->query($sql);
-
-if($stmt){
-  $elementos = $stmt->fetchColumn();
-}
-else{
-  $elementos = 0;
-}
-
+require_once("../Pagination/Paginacion.php");
+include_once('../includes/generic.connection.php');
 ?>
 
 <!DOCTYPE html>
@@ -76,22 +62,9 @@ else{
   <div id="results">
 
 <?php
-  $pages = new Paginator;
-  $pages->items_total = $elementos;
-  $pages->mid_range = 9;
+  $pages = new Paginacion;
   $pages->paginate();
-  echo $pages->display_pages();
-
-  $sql =  "SELECT idFlete FROM Flete ORDER BY idFlete ASC $pages->limit";
-
- $newstmt = $PDOmysql->prepare($sql);
- $newstmt->execute();
-
- $rows = $newstmt->fetchAll(PDO::FETCH_ASSOC);
-    foreach ($rows as $fila){
-      echo '<h2> ID: '. $fila['idFlete'] .'</h2>';
-    }
-
+  print_r($pages->display());
 ?>
 </div>
 
