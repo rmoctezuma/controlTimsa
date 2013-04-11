@@ -64,7 +64,7 @@ include_once('../includes/generic.connection.php');
 <?php
   $pages = new Paginacion;
   $pages->paginate();
-  print_r($pages->display());
+  echo $pages->display();
 ?>
 </div>
 

@@ -26,8 +26,8 @@ class Dia{
 					ORDER BY idFlete';
 
 			$stmt = $PDOmysql->prepare($sql);
-			 $stmt->bindParam(':dia', $dia);
-			 $stmt->bindParam(':anio', $anio);
+			 $stmt->bindParam(':dia', $this->dia);
+			 $stmt->bindParam(':anio', $this->anio);
 			 $stmt->execute();
 			 $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
 			
@@ -40,10 +40,8 @@ class Dia{
 	}
 
 	function formattedRequest($rows){
-		$this->contenido = $rows;
 
 		foreach($rows as $fila) {
-			$this->contenido.= " Entro ";
 			$this->contenido.= $fila['idFlete'];
 		}
 		return $this->contenido;
