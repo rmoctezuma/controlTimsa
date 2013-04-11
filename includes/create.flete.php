@@ -18,7 +18,6 @@ $booking = $_POST['booking']; //opcional, hasta 2  (array)
 $tipoContenedor = $_POST['tipoContenedor']; //opcional, hasta 2 (array)
 $sello = $_POST['sello']; //opcional, hasta 3 (array)
  
-
 $mysqli = consulta(); //recibe la conexion a la base de datos.
 
 	try {

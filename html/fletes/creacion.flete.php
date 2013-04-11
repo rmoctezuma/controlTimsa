@@ -73,7 +73,6 @@ try {
 		  </div>
 
 		  <div class= "container">
-		  	<form id="FormFlete">
 		  		
 		    <div class="page-header">
 		    	<p>
@@ -92,7 +91,6 @@ try {
 
 						        	echo '<li><a href='.$fila['idAgente'] .'>'.$fila['Nombre'].'</a></li>';
 						        }
-
 				    ?>
 				  </ul>
 				</div>
@@ -198,7 +196,12 @@ try {
 	                </div>
 	                </div>     
             </div>
-            
+
+            <div class="alert alert-error" id="bloqueError">
+            	<button type="button" class="close" data-dismiss="alert">&times;</button>
+            	<h4 class="alert-heading" id="errorLog"> <h4>
+            </div>
+
             <hr>
 
 		 <div id="results">
@@ -271,9 +274,6 @@ try {
 
 		 </div>
 
-
-
-		</form>
 		 </div>
 
 	</body>

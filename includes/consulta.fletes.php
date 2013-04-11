@@ -51,6 +51,27 @@ function consultaFletes(){
                $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
               foreach($rows as $fila){
+                $salida .= '<h3> Movimientos  </h3>';
+
+                  $salida .= '<div class= "container" id="tabla">
+                            <table class="table table-hover">
+                              <thead>
+                                <tr>
+                                  <th>#</th>
+                                  <th>Operador</th>
+                                  <th>Economico</th>
+                                  <th>Placas </th>
+                                  <th>Cliente</th>
+                                  <th>Sucursal</th>
+                                  <th>Agencia</th>
+                                  <th>Trafico</th>
+                                  <th>Tipo Viaje</th>
+                                  <th>Status</th>
+                                  <th>Hora</th>
+                                  <th> </th>
+                                  </tr></thead>
+                                  <tbody>';
+
                     $salida.='
                             <tr>
                               <td>'. $fila['idFlete'].' </td>
@@ -66,6 +87,10 @@ function consultaFletes(){
                               <td>'. $fila['Fecha']    .'  </td>
                               <td> <button class="demo btn btn-success btn-mini" data-toggle="modal" href="#responsive">Detalles</button> <td>
                             </tr>';
+
+                          $salida.= ' </tbody>
+                          </table>';
+
               } 
             }
             catch(PDOException $e){

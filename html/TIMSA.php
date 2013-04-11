@@ -22,7 +22,6 @@
     <script src="../js/bootstrap-collapse.js"></script>
 
     <script type="text/javascript" src="../js/MainAction.js"></script>
-    
 
   <style>
       body {
@@ -72,7 +71,9 @@
   </div>
 
        <div class= "container">
-        <div class="span6  offset3"><h1>Movimientos Actuales</h1>    
+        <div class="span6  offset3">
+          <h1>Movimientos Actuales </h1>    
+          <h3><?php echo date('l jS \of F Y ') ?></h3>
         </div> 
       </div>
       <hr>
@@ -97,7 +98,7 @@
           <ul class="nav nav-list">
                   <li class="active"><a href="#tabla"><i class="icon-home icon-white"></i> Home</a></li>
                   <br>
-              </ul>
+            </ul>
  
     </div>
 

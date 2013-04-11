@@ -1,5 +1,20 @@
 <?php
-header('Location: http://control.timsalzc.com/Timsa/html/TIMSA.php');
+require("../includes/Paginacion.php");
+include('../includes/generic.connection.php');
+
+$PDOmysql = consulta();
+
+$sql = 'SELECT COUNT(*) FROM Flete';
+
+$stmt = $PDOmysql->query($sql);
+
+if($stmt){
+  $elementos = $stmt->fetchColumn();
+}
+else{
+  $elementos = 0;
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -12,20 +27,7 @@ header('Location: http://control.timsalzc.com/Timsa/html/TIMSA.php');
 
   <style>
       body {
-        padding-top: 30px; /* 60px to make the container go all the way to the bottom of the topbar */
-      }
-      </style>
-
-      <style >
-      .hero-unit {
-        background-image: url('../images/hero-wide-opt.jpg');
-        color: white;
-        height: 200px;
-        text-align: center;
-        overflow: hidden;
-        background-position: 50% top;
-        background-repeat: no-repeat;
-        background-color: white;
+        padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
       }
       </style>
 
@@ -71,47 +73,28 @@ header('Location: http://control.timsalzc.com/Timsa/html/TIMSA.php');
     </div>
   </div>
 
+  <div id="results">
 
-    <div class="hero-unit">
-      <div class="container">
-        <h1>Transportes Integrados de Michoacan </h1>
-        <h2> Manejo de Fletes</h2>
-      </div>
-      <p ><img src="../images/logo2.png" class="img-rounded"></p> 
-    </div>
-<div class= "container">
-    <div class="page-header"><h1>Fletes</h1> 
-    </div>
+<?php
+  $pages = new Paginator;
+  $pages->items_total = $elementos;
+  $pages->mid_range = 9;
+  $pages->paginate();
+  echo $pages->display_pages();
 
-  </div>
+  $sql =  "SELECT idFlete FROM Flete ORDER BY idFlete ASC $pages->limit";
 
-  <table class="table table-hover">
-    <thead>
-      <tr>
-        <th>#</th>
-        <th>Operador</th>
-        <th>Economico</th>
-        <th>Cliente</th>
-        <th>Sucursal</th>
-        <th>Agencia</th>
-        <th>Trafico</th>
-        <th>Tipo Viaje</th>
-        <th>Status</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-      <td>001</td>
-      <td>Raul Moctezuma Pacheco</td>
-      <td>001</td>
-      <td>Samsung</td>
-      <td>Mexico</td>
-      <td>Merx</td>
-      <td>Reutilizado</td>
-      <td>Full</td>
-      <td>A</td>
-    </tr>
-    </tbody>
-</table>
+ $newstmt = $PDOmysql->prepare($sql);
+ $newstmt->execute();
+
+ $rows = $newstmt->fetchAll(PDO::FETCH_ASSOC);
+    foreach ($rows as $fila){
+      echo '<h2> ID: '. $fila['idFlete'] .'</h2>';
+    }
+
+?>
+</div>
+
+</body>
 
 </html>

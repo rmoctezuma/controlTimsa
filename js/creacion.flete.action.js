@@ -487,10 +487,29 @@ $(function(){
 				alert("error, comprueba tu conexion a internet" + xhr.responseText);
 			}
 		});
-
 	});
 
+	$('#bloqueError').hide();
+
 	$('#createFlete button').click( function (e){
+
+		if(! $('#Socio').attr("title")){
+			$('#errorLog').text("Error, por favor selecciones un socio");
+			$('#bloqueError').fadeIn();
+			return;
+		}
+
+		if(! $('#Economico').attr("title")){
+			$('#errorLog').text("Error, por favor selecciones un economico");
+			$('#bloqueError').fadeIn();
+			return;
+		}
+
+		if(! $('#Operador').attr("title")){
+			$('#errorLog').text("Error, por favor selecciones un operador");
+			$('#bloqueError').fadeIn();
+			return;
+		}
 
 		var arrayContenedor =[];
 		var arrayWorkOrder = [];
@@ -576,7 +595,6 @@ $(function(){
 			url:"../../includes/create.flete.php",
 			data: parametros,
 			success: function(response){
-
 					window.location = "http://control.timsalzc.com/Timsa/html/TIMSA.php";
 			},
 			error: function(xhr, ajaxOptions, thrownError){

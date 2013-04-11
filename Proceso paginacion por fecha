@@ -1,0 +1,29 @@
+PROCESO
+
+Formas de Evaluacion : Dia, Semana, Mes, o Año.
+
+1.- Obtener el metodo de evaluacion.
+2.- Segun el metodo de evaluacion, hacer una consulta y reconocer el numero de elementos(dias | meses | etc)
+3.- Segun el numero de elementos, debe existir una pagina por cada uno.
+ (si el elemento es una semana, existiran 6 dias, que conformaran a todo un elemento semana).
+4.- Regresar una consulta por pagina, que devuelva el elemento, en el orden deseado.
+
+Proceso tecnico.
+
+1.- El usuario selecciona la forma en que se procesaran los resultados, default es por semana.
+	En todos los metodos de seleccion, se debe seleccionar un año.
+
+DIA    : Se mostraran 365(dias anuales) paginas, en cada una mostrando los fletes realizados dada esa fecha.
+SEMANA : Se mostraran 52 (numero de semanas por año) paginas. En cada una se mostraran los 7 dias de una 			 semana(segun rango de tiempo), desglosados, mostrando los fletes que se realizaron en cada dia.
+MES    : Se muestran 12 paginas. En cada una se muestra una mes, desglosado por 4 semanas. Cada semana se 			 desglosara como lo hace en la seleccion de SEMANA. 
+AÑO    : Se muestra un numero de paginas calculado desde el 2013(año de inicio de operaciones), hasta el año 		  actual. En cada pagina se muestran 12 meses, cada uno desglosado como en la seleccion de MES.
+
+
+
+Acciones.
+Crear una clase para cada Seleccion. La SEMANA llamara a 7 objetos DIAS. El MES a 4 objetos SEMANA, y el año a 12 objetos MES.
+
+Acciones extras.
+Filtrar Fletes por SOCIO, ECONOMICO, CLIENTE u OPERADOR.
+Crear opciones de arbol, para que cada DIA, SEMANA, MES u AÑO, se desglose como su clase especifica.
+Mostrar acciones de dinero para TIMSA, para OPERADOR, para SOCIO, para ECONOMICO segun la seleccion.
