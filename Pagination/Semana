@@ -4,7 +4,7 @@ require_once("../includes/generic.connection.php");
 
 class Dia{
 	var $anio;
-	var $dia;
+	var $semana;
 
 	var $contenido;
 
@@ -15,8 +15,9 @@ class Dia{
 		$PDOmysql = consulta();
 		$rows = "";
 
-		try{
+		$dia = new Dia;
 
+		try{
 			$sql = 'SELECT idFlete, Fecha
 					FROM Flete  	
 					WHERE

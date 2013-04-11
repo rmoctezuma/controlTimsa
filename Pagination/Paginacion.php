@@ -3,6 +3,9 @@
 # Clase controladora, que retornara resultados.
 
 require_once("Dia.php");
+require_once("Semana.php");
+require_once("Mes.php");
+require_once("Año.php");
 
 class Paginacion{
 	var $anio;
@@ -30,9 +33,20 @@ class Paginacion{
 		if(isset($_GET['tipoConsulta'])){
 			switch ($_GET['tipoConsulta']) {
 				case 'SEMANA':
-					# code...
+					$consulta = new Semana;
+					if(isset($_GET['semana']) && isset($_GET['anio'])){
+						$consulta->semana     = $_GET['semana'];
+						$consulta->anio       = $_GET['anio'];
+						$this->currentPage    = $this->semana;
+					}
 					break;
 				case 'MES':
+					$consulta = new Mes;
+					if(isset($_GET['semana']) && isset($_GET['anio'])){
+						$consulta->semana     = $_GET['mes'];
+						$consulta->anio       = $_GET['anio'];
+						$this->currentPage    = $this->mes;
+					}
 					break;
 				case 'DIA':
 
@@ -51,6 +65,11 @@ class Paginacion{
 					
 					break;
 				case 'AÑO':
+					$consulta = new Año;
+					if(isset($_GET['semana']) && isset($_GET['anio'])){
+						$consulta->anio       = $_GET['anio'];
+						$this->currentPage    = $this->año;
+					}
 					break;			
 				default:
 					break;
