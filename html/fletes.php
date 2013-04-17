@@ -8,6 +8,8 @@ include_once('../includes/generic.connection.php');
   <head>
     <meta charset="utf-8">
     <title> TIMSA LZC </title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+    <script type="text/javascript" src="../js/bootstrap.js"></script>
     <link href="../css/bootstrap.min.css" rel="stylesheet" media="screen">
     <link href="../css/bootstrap-responsive.css" rel="stylesheet">
 
@@ -59,13 +61,29 @@ include_once('../includes/generic.connection.php');
     </div>
   </div>
 
-  <div id="results">
+  <div id="Titulo" class="container">
+    <h1>Control de Fletes</h1>
+    <label for="tipoConsulta"> Tipo de Consulta</label>
+    <select id="tipoConsulta">
+      <option value="DIA">Dia</option>
+      <option value="SEMANA">Semana</option>
+      <option value="MES">Mes</option>
+      <option value="ANIO">Año</option>
+    </select> 
+    <br>
+  </div>
+
+  <div id="results" class="container">
 
 <?php
   $pages = new Paginacion;
   $pages->paginate();
   echo $pages->display();
 ?>
+</div>
+
+<div id="paginas">
+  $pages->paginate();
 </div>
 
 </body>
