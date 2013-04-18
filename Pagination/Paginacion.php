@@ -20,72 +20,73 @@ class Paginacion{
 	var $contenido;
 
 	function Paginacion(){
-		$this->tipoConsulta  = "SEMANA";
+		
 		$this->mes    		 =  date('m');
-		$this->anio   		 =  date('Y');
+		
 		$this->dia    		 =  date('z') + 1;
 		$this->semana 		 =  date('W') - 1;
 		$this->currentPage   =  $this->semana;
 		$this->numeroPaginas =  52;
 		$this->contenido     =  "Sin resultados";
+
+		if(isset($_GET['anio'])){ $this->anio = $_GET['anio']; } else { $this->anio =  date('Y');}
+		if(isset($_GET['tipoConsulta']))  $this->tipoConsulta = $_GET['tipoConsulta'];  else $this->tipoConsulta  = "SEMANA";
 	}
 
 	function paginate(){
-		if(isset($_GET['tipoConsulta'])){
-			switch ($_GET['tipoConsulta']) {
+			switch ($this->tipoConsulta) {
 				case 'SEMANA':
 					$consulta = new Semana;
-					if(isset($_GET['semana']) && isset($_GET['anio'])){
-						$consulta->semana     = $_GET['semana'];
-						$consulta->anio       = $_GET['anio'];
-						$this->currentPage    = $consulta->semana;
+					if(isset($_GET['semana'])){
+						$consulta->semana = $this->semana    = $_GET['semana'];
+						$this->currentPage= $consulta->semana;
 					}
 					else{
 						$consulta->semana = $this->semana;
-						$consulta->anio = $this->anio;
 					}
+					$consulta->anio       = $this->anio;
 					$this->contenido = $consulta->getRequest();
 
 					$this->numeroPaginas = 52;
 					
 					break;
 				case 'MES':
+					$this->tipoConsulta = "MES";
 					$consulta = new Mes;
-					if(isset($_GET['mes']) && isset($_GET['anio'])){
-						$consulta->mes        = $_GET['mes'];
-						$consulta->anio       = $_GET['anio'];
+					if(isset($_GET['mes'])){
+						$consulta->mes        = $this->mes         = $_GET['mes'];
 						$this->currentPage    = $consulta->mes;
 					}
 					else{
 						$consulta->mes        = $this->mes;
-						$consulta->anio       = $this->anio;
 					}
+
+					$consulta->anio       = $this->anio;
 
 					$this->contenido = $consulta->getRequest();
 					$this->numeroPaginas = 12;
 					break;
 				case 'DIA':
-
+					$this->tipoConsulta = "DIA";
 					$consulta = new Dia;
-					if(isset($_GET['dia']) && isset($_GET['anio'])){
-						$consulta->dia      = $_GET['dia'];
-						$consulta->anio     = $_GET['anio'];
+					if(isset($_GET['dia']) ){
+						$consulta->dia  = $this->dia       = $_GET['dia'];
 						$this->currentPage  = $consulta->dia;
 					}
 					else{
 						$consulta->dia = $this->dia;
-						$consulta->anio = $this->anio;
 					}
-
+					 $consulta->anio       = $this->anio;
 					 $this->contenido = $consulta->getRequest();
-					 $this->numeroPaginas = 7;
+					 $this->numeroPaginas = 365;
 					
 					break;
 				case 'ANIO':
+					$this->tipoConsulta = "ANIO";
 					$consulta = new Anio;
 					if(isset($_GET['anio'])){
-						$consulta->anio       = $_GET['anio'];
-						$this->currentPage    = $consulta->anio;
+						$consulta->anio     = $this->anio      = $_GET['anio'];
+						$this->currentPage  = $consulta->anio;
 					}
 					else{
 						$consulta->anio       = $this->anio;
@@ -98,24 +99,25 @@ class Paginacion{
 					break;			
 				default:
 					break;
-			}
-		}
-		else{
-			$consulta = new Semana;
-			$consulta->semana = $this->semana;
-			$consulta->anio = $this->anio;
-			$this->contenido = $consulta->getRequest();
-		}
+			}	
 	}
 
 	function display(){
 		return '<div id="accordion2" class="accordion"><div class="accordion-group">  '. $this->contenido . '</div></div>';
 	}
 
-	function paginate(){
+	function crearPaginacion(){
+		$paginas = '<div class="pagination pagination-large"><ul>';
+
+		$tipo = strtolower($this->tipoConsulta);
+
 		for ($i=1; $i <= $this->numeroPaginas; $i++) { 
-			# code...
+			$paginas.= '<li><a href='."$_SERVER[PHP_SELF]?tipoConsulta=$this->tipoConsulta&$tipo=$i&anio=$this->anio".'>'.$i.'</a></li>';
 		}
+
+		$paginas .= '</ul></div>';
+
+		return $paginas;
 	}
 	
 }

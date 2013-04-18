@@ -77,8 +77,7 @@
         </div> 
       </div>
       <hr>
-
-
+      
     <div id= "loader">
       <div class="container">
       <fieldset id="ajaxLoader" class="ajaxLoader hide">

@@ -29,7 +29,7 @@ function consultaFletes(){
 
           $sql = 'select distinct Flete.idFlete idFlete, Operador.Nombre nombre,
            Operador.ApellidoP apellidop, Operador.ApellidoM apellidom, Economico.Economico economico, Economico.Placas placas, 
-           Cliente.Nombre cliente, ClienteDireccion.Localidad sucursal,Agencia.nombre agencia, CuotaDetalle.Trafico trafico,
+           Cliente.Nombre cliente, ClienteDireccion.NombreSucursal sucursal,Agencia.nombre agencia, CuotaDetalle.Trafico trafico,
            CuotaDetalle.TipoViaje TipoViaje,Flete.Fecha Fecha,Flete.statusA statusA 
            from 
            Cuota,Socio,Flete, Operador, Economico, Cliente, CuotaDetalle, ClienteDireccion, Agencia,VehiculoDetalle, Cuota_Flete

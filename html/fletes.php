@@ -1,6 +1,8 @@
 <?php
 require_once("../Pagination/Paginacion.php");
 include_once('../includes/generic.connection.php');
+
+$pages = new Paginacion;
 ?>
 
 <!DOCTYPE html>
@@ -63,27 +65,43 @@ include_once('../includes/generic.connection.php');
 
   <div id="Titulo" class="container">
     <h1>Control de Fletes</h1>
+
     <label for="tipoConsulta"> Tipo de Consulta</label>
-    <select id="tipoConsulta">
-      <option value="DIA">Dia</option>
-      <option value="SEMANA">Semana</option>
-      <option value="MES">Mes</option>
-      <option value="ANIO">Año</option>
+    <select id="tipoConsulta" ONCHANGE="location = this.options[this.selectedIndex].value;">
+      <option value="fletes.php?tipoConsulta=DIA&anio=<?php echo $pages->anio   ?> " <?php if($pages->tipoConsulta == "DIA") echo "selected" ?>  >Dia</option>
+      <option value="fletes.php?tipoConsulta=SEMANA&anio=<?php echo $pages->anio   ?> "<?php if($pages->tipoConsulta == "SEMANA") echo "selected" ?> >Semana</option>
+      <option value="fletes.php?tipoConsulta=MES&anio=<?php echo $pages->anio   ?>"<?php if($pages->tipoConsulta == "MES") echo "selected" ?>  >Mes</option>
+      <option value="fletes.php?tipoConsulta=ANIO&anio=<?php echo $pages->anio   ?>"<?php if($pages->tipoConsulta == "ANIO") echo "selected" ?> >Año</option>
+    </select>
+
+    <label for="año"> Año</label>
+    <select id="año" ONCHANGE="location = this.options[this.selectedIndex].value;">
+      <?php
+        for ($i=13; $i <= 25; $i++) { 
+          $nuevoAño = '20' . $i;
+          if($nuevoAño == $pages->anio) $seleccion = "selected"; else  $seleccion = "";
+
+          echo '<option value='."fletes.php?tipoConsulta=$pages->tipoConsulta&anio=$nuevoAño".' '. $seleccion . '>'.$nuevoAño .' </option>';
+        }
+      ?>
     </select> 
     <br>
   </div>
 
+
+
   <div id="results" class="container">
 
 <?php
-  $pages = new Paginacion;
   $pages->paginate();
   echo $pages->display();
 ?>
 </div>
 
-<div id="paginas">
-  $pages->paginate();
+<div id="paginas" class="container">
+  <?php
+  echo $pages->crearPaginacion();
+  ?>
 </div>
 
 </body>
