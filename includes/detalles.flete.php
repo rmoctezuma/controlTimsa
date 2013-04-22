@@ -1,82 +1,62 @@
 <?php
 
+require_once("../includes/generic.connection.php");
+
 $respuestaOK = true;
 $mensajeError = "No se puede ejecutar la aplicación";
 $contenidoOK = "";
 
-      /*try {
-            $mysqli = new PDO('mysql:host=www.timsalzc.com;dbname=timsalzc_ControlTimsa;charset=utf8', 'timsalzc_Raul', 'f203e21387', array(
-            PDO::ATTR_PERSISTENT => true
-        ));
-            $respuestaOK = true;
-              } catch(PDOException $ex) {
-              	  $respuestaOK = false;
-                  echo "An Error occured!"; //user friendly message
-                  echo $ex->getMessage();
-                  $contenidoOK .= '
-                      <tr id="sinDatos">
-                        <td >ERROR AL CONECTAR CON LA BASE DE DATOS</td>
-                        </tr>';
-        }
-
-        */
-
        if(isset($_POST) && !empty($_POST)){
+
+        $PDOmysql = consulta();
 
 
        	$value = $_POST['value'];
-
-        try {
-            $mysqli = new PDO('mysql:host=www.timsalzc.com;dbname=timsalzc_ControlTimsa;charset=utf8', 'timsalzc_Raul', 'f203e21387');
-            $errorDbConexion = false;
-              } catch(PDOException $ex) {
-                  echo "An Error occured!"; //user friendly message
-                  echo $ex->getMessage();
-                  $salida .= '
-                      <tr id="sinDatos">
-                        <td >ERROR AL CONECTAR CON LA BASE DE DATOS</td>
-                        </tr>';
-
-                  return $salida;
-        }
         
-        // FALTA AJUSTAR LA QUERY, PARA SELECCIONAR LA ULTIMA FECHA DE CADA LICENCIA.
-
-        $sql = 'select distinct Operador.Nombre nombre,
-         Operador.ApellidoP apellidop, Operador.ApellidoM apellidom, Operador.fecha_ingreso ingreso,
-          Economico.Economico economico, Economico.Placas placas,
-
-         Agencia.nombre agencia, CuotaDetalle.Trafico trafico, Socio.Nombre socio,
+        try{
 
 
-         CuotaDetalle.Tarifa tarifa, CuotaDetalle.TipoViaje TipoViaje,Flete.Fecha Fecha,Flete.statusA statusA, Flete.comentarios comentarios, Flete.fecha_llegada llegada, 
-         Flete.fecha_facturacion fact, 
+          $sql = 'SELECT distinct Operador.Nombre nombre,
+           Operador.ApellidoP apellidop, Operador.ApellidoM apellidom, Operador.fecha_ingreso ingreso,
+            Economico.Economico economico, Economico.Placas placas,
 
-         ClienteDireccion.NombreSucursal
-
-         from 
-
-         Cuota,Socio,Flete, Operador, Economico, Cliente, CuotaDetalle, ClienteDireccion, 
-         Agencia,VehiculoDetalle, Cuota_Flete
-
-         where
-
-         Operador.Eco = VehiculoDetalle.Operador and Economico.Economico = VehiculoDetalle.Economico and 
-         Socio.idSocio = VehiculoDetalle.Socio
-         and Flete.Operador = VehiculoDetalle.Operador and Flete.Economico = VehiculoDetalle.Economico and 
-         Flete.Socio = VehiculoDetalle.Socio
-         and Flete.Agencia_idAgente = Agencia.idAgente
-         and Flete.idFlete = Cuota_Flete.NumFlete and Cuota_Flete.Sucursal = ClienteDireccion.Sucursal and 
-         Cuota_Flete.TipoCuota = CuotaDetalle.numero and
-          Cuota_Flete.Cuota = CuotaDetalle.Cuota_idCuota and CuotaDetalle.Cuota_idCuota = Cuota.idCuota and 
-          Cuota.idCuota = ClienteDireccion.Cuota_idCuota 
-          and ClienteDireccion.Cliente_idCliente = Cliente.idCliente and ClienteDireccion.Cuota_idCuota = Cuota.idCuota
-          and ClienteDireccion.Sucursal = Cuota_Flete.Sucursal and ClienteDireccion.Cuota_idCuota = Cuota_Flete.Cuota
-          and Flete.idFlete = 113';
+           Agencia.nombre agencia, CuotaDetalle.Trafico trafico, Socio.Nombre socio,
 
 
-          //$fila =  $mysqli->query($sql);
-          foreach($mysqli->query($sql) as $fila){
+           CuotaDetalle.Tarifa tarifa, CuotaDetalle.TipoViaje TipoViaje,Flete.Fecha Fecha,Flete.statusA statusA, Flete.comentarios comentarios, Flete.fecha_llegada llegada, 
+           Flete.fecha_facturacion fact, 
+
+           ClienteDireccion.NombreSucursal
+
+           from 
+
+           Cuota,Socio,Flete, Operador, Economico, Cliente, CuotaDetalle, ClienteDireccion, 
+           Agencia,VehiculoDetalle, Cuota_Flete
+
+           where
+
+           Operador.Eco = VehiculoDetalle.Operador and Economico.Economico = VehiculoDetalle.Economico and 
+           Socio.idSocio = VehiculoDetalle.Socio
+           and Flete.Operador = VehiculoDetalle.Operador and Flete.Economico = VehiculoDetalle.Economico and 
+           Flete.Socio = VehiculoDetalle.Socio
+           and Flete.Agencia_idAgente = Agencia.idAgente
+           and Flete.idFlete = Cuota_Flete.NumFlete and Cuota_Flete.Sucursal = ClienteDireccion.Sucursal and 
+           Cuota_Flete.TipoCuota = CuotaDetalle.numero and
+            Cuota_Flete.Cuota = CuotaDetalle.Cuota_idCuota and CuotaDetalle.Cuota_idCuota = Cuota.idCuota and 
+            Cuota.idCuota = ClienteDireccion.Cuota_idCuota 
+            and ClienteDireccion.Cliente_idCliente = Cliente.idCliente and ClienteDireccion.Cuota_idCuota = Cuota.idCuota
+            and ClienteDireccion.Sucursal = Cuota_Flete.Sucursal and ClienteDireccion.Cuota_idCuota = Cuota_Flete.Cuota
+            and Flete.idFlete = :flete';
+
+
+            //$fila =  $mysqli->query($sql);
+
+                 $stmt = $PDOmysql->prepare($sql);
+                 $stmt->bindParam(':flete', $value);
+                 $stmt->execute();
+                 $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+          foreach($rows as $fila){
 
             $valorViaje = $fila['sucursal'].'-Lazaro';
 
@@ -256,15 +236,18 @@ $contenidoOK = "";
                 </div>
               </div>';
 
-              echo '<div> <button id="finalizarFlete"> Terminar Flete </button> </div>';
-          }        
-           
+              $contenidoOK.= '<div> <button id="finalizarFlete"> Terminar Flete </button> </div>';
+          }
+
+        }catch(PDOException $e){
+          
+        }               
 }
 
 
 $salidaJson = array("respuesta" => $respuestaOK,
-					"mensaje" => $mensajeError,
-					"contenido" => $contenidoOK);
+          					"mensaje" => $mensajeError,
+          					"contenido" => $contenidoOK);
 
 echo json_encode($salidaJson);
 

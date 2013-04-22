@@ -41,12 +41,12 @@ if(isset($_POST) && !empty($_POST)){
               if($fila['status'] == 'Libre'){
                 if($Contador == 3) {$contenido .= '<br>';}
                 $Contador += 1;
-                  $contenido .= '<button type="button" val="'.$fila['idSocio'].'" title="'.$fila['Placas'].'" class="btn btn-large " data-toggle="button">'.$fila['Economico']. '</button>';
+                  $contenido .= '<button type="button" val="'.$fila['idSocio'].'" title="'.$fila['Placas'].'" class="btn btn-large" data-toggle="button">'.$fila['Economico']. '</button>';
               }
               else{
                 if($Contador == 3) {$contenido .= '<br>';}
                 $Contador += 1;
-                 $contenido .= '<button type="button" val="'.$fila['idSocio'].'" title="'.$fila['Placas'].'" class="btn btn-large disabled " disabled = "disabled" data-toggle="button">'.$fila['Economico']. '</button>';
+                 $contenido .= '<button type="button" val="'.$fila['idSocio'].'" title="'.$fila['Placas'].'" class="btn btn-large disabled" disabled = "disabled" data-toggle="button">'.$fila['Economico']. '</button>';
               }
           }
 

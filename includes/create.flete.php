@@ -17,6 +17,8 @@ $workOrder = $_POST['workorder']; //opcional, hasta 2 (array)
 $booking = $_POST['booking']; //opcional, hasta 2  (array)
 $tipoContenedor = $_POST['tipoContenedor']; //opcional, hasta 2 (array)
 $sello = $_POST['sello']; //opcional, hasta 3 (array)
+$status = $_POST['status'];
+
  
 $mysqli = consulta(); //recibe la conexion a la base de datos.
 

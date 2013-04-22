@@ -12,6 +12,7 @@ $pages = new Paginacion;
     <title> TIMSA LZC </title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
     <script type="text/javascript" src="../js/bootstrap.js"></script>
+    <script type="text/javascript" src="../js/fletes.paginados.action.js"></script>
     <link href="../css/bootstrap.min.css" rel="stylesheet" media="screen">
     <link href="../css/bootstrap-responsive.css" rel="stylesheet">
 
@@ -63,6 +64,8 @@ $pages = new Paginacion;
     </div>
   </div>
 
+  <div id="InfoFletes">
+
   <div id="Titulo" class="container">
     <h1>Control de Fletes</h1>
 
@@ -102,6 +105,21 @@ $pages = new Paginacion;
   <?php
   echo $pages->crearPaginacion();
   ?>
+</div>
+
+</div>
+
+<div id="detallesFlete" class="container">
+        <h1> <a href="#" id="back"><img src="http://control.timsalzc.com/Timsa/img/back-arrow.png" class="img-rounded"></a> Detalles de Flete </h1>
+        <br>
+
+          <div class="row-fluid span10">
+            <div class="container span9">
+               <div class="accordion" id="accordion3">
+               </div>
+            </div>
+        </div>
+
 </div>
 
 </body>

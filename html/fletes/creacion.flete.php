@@ -77,6 +77,11 @@ try {
 		    <div class="page-header">
 		    	<p>
 		    	<h1 id="title">Flete MAERSK</h1> 
+		    	<div id="ViajePreparado">
+		    		<label class="checkbox">
+				      <input id="preparado"  type="checkbox"> Viaje Preparado
+				    </label>
+		    	</div>
 			    <div class="btn-group span2 offset10" id="seleccionAgencia">
 				  <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
 				    Agencia

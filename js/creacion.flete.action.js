@@ -491,6 +491,9 @@ $(function(){
 
 	$('#bloqueError').hide();
 
+
+	//Esta es el evento que genera el flete. Toma todos los datos, y los inserta en la base de datos.
+
 	$('#createFlete button').click( function (e){
 
 		if(! $('#Socio').attr("title")){
@@ -583,7 +586,8 @@ $(function(){
 			"workorder" : arrayWorkOrder,
 			"booking" : arrayBooking,
 			"tipoContenedor" : arrayTipoContenedor,
-			"sello" : arraySelloMejorado
+			"sello" : arraySelloMejorado,
+			"status" : "Activo"
 		};
 
 		$.ajax({
@@ -707,7 +711,10 @@ $('#busquedaSocios').hide();
 
 		var economico = $(this).val();
 
-		var parametros = { "economico" : economico, "action" : "economico"};
+		var parametros = { 
+			"economico" : economico,
+			 "action" : "economico"
+			};
 
 		$('#OperadorTab').empty();
 		$('#EconomicoTab').empty();
@@ -736,6 +743,10 @@ $('#busquedaSocios').hide();
 		            		else
 		            			{
 		            			$('#EconomicoTab').append(response.contenido);
+		            				if($('#preparado').is(":checked")){
+		            					//$( "." ).each(function() {
+										//});
+		            				}
 		            		  }
 			},
 			error : function(xhr, ajaxOptions, thrownError){
@@ -776,6 +787,12 @@ $('#botonGroupEconomicoViaNumeroEconomico button').live("click", function (){
 		        });
 	});
 
+$('#preparado').click(function(){
+	if($('#preparado').is("checked")){
+		$('.economicosButtons').removeClass('disabled');
+		$('.economicosButtons').attr("disabled", false);
+	}
+})
 
 	
 
