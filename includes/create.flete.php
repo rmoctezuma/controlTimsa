@@ -43,13 +43,14 @@ $mysqli = consulta(); //recibe la conexion a la base de datos.
 			$stmt->execute();
 
 		// Inserta el Flelte, con los datos principales.
-			$sql = 'insert into Flete(Agencia_idAgente, Operador, Economico, Socio, comentarios) values(:agencia,:operador,:economico,:socio, :comentarios)';
+			$sql = 'insert into Flete(Agencia_idAgente, Operador, Economico, Socio, comentarios, statusA) values(:agencia,:operador,:economico,:socio, :comentarios, :status)';
 			$stmt = $mysqli->prepare($sql);
 			$stmt->bindParam(':agencia',$agencia);
 			$stmt->bindParam(':operador',$operador);
 			$stmt->bindParam(':economico',$economico);
 			$stmt->bindParam(':socio',$socio);
 			$stmt->bindParam(':comentarios',$comentarios);
+			$stmt->bindParam(':status',$status);
 			$stmt->execute();
 		//Obtiene la llave primaria del flete recien creado.
 			$insertId = $mysqli ->lastInsertId();

@@ -138,6 +138,9 @@ $(function(){
 		            		else
 		            			{
 		            			$('#OperadorTab').append(response.contenido);
+			            			if($('#preparado').is(":checked")){
+			            				activarViajesPreparados();
+			            			} 
 		            		  }
 
 		            		// si es exitosa la operación
@@ -332,7 +335,7 @@ $(function(){
 		$('#Socio').append($(this).text());
 		$('#Socio').attr("title", $(this).attr("href"));
 		$('#Operador').empty();
-		$('#Operador').append("SIn asignar");
+		$('#Operador').append("Sin asignar");
 		$('#Operador').attr("title","");
 
 
@@ -361,6 +364,9 @@ $(function(){
 		            		else
 		            			{
 		            			$('#EconomicoTab').append(response.contenido);
+		            			if($('#preparado').is(":checked")){
+		            					activarViajesPreparados();
+		            				}
 		            		  }
 		            		// si es exitosa la operación
 		                	// alert(response.contenido)		                	
@@ -573,6 +579,13 @@ $(function(){
 			arraySelloMejorado[i] = newArraySellos;
 		}
 
+
+		var status = "Activo";
+
+		if($('#preparado').is(':checked')){
+			status = "Programado";
+		}
+
 		var parametros = {
 			"agencia" : $('#Agencia').attr("title"),
 			"cliente" : $('#Cliente').attr("title"),
@@ -587,7 +600,7 @@ $(function(){
 			"booking" : arrayBooking,
 			"tipoContenedor" : arrayTipoContenedor,
 			"sello" : arraySelloMejorado,
-			"status" : "Activo"
+			"status" : status
 		};
 
 		$.ajax({
@@ -698,6 +711,9 @@ $('#busquedaSocios').hide();
 		            		else
 		            			{
 		            			$('#EconomicoTab').append(response.contenido);
+			            			if($('#preparado').is(":checked")){
+			            					activarViajesPreparados();
+			            				}
 		            		  }
 			},
 			error : function(xhr, ajaxOptions, thrownError){
@@ -744,8 +760,7 @@ $('#busquedaSocios').hide();
 		            			{
 		            			$('#EconomicoTab').append(response.contenido);
 		            				if($('#preparado').is(":checked")){
-		            					//$( "." ).each(function() {
-										//});
+		            					activarViajesPreparados();
 		            				}
 		            		  }
 			},
@@ -778,7 +793,11 @@ $('#botonGroupEconomicoViaNumeroEconomico button').live("click", function (){
 		            			$('#OperadorTab').append(response.contenido);
 		            			$('#Socio').empty();
 		            			$('#Socio').append(response.socio);
-		            			$('#Socio').attr("title", parametros['Socio']);              	           	
+		            			$('#Socio').attr("title", parametros['Socio']);
+
+		            			if($('#preparado').is(":checked")){
+		            				activarViajesPreparados();
+		            			}              	           	
 		            },
 		            error:function(xhr, ajaxOptions, thrownError){
 		            	alert("error, comprueba tu conexion a internet");
@@ -788,13 +807,54 @@ $('#botonGroupEconomicoViaNumeroEconomico button').live("click", function (){
 	});
 
 $('#preparado').click(function(){
-	if($('#preparado').is("checked")){
-		$('.economicosButtons').removeClass('disabled');
-		$('.economicosButtons').attr("disabled", false);
+	
+	if($('#preparado').is(":checked")){
+		activarViajesPreparados();
+	}
+	else{
+		desactivarViajesPreparados();
 	}
 })
 
-	
+function activarViajesPreparados(){
+	$( ".economicosButtons" ).each(function() {
+		$(this).removeClass('disabled');
+	    $(this).attr("disabled", false);
+	});
+
+	$('.operadores').each(function() {
+	    $(this).attr("disabled", false);
+	});
+}
+
+function desactivarViajesPreparados(){
+	$( ".economicosButtons" ).each(function() {
+		if($(this).hasClass('ocupado')){
+			$(this).addClass('disabled');
+		    $(this).attr("disabled", "disabled");
+
+		    if($(this).hasClass('active')){
+		    	$(this).removeClass('active');
+		    	$('#Economico').empty();
+		    	$('#Economico').attr("title","");
+				$("#Economico").append("Sin asignar");
+		    }
+		}
+	});
+
+	$('.operadores').each(function() {
+		if($(this).hasClass('ocupado')){
+	    	$(this).attr("disabled", "disabled");
+
+	    	if($(this).is(':checked')){
+				$('#Operador').empty();
+				$('#Operador').append("Sin asignar");
+				$('#Operador').attr("title","");
+				$(this).prop('checked', false);
+			}
+	    }
+	});
+}
 
 //termina On document Ready
 });

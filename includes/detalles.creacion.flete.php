@@ -47,12 +47,12 @@ if(isset($_POST) && !empty($_POST)){
               if($fila['status'] == 'Libre'){
                 if($Contador == 3) {$contenido .= '<br>';}
                 $Contador += 1;
-                  $contenido .= '<button type="button" title="'.$fila['num'].'" class="btn btn-large " data-toggle="button">'.$fila['plac']. '</button>';
+                  $contenido .= '<button type="button" title="'.$fila['num'].'" class="btn btn-large economicosButtons" data-toggle="button">'.$fila['plac']. '</button>';
               }
               else{
                 if($Contador == 3) {$contenido .= '<br>';}
                 $Contador += 1;
-                 $contenido .= '<button type="button" title="'.$fila['num'].'" class="btn btn-large disabled " disabled = "disabled" data-toggle="button">'.$fila['plac']. '</button>';
+                 $contenido .= '<button type="button" title="'.$fila['num'].'" class="btn btn-large disabled economicosButtons ocupado" disabled = "disabled" data-toggle="button">'.$fila['plac']. '</button>';
               }
           }
 
@@ -81,14 +81,14 @@ if(isset($_POST) && !empty($_POST)){
             if( $fila['status'] == 'Libre'){
 
               $contenido .= '<label class="radio">
-                                <input type="radio" name="optionsRadios" value="'.$fila['operador'].'">
+                                <input type="radio" name="optionsRadios" class="operadores" value="'.$fila['operador'].'">
                                 '.$fila['nombre']  .  $fila['apellidop'] .  $fila['apellidom'] .'
                               </label>';
                             }
 
                             else{
                                 $contenido .= '<label class="radio">
-                                                <input type="radio" disabled="disabled" name="optionsRadios" value="'.$fila['operador'].'">
+                                                <input type="radio" disabled="disabled" name="optionsRadios" class="operadores ocupado" value="'.$fila['operador'].'">
                                                 '.$fila['nombre']  .  $fila['apellidop'] .  $fila['apellidom'] .'
                                               </label>';
                             }
