@@ -110,16 +110,27 @@ $pages = new Paginacion;
 </div>
 
 <div id="detallesFlete" class="container">
-        <h1> <a href="#" id="back"><img src="http://control.timsalzc.com/Timsa/img/back-arrow.png" class="img-rounded"></a> Detalles de Flete </h1>
+        <h1 id="titulo"> <a href="#" id="back"><img src="http://control.timsalzc.com/Timsa/img/back-arrow.png" class="img-rounded"></a> Detalles de Flete </h1>
         <br>
-
           <div class="row-fluid span10">
             <div class="container span9">
                <div class="accordion" id="accordion3">
                </div>
             </div>
         </div>
+        <div id="confirmacionFlete">
+          <h4>¿Realmente desea finalizar este flete?</h4>
+          <button id="cancelar" class="btn">Cancelar</button>
+          <button id="confirmar" class="btn btn-primary">Aceptar</button>
+        </div>
+        <div id="confirmarReutilizarFletes">
+          <h4>¿Desea utilizar los mismos contenedores?</h4>
+          <button class="contenedoresAcceso btn" value="false" >No</button>
+          <button class="contenedoresAcceso btn btn-primary" value="true">Si</button>
+        </div>
 
+</div>
+<div id="reutilizarFlete" class="container">
 </div>
 
 </body>

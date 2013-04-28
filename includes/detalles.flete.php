@@ -9,8 +9,6 @@ $contenidoOK = "";
        if(isset($_POST) && !empty($_POST)){
 
         $PDOmysql = consulta();
-
-
        	$value = $_POST['value'];
         
         try{
@@ -21,7 +19,6 @@ $contenidoOK = "";
             Economico.Economico economico, Economico.Placas placas,
 
            Agencia.nombre agencia, CuotaDetalle.Trafico trafico, Socio.Nombre socio,
-
 
            CuotaDetalle.Tarifa tarifa, CuotaDetalle.TipoViaje TipoViaje,Flete.Fecha Fecha,Flete.statusA statusA, Flete.comentarios comentarios, Flete.fecha_llegada llegada, 
            Flete.fecha_facturacion fact, 
@@ -64,8 +61,6 @@ $contenidoOK = "";
            if( $fila['trafico'] != 'Reutilizado'){
               $valorViaje = 'Lazaro-'. $fila['sucursal'];
            }
-
-
 
             $contenidoOK .= '<div class="accordion-group">
                 <div class="accordion-heading">
@@ -217,7 +212,7 @@ $contenidoOK = "";
                         Status
                       </dt>
                       <dd>
-                         <pre>'. $fila['statusA']. '</pre>
+                         <pre id="status" value="'.$fila['statusA'].'">'. $fila['statusA']. '</pre>
                       </dd>
                       <dt>
                         Tarifa 
@@ -236,7 +231,20 @@ $contenidoOK = "";
                 </div>
               </div>';
 
-              $contenidoOK.= '<div> <button id="finalizarFlete"> Terminar Flete </button> </div>';
+              if($fila['statusA'] == "Completo"){
+
+               $newDisabled =  'disabled="disabled"';
+               }
+               else{
+                 $disabled    = 'disabled= "disabled" ';
+               }
+
+              $contenidoOK.= '<div id="panelBotones">
+                                <button class="btn btn-success" id="reutilizar" '. $newDisabled .'> Reutilizar Flete </button>
+                                <button class="btn btn-danger" id="finalizarFlete" '. $newDisabled .'> Terminar Flete </button> 
+                                <button class="btn btn-primary" id="facturarFlete" '.$disabled.'> Facturar </button> 
+                                <h4></h4>
+                              </div>';
           }
 
         }catch(PDOException $e){

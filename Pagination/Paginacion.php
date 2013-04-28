@@ -112,9 +112,13 @@ class Paginacion{
 		$tipo = strtolower($this->tipoConsulta);
 
 		for ($i=1; $i <= $this->numeroPaginas; $i++) { 
-			$paginas.= '<li><a href='."$_SERVER[PHP_SELF]?tipoConsulta=$this->tipoConsulta&$tipo=$i&anio=$this->anio".'>'.$i.'</a></li>';
+			if($i == $this->currentPage){
+				$paginas.= '<li class="disabled"><a href='."$_SERVER[PHP_SELF]?tipoConsulta=$this->tipoConsulta&$tipo=$i&anio=$this->anio".'>'.$i.'</a></li>';
+			}
+			else{
+				$paginas.= '<li><a href='."$_SERVER[PHP_SELF]?tipoConsulta=$this->tipoConsulta&$tipo=$i&anio=$this->anio".'>'.$i.'</a></li>';
+			}
 		}
-
 		$paginas .= '</ul></div>';
 
 		return $paginas;
