@@ -231,6 +231,51 @@ $contenidoOK = "";
                 </div>
               </div>';
 
+        
+          foreach($rows as $fila){
+
+              '<div class="accordion-group">
+                              <div class="accordion-heading">
+                                <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseOne">
+                                  Operador
+                                </a>
+                              </div>
+                              <div id="collapseOne" class="accordion-body collapse">
+                                <div class="accordion-inner">
+                                  <h3> '. $fila['nombre'] .$fila['apellidop']. $fila['apellidom'] .'</h3> <hr>
+                                  <dl>
+                                    <dt>
+                                      Licencia  
+                                    </dt>
+                                    <dd>
+                                      <pre>' .$fila['licencia'].'</pre>
+                                    </dd>
+                                    <dt>
+                                      Vigencia
+                                    </dt>
+                                    <dd>
+                                      <pre>' .$fila['fechalicencia'].'</pre>
+                                    </dd>
+                                     <dt>
+                                      Telefono
+                                    </dt>
+                                    <dd>
+                                      <pre>' .$fila['tel'].'</pre>
+                                    </dd>
+                                     <dt>
+                                      En TIMSA desde
+                                    </dt>
+                                    <dd>
+                                      <pre>' .$fila['ingreso'].'</pre>
+                                    </dd>
+                                  </dl>
+                                </div>
+                              </div>
+                            </div>'
+                          }
+
+
+
               if($fila['statusA'] == "Completo"){
 
                $newDisabled =  'disabled="disabled"';

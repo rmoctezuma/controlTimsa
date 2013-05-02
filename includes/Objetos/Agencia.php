@@ -3,13 +3,13 @@
 include_once("../includes/generic.connection.php");
 
 class Agencia{
-	var $idAgencia;
-	var $Nombre;
-	var $fechaIngreso;
-	var $statusA;
-	var $fechaDeprecated;
+	private $idAgencia;
+	private $Nombre;
+	private $fechaIngreso;
+	private $statusA;
+	private $fechaDeprecated;
 
-	function Agencia($id,$nombre,$fecha,$status,$fechaDeprecated){
+	function createAgencia($id,$nombre,$fecha,$status,$fechaDeprecated){
 		$this->idAgencia = $id;
 		$this->Nombre = $nombre;
 		$this->fechaIngreso = $fecha;
@@ -78,7 +78,7 @@ class Agencia{
 	}	
 
 	function setFechaDeprecated($parametro){
-		$this->fechaDeprecated = $parametro ;
+		$this->fechaDeprecated = $parametro;
 	}
 
 }

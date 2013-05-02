@@ -3,14 +3,15 @@
 include_once("../includes/generic.connection.php");
 
 Class Cliente{
-	var $idCliente;
-	var $nombre;
-	var $fecha;
-	var $status;
-	var $fechaSalida;
-	var $imagen;
+	private  $idCliente;
+	private  $nombre;
+	private  $fecha;
+	private  $status;
+	private  $fechaSalida;
+	private  $imagen;
 
-	function Cliente($id,$nombre,$fecha,$status,$fechaSalida,$img){
+
+	function createCliente($id,$nombre,$fecha,$status,$fechaSalida,$img){
 			$this->idCliente = $id;
 			$this->nombre = $nombre;
 			$this->fecha = $fecha;

@@ -125,8 +125,9 @@ $pages = new Paginacion;
         </div>
         <div id="confirmarReutilizarFletes">
           <h4>¿Desea utilizar los mismos contenedores?</h4>
-          <button class="contenedoresAcceso btn" value="false" >No</button>
+          <button class="contenedoresAcceso btn btn-warning" value="false" >No</button>
           <button class="contenedoresAcceso btn btn-primary" value="true">Si</button>
+          <button class="contenedoresAcceso btn btn" value="cancelar">Cancelar</button>
         </div>
 
 </div>

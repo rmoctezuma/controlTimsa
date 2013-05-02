@@ -20,7 +20,8 @@ class ListaAgencia{
             $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
             foreach ($rows as $fila) {
-            	$agencia = new Agencia($fila['idAgente'],$fila['Nombre'],$fila['fecha_ingreso'],$fila['statusA'],$fila['fecha_deprecated']);
+            	$agencia = new Agencia;
+            	$agencia->createAgencia($fila['idAgente'],$fila['Nombre'],$fila['fecha_ingreso'],$fila['statusA'],$fila['fecha_deprecated']);
             	array_push($this->agencias, $agencia);
             }
 		} catch(PDOException $e){

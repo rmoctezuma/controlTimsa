@@ -20,7 +20,8 @@ Class ListaClientes{
             $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
             foreach ($rows as $fila) {
-            	$cliente = new Cliente($fila['idCliente'],$fila['Nombre'],$fila['fecha_ingreso'],$fila['statusA'],$fila['fecha_deprecated'],$fila['rutaImagen']);
+            	$cliente = new Cliente();
+            	$cliente->createCliente($fila['idCliente'],$fila['Nombre'],$fila['fecha_ingreso'],$fila['statusA'],$fila['fecha_deprecated'],$fila['rutaImagen']);
             	array_push($this->clientes, $cliente);
             }
 		} catch(PDOException $e){

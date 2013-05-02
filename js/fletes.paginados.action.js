@@ -1,11 +1,13 @@
 $(function(){
 	$('#detallesFlete').hide();
 
+	//Boton de detalle en tabla de fletes.
+	//Se despliega el detalle de los fletes, y las acciones a realizar sobre este.
 	$('.demo').click(function(){
 
-			var value =  $(this).parent().parent().children('td:eq(0)').text();
+			var value =  $(this).parent().parent().children('td:eq(0)').text();//toma el id de la casilla
 
-			var parametros = { "value" : value};
+			var parametros = { "value" : value}; //segun el id, se realiza la consulta del flete
 
 			$.ajax({
 		        beforeSend: function(){
@@ -26,7 +28,7 @@ $(function(){
 		                	// Validad tipo de acción	                	
 		                	$('#accordion3').empty();
 		                	$('#accordion3').append(response.contenido);
-		                	$('#titulo').empty();
+		                	$('#titulo').empty();//Se rellena el acordeon y se agrega un comando de navegacion
 		                	$('#titulo').append('<a href="#" id="back"><img src="http://control.timsalzc.com/Timsa/img/back-arrow.png" class="img-rounded"></a>  Detalles de Flete ' + value);
 		                	$('#titulo').val(value);
 
@@ -45,7 +47,7 @@ $(function(){
 			$('#detallesFlete').show();
 
 	});
-
+	//navegacion. 
 	$('#back').live("click",function(){
 			$('#InfoFletes').show();
 			$('#detallesFlete').hide();
@@ -115,6 +117,8 @@ $('#confirmarReutilizarFletes').hide();
 	
 	$('.contenedoresAcceso').click(function(){
 
+		if($(this).val() != "cancelar"){
+
 		parametros = { "flete" 		  : $('#titulo').val(),
 					   "contenedores" : $(this).val() 
 					 };
@@ -136,13 +140,66 @@ $('#confirmarReutilizarFletes').hide();
 		            },
 		            error:function(xhr, ajaxOptions, thrownError){
 		                alert(xhr.responseText);
-		                alert("error");               
+		                alert("error");
 		            }
 			});
+		}
+		else{
+				$('#panelBotones').show("fast");
+				$('#confirmarReutilizarFletes').hide("fast");
+		}
 	});
 
 	$('#newBack').live("click",function(){
 		$('#reutilizarFlete').hide("fast");
 		$('#detallesFlete').show("fast");
 	});
+
+	//Se hace cargo del control del formulario de los contenedores,
+	//segun la accion del radio desglosa, la informacion necesaria.
+	$('input[type=radio]').live("click", function(){
+		var contenido = "";
+
+		if($(this).val() == "Sencillo" ){
+			contenido += '<div class="span4">';
+			contenido += "<label>Contenedor  <input name='contenedor1' type='text'></label>";
+			contenido += "<label>WorkOrder<input name='workorder1' type='text'></label>";
+			contenido += "<label>Booking<input name='booking1' type='text'></label>";
+			contenido += '<label>Sellos<select numero = "1" class="sellos"><option value="1">1</option><option value="2">2</option><option value="3">3</option></select></label>';
+			contenido += '<div></div>';
+			contenido += '</div>';
+		}
+		else if($(this).val() == "Full"){
+			contenido += '<div class="span4">';
+			contenido += "<label>Contenedor  <input name='contenedor1' type='text'></label>";
+			contenido += "<label>WorkOrder<input name='contenedor1' type='text'></label>";
+			contenido += "<label>Booking<input name='contenedor1' type='text'></label>";
+			contenido += '<label>Sellos<select numero = "1" class="sellos"><option value="1">1</option><option value="2">2</option><option value="3">3</option></select></label>';
+			contenido += '<div></div>';
+			contenido += '</div>';
+
+			contenido += '<div class="span4">';
+			contenido += "<label>Contenedor  <input name='contenedor2' type='text'></label>";
+			contenido += "<label>WorkOrder<input name='contenedor2' type='text'></label>";
+			contenido += "<label>Booking<input name='contenedor2' type='text'></label>";
+			contenido += '<label>Sellos<select numero="2" class="sellos"><option value="1">1</option><option value="2">2</option><option value="3">3</option></select></label>';
+			contenido += '<div></div>';
+			contenido += '</div>';
+		}
+
+		$('#nuevosContenedores').empty();
+		$('#nuevosContenedores').append(contenido);
+
+	});
+
+	$('.sellos').live("change",function(){
+		$(this).parent().parent().children('div').empty();
+		$(this).parent().parent().children('div').append('<h4>Sellos por contenedor</h4>');
+
+		for (var i = 1; i <= $(this).val(); i++) {
+			$(this).parent().parent().children('div').append('<label>Sello<input type="text"></label>');
+		};
+
+	});
 });
+
