@@ -22,8 +22,27 @@ Class Sucursal{
 	private $Cliente;
 	private $Cuota;
 
-	function createSucursal(){
-		
+	function createSucursal($id,$nombreSucursal,$calle,$numero,$colonia,$localidad,$ciudad,$estado,
+		$telefono,$status,$fechaIngreso,$fechaDeprecated,$lat,$long,$Cliente,$Cuota){
+
+		$this->id = $id;
+		$this->nombreSucursal = $nombreSucursal;
+		$this->calle = $calle;
+		$this->numero = $numero;
+		$this->colonia = $colonia;
+		$this->localidad = $localidad;
+		$this->ciudad = $ciudad;
+		$this->estado = $estado;
+		$this->telefono = $telefono;
+		$this->status = $status;
+		$this->fechaIngreso = $fechaIngreso;
+		$this->fechaDeprecated = $fechaDeprecated;
+		$this->lat = $lat;
+		$this->long = $long;
+
+		#Objetos Foraneos de la sucursal.
+		$this->Cliente = $Cliente;
+		$this->Cuota = $Cuota;
 	}
 
 

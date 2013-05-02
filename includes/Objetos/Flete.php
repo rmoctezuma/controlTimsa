@@ -35,7 +35,7 @@ Class Flete{
 	private $listaContenedores;
 
 
-	function Flete($id,$fecha,$status,$comentarios,$fecha_llegada,$fecha_facturacion, $agencia, $operador,$economico,$socio,
+	function createFlete($id,$fecha,$status,$comentarios,$fecha_llegada,$fecha_facturacion, $agencia, $operador,$economico,$socio,
 					$Sucursal,$cuota,$trafico,$tipoCuota,$contenedores){
 		#inicializar variables;
 		$this->idFlete = $id;

@@ -10,7 +10,7 @@ Class Cuota{
 	private $reutilizado = array('Sencillo' => "", 'Full' => "");
 
 
-	function Cuota($id,$lugar,$importacionSencillo,$exportacionSencillo,$reutilizadoSencillo, $importacionFull,$exportacionFull,$reutilizadoFull){
+	function createCuota($id,$lugar,$importacionSencillo,$exportacionSencillo,$reutilizadoSencillo, $importacionFull,$exportacionFull,$reutilizadoFull){
 		$this->id = $id;
 		$this->lugar = $lugar;
 

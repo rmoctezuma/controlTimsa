@@ -232,12 +232,13 @@ $contenidoOK = "";
               </div>';
 
         
+
           foreach($rows as $fila){
 
               '<div class="accordion-group">
                               <div class="accordion-heading">
                                 <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseOne">
-                                  Operador
+                                  Contenedores
                                 </a>
                               </div>
                               <div id="collapseOne" class="accordion-body collapse">
