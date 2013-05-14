@@ -87,6 +87,10 @@ Class Sucursal{
 
 	}
 
+	public function __toString(){
+        return $this->id;
+    }
+
 	function getID(){
 		return $this->id;
 	}

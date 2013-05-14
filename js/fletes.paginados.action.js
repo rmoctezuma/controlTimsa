@@ -160,29 +160,35 @@ $('#confirmarReutilizarFletes').hide();
 	$('input[type=radio]').live("click", function(){
 		var contenido = "";
 
+
+
 		if($(this).val() == "Sencillo" ){
 			contenido += '<div class="span4">';
-			contenido += "<label>Contenedor  <input name='contenedor1' type='text'></label>";
-			contenido += "<label>WorkOrder<input name='workorder1' type='text'></label>";
-			contenido += "<label>Booking<input name='booking1' type='text'></label>";
-			contenido += '<label>Sellos<select numero = "1" class="sellos"><option value="1">1</option><option value="2">2</option><option value="3">3</option></select></label>';
+			contenido += "<label>Contenedor  <input class='required' name='contenedor1' type='text'></label>";
+			contenido += "<label>WorkOrder<input class='required' name='workorder1' type='text'></label>";
+			contenido += "<label>Booking<input class='required' name='booking1' type='text'></label>";
+			//contenido += '<label>Sellos<select numero = "1" class="sellos"><option value="1">1</option><option value="2">2</option><option value="3">3</option></select></label>';
+			contenido += '<label>Sellos <input class="sellos" numero="1" type="number" name="sellos1" min="0" max="3"></label>';
 			contenido += '<div></div>';
 			contenido += '</div>';
 		}
 		else if($(this).val() == "Full"){
 			contenido += '<div class="span4">';
-			contenido += "<label>Contenedor  <input name='contenedor1' type='text'></label>";
-			contenido += "<label>WorkOrder<input name='contenedor1' type='text'></label>";
-			contenido += "<label>Booking<input name='contenedor1' type='text'></label>";
-			contenido += '<label>Sellos<select numero = "1" class="sellos"><option value="1">1</option><option value="2">2</option><option value="3">3</option></select></label>';
+			contenido += "<label>Contenedor  <input class='required' name='contenedor1' type='text'></label>";
+			contenido += "<label>WorkOrder<input class='required' name='workorder1' type='text'></label>";
+			contenido += "<label>Booking<input class='required' name='booking1' type='text'></label>";
+			//contenido += '<label>Sellos<select numero = "1" class="sellos"><option value="1">1</option><option value="2">2</option><option value="3">3</option></select></label>';
+			contenido += '<label>Sellos <input class="sellos" numero="1" type="number" name="sellos1" min="0" max="3"> </label>';
 			contenido += '<div></div>';
+			
 			contenido += '</div>';
 
 			contenido += '<div class="span4">';
-			contenido += "<label>Contenedor  <input name='contenedor2' type='text'></label>";
-			contenido += "<label>WorkOrder<input name='contenedor2' type='text'></label>";
-			contenido += "<label>Booking<input name='contenedor2' type='text'></label>";
-			contenido += '<label>Sellos<select numero="2" class="sellos"><option value="1">1</option><option value="2">2</option><option value="3">3</option></select></label>';
+			contenido += "<label>Contenedor  <input class='required' name='contenedor2' type='text'></label>";
+			contenido += "<label>WorkOrder<input class='required' name='workorder2' type='text'></label>";
+			contenido += "<label>Booking<input class='required' name='booking2' type='text'></label>";
+			//contenido += '<label>Sellos<select numero="2" class="sellos"><option value="1">1</option><option value="2">2</option><option value="3">3</option></select></label>';
+			contenido += '<label>Sellos <input class="sellos" numero="2" type="number" name="sellos2" min="0" max="3"> </label>';
 			contenido += '<div></div>';
 			contenido += '</div>';
 		}
@@ -193,13 +199,26 @@ $('#confirmarReutilizarFletes').hide();
 	});
 
 	$('.sellos').live("change",function(){
+		var contenedor;
+
+		if($(this).attr('numero') == '1'){
+			contenedor = 0;
+		}
+		else{
+			contenedor = 3;
+		}
+
 		$(this).parent().parent().children('div').empty();
 		$(this).parent().parent().children('div').append('<h4>Sellos por contenedor</h4>');
 
 		for (var i = 1; i <= $(this).val(); i++) {
-			$(this).parent().parent().children('div').append('<label>Sello<input type="text"></label>');
+			$(this).parent().parent().children('div').append('<label>Sello<input type="text" name="sello' +( i + contenedor )+ '"></label>');
 		};
 
+	});
+
+	$('#formaReutilizado').live('click', function(){
+		$('#formaReutilizado').validate();
 	});
 });
 

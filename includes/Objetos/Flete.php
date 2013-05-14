@@ -26,9 +26,7 @@ Class Flete{
 	#Cuota para el Flete
 
 	private $Sucursal;
-	private $Cuota;
-	private $trafico;
-	private $tipoCuota;
+	private $CuotaViaje;
 
 	#Contenedores
 
@@ -36,7 +34,7 @@ Class Flete{
 
 
 	function createFlete($id,$fecha,$status,$comentarios,$fecha_llegada,$fecha_facturacion, $agencia, $operador,$economico,$socio,
-					$Sucursal,$cuota,$trafico,$tipoCuota,$contenedores){
+					$Sucursal,$cuotaViaje,$contenedores){
 		#inicializar variables;
 		$this->idFlete = $id;
 		$this->fecha = $fecha;
@@ -51,9 +49,7 @@ Class Flete{
 		$this->Socio =$socio;
 		#Cuotas
 		$this->Sucursal = $Sucursal;
-		$this->Cuota  = $cuota;
-		$this->trafico = $trafico;
-		$this->tipoCuota = $tipoCuota;
+		$this->CuotaViaje = $cuotaViaje; 
 		#Contenedores
 		$this->listaContenedores = $contenedores;
 	}
@@ -81,36 +77,47 @@ Class Flete{
 
 				#Objetos Foraneos;
 
-				$this->Agencia  = $fila['Agencia_idAgente'];
-				$this->Operador  = $fila['Operador'];
-				$this->Economico  = $fila['Economico'];
-				$this->Socio  = $fila['Socio'];
+				$this->Agencia  = new Agencia;
+				$this->Agencia->inicializarAgenciaConIdenttificador($fila['Agencia_idAgente']);
+				$this->Operador  = new Operador;
+				$this->Operador->getOperadorFromID($fila['Operador']);
+				$this->Economico  = new Economico;
+				$this->Economico->createEconomicoFromID($fila['Economico']);
+				$this->Socio  = new Socio;
+				$this->Socio->createSocioFromID( $fila['Socio']);
+
+				$this->FletePadre = $fila['FletePadre'];
 			}
 
 			#Cuota para el Flete
-			$sql = 'SELECT * FROM Flete  WHERE Flete.idFlete = :flete';
+			$sql = 'SELECT * FROM cuota_flete,  WHERE NumFlete = :flete';
 
 			$stmt = $PDOmysql->prepare($sql);
             $stmt->bindParam(':flete', $id);
             $stmt->execute();
             $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-				
+			foreach ($variable as $fila) {
+				$this->Sucursal  = new Sucursal;
+				$this->Sucursal->getSucursalFromID($fila['Sucursal']);
+				$this->CuotaViaje  = new CuotaViaje;
+				$this->CuotaViaje->getCuotaFromID($fila['Cuota'] , $fila['tipoCuota']); 
+			}
 
-				$this->Sucursal  = $fila[''];
-				$this->Cuota  = $fila[''];
-				$this->trafico  = $fila[''];
-				$this->tipoCuota  = $fila[''];
+			#Contenedores
 
-					#Contenedores
-
-				$this->listaContenedores = $fila[''];
-
+			$this->listaContenedores = new ListaContenedorViaje;
+			$this->listaContenedores->getContenedoresDeViaje($id);
+			
             
 		} catch(PDOException $e){
 
 		}
 	}
+
+	public function __toString(){
+        return $this->idFlete;
+    }
 	#Metodos de variables principales.
 	function set_idFlete($ID){
 		$this->idFlete = $ID;
@@ -186,24 +193,13 @@ Class Flete{
 	function get_Sucursal(){
 		return $this->FletePadre;
 	}
-	function set_Cuota($Cuota){
+	function set_CuotaViaje($Cuota){
 		$this->Cuota = $Cuota;
 	}
-	function get_Cuota(){
-		return $this->Cuota;
+	function get_CuotaViaje(){
+		return $this->CuotaViaje;
 	}
-	function set_trafico($trafico){
-		$this->trafico = $trafico;
-	}
-	function get_trafico(){
-		return $this->trafico;
-	}
-	function set_tipoCuota($tipoCuota){
-		$this->tipoCuota = $tipoCuota;
-	}
-	function get_tipoCuota(){
-		return $this->tipoCuota;
-	}
+	
 	function set_listaContenedores($listaContenedores){
 		$this->listaContenedores = $listaContenedores;
 	}

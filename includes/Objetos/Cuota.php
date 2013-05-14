@@ -72,6 +72,10 @@ Class Cuota{
 		}
 	}
 
+	public function __toString(){
+        return $this->id;
+    }
+
 	function get_id(){
 		return $this->id;
 	}

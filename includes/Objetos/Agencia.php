@@ -9,7 +9,7 @@ class Agencia{
 	private $statusA;
 	private $fechaDeprecated;
 
-	function createAgencia($id,$nombre,$fecha,$status,$fechaDeprecated){
+	public function createAgencia($id,$nombre,$fecha,$status,$fechaDeprecated){
 		$this->idAgencia = $id;
 		$this->Nombre = $nombre;
 		$this->fechaIngreso = $fecha;
@@ -17,7 +17,7 @@ class Agencia{
 		$this->fechaDeprecated = $fechaDeprecated;
 	}
 
-	function inicializarAgenciaConIdenttificador($id){
+	public function inicializarAgenciaConIdenttificador($id){
 		try{
 
 			$PDOmysql = consulta();
@@ -40,6 +40,10 @@ class Agencia{
 
 		}
 	}
+
+	public function __toString(){
+        return $this->idAgencia;
+    }
 
 	function getAgencia(){
 		return $this->idAgencia;

@@ -45,6 +45,10 @@ Class Cliente{
 		}
 	}
 
+	public function __toString(){
+        return $this->idCliente;
+    }
+
 	function getID(){
 		return $this->idCliente;
 	}

@@ -21,7 +21,9 @@ require_once("Objetos/ListaAgencia.php");
             $stmt->execute();
             $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-            $forma .= '<form id="formaReutilizado">';
+            $forma .= '<form id="formaReutilizado"  method="POST" action="../includes/FleteReutilizado.php">';
+             $forma .= '<h4> Flete Raiz </h4>';
+            $forma .= '<input name="fletePadre" type="text" value="'.$idFlete.'">';
 
             foreach ($rows as $fila) {
             	$forma .= '<h4>Agencia</h4>';
@@ -61,7 +63,7 @@ require_once("Objetos/ListaAgencia.php");
 
                   $forma .= '<label> Comentarios</label><textarea name="comentarios"></textarea>';
             }
-            $forma .= '<input type="submit" class="btn btn-primary" method="POST" action="Fletereutilizado.php">';
+            $forma .= '<input type="submit" class="btn btn-primary" >';
             $forma .= '</form>';
 
 		}catch(PDOException $e){

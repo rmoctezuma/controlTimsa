@@ -12,6 +12,7 @@ $pages = new Paginacion;
     <title> TIMSA LZC </title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
     <script type="text/javascript" src="../js/bootstrap.js"></script>
+    <script type="text/javascript" src="../js/jquery.validate.js"></script>
     <script type="text/javascript" src="../js/fletes.paginados.action.js"></script>
     <link href="../css/bootstrap.min.css" rel="stylesheet" media="screen">
     <link href="../css/bootstrap-responsive.css" rel="stylesheet">

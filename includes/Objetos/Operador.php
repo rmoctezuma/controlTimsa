@@ -28,70 +28,104 @@ Class Operador{
 		$this->imagen = $imagen;
 	}
 
-	function get_id(){
+	public function getOperadorFromID($id){
+		try{
+
+			$PDOmysql = consulta();
+
+			$sql = 'SELECT * FROM Operador WHERE Operador.Eco = :operador';
+
+			$stmt = $PDOmysql->prepare($sql);
+            $stmt->bindParam(':operador', $id);
+            $stmt->execute();
+            $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+            foreach ($rows as $fila) {
+	             $this->id  = $id;
+	             $this->nombre = $fila['Nombre'];
+	             $this->apellidop = $fila['ApellidoP'];
+	             $this->apellidom = $fila['ApellidoM'];
+	           	 $this->RC = $fila['R.C.'];
+	             $this->curp = $fila['CURP'];
+	             $this->fechaIngreso = $fila['fecha_ingreso'];
+	             $this->status = $fila['statusA'];
+	             $this->fecha_deprecated = $fila['fecha_deprecated'];
+	             $this->telefono = $fila['Telefono'];
+	             $this->imagen = $fila['rutaImagen'];
+            }
+		} catch(PDOException $e){
+
+		}
+	}
+
+	public function __toString(){
+        return $this->id;
+    }
+
+	public function get_id(){
 		return $this->id;
 	}
-	function set_id($id){
+	public function set_id($id){
 		$this->id = $id;	
 	}
-	function get_nombre(){
+	public function get_nombre(){
 		return $this->nombre;
 	}
-	function set_nombre($nombre){
+	public function set_nombre($nombre){
 		$this->nombre = $nombre;	
 	}
-	function get_apellidop(){
+	public function get_apellidop(){
 		return $this->apellidop;
 	}
-	function set_apellidop($apellidop){
+	public function set_apellidop($apellidop){
 		$this->apellidop = $apellidop;	
 	}
-	function get_apellidom(){
+	public function get_apellidom(){
 		return $this->apellidom;
 	}
-	function set_apellidom($apellidom){
+	public function set_apellidom($apellidom){
 		$this->apellidom = $apellidom;	
 	}
-	function get_RC(){
+	public function get_RC(){
 		return $this->RC;
 	}
-	function set_RC($RC){
+	public function set_RC($RC){
 		$this->RC = $RC;	
 	}
-	function get_curp(){
+	public function get_curp(){
 		return $this->curp;
 	}
-	function set_curp($curp){
+	public function set_curp($curp){
 		$this->curp = $curp;	
 	}
-	function get_fechaIngreso(){
+	public function get_fechaIngreso(){
 		return $this->fechaIngreso;
 	}
-	function set_fechaIngreso($fechaIngreso){
+	public function set_fechaIngreso($fechaIngreso){
 		$this->fechaIngreso = $fechaIngreso;	
 	}
-	function get_status(){
+	public function get_status(){
 		return $this->status;
 	}
-	function set_status($status){
+	public function set_status($status){
 		$this->status = $status;	
 	}
-	function get_fecha_deprecated(){
+	public function get_fecha_deprecated(){
 		return $this->RC;
 	}
-	function set_fecha_deprecated($fecha_deprecated){
+	public function set_fecha_deprecated($fecha_deprecated){
 		$this->fecha_deprecated = $fecha_deprecated;	
 	}
-	function get_telefono(){
+	public function get_telefono(){
 		return $this->telefono;
 	}
-	function set_telefono($telefono){
+	public function set_telefono($telefono){
 		$this->telefono = $telefono;	
 	}
-	function get_imagen(){
+	public function get_imagen(){
 		return $this->imagen;
 	}
-	function set_imagen($imagen){
+	public function set_imagen($imagen){
 		$this->imagen = $imagen;	
 	}
 
