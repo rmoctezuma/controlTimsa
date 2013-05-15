@@ -4,6 +4,7 @@ require_once("Agencia.php");
 require_once("Economico.php");
 require_once("Socio.php");
 require_once("Operador.php");
+require_once("ListaContenedorViaje.php");
 
 
 Class Flete{
@@ -125,7 +126,7 @@ Class Flete{
 	function get_idFlete(){
 		return $this->idFlete;
 	}
-	function set_fecha($fecha)){
+	function set_fecha($fecha){
 		$this->$fecha = $fecha;
 	}
 	function get_fecha(){

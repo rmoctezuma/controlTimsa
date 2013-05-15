@@ -133,10 +133,11 @@ $('#confirmarReutilizarFletes').hide();
 		            data: parametros,
 		            success: function(response){
 		            	$('#detallesFlete').hide();
-		            	$('#reutilizarFlete').empty();
-		            	$('#reutilizarFlete').append('<h1><a id="newBack"><img src="http://control.timsalzc.com/Timsa/img/back-arrow.png"></a>  Reutilizar Flete</h1>');
-		            	$('#reutilizarFlete').append(response.forma);
-		            	$('#reutilizarFlete').show();
+
+		            	var reutilizarFlete = 
+		            	$('#reutilizarFlete').empty()
+		            						.append('<h1><a id="newBack"><img src="http://control.timsalzc.com/Timsa/img/back-arrow.png"></a>  Reutilizar Flete</h1>');
+		            	reutilizarFlete.append(response.forma).reutilizarFlete.show();
 		            },
 		            error:function(xhr, ajaxOptions, thrownError){
 		                alert(xhr.responseText);

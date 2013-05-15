@@ -81,6 +81,9 @@
 
 <div class= "container span2" id="OperadorList">
   <h1> Operadores </h1>
+  <button class="btn btn-primary" id="botonCrear"> Crear nuevo Operador</button>
+  <br>
+  <br>
   <br>
 
     <?php
@@ -129,7 +132,7 @@
 
     ?>
 
-     <button class="btn btn-primary" id="botonCrear"> Crear nuevo Operador</button>
+     
 
 </div>
 

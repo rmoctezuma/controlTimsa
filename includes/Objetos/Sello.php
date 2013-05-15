@@ -1,6 +1,6 @@
 <?php
 
-Class ListaSellos{
+Class Sello{
 	private $sello;
 	private $numero_sello;
 	private $fecha_sellado;
@@ -34,4 +34,5 @@ Class ListaSellos{
 	public function get_fecha_sellado(){
 		return $this->fecha_sellado;
 	}
+}
 ?>

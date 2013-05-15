@@ -3,8 +3,12 @@ include_once("../includes/generic.connection.php");
 require_once("ListaSellos.php");
 
 	Class Contenedor{
+		private $id;
 		private $flete;
-		private $contenedores;
+		private $tipo;
+		private $workorder;
+		private $booking;
+		private $sellos;
 
 		function createContenedor($id,$flete,$tipo,$workorder,$booking,$sellos){
 			$this->id = $id;

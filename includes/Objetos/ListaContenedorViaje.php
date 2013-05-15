@@ -8,7 +8,7 @@ require_once("ListaSellos.php");
 
 		function createListaContenedorViaje($flete,$contenedores){
 			$this->flete = $flete;
-			$this->contenedores = $contenedores
+			$this->contenedores = $contenedores;
 		}
 
 		function getContenedoresDeViaje($flete){
