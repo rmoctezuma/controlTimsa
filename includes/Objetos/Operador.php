@@ -14,7 +14,7 @@ Class Operador{
 	private $telefono;
 	private $imagen;
 
-	function Operador($id,$nombre,$apellidop,$apellidom,$RC,$curp,$fechaIngreso,$status,$fecha_deprecated,$telefono,$imagen){
+	function createOperador($id,$nombre,$apellidop,$apellidom,$RC,$curp,$fechaIngreso,$status,$fecha_deprecated,$telefono,$imagen){
 		$this->id = $id;
 		$this->nombre = $nombre;
 		$this->apellidop = $apellidop;

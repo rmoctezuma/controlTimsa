@@ -24,12 +24,12 @@ require_once("ListaSellos.php");
 
 				$PDOmysql = consulta();
 
-				$sql = 'SELECT contenedor.idContenedor,contenedor.Tipo, contenedor_viaje.WorkOrder,
-								contenedor_viaje.Booking
-						 FROM contenedor, contenedor_viaje
-						 WHERE contenedor.idContenedor = :contenedor
-						 and contenedor_viaje.Contenedor = contenedor.idContenedor
-						 and contenedor_viaje.Flete_idFlete = :flete';
+				$sql = 'SELECT Contenedor.idContenedor,Contenedor.Tipo, Contenedor_Viaje.WorkOrder,
+								Contenedor_Viaje.Booking
+						 FROM Contenedor, Contenedor_viaje
+						 WHERE Contenedor.idContenedor = :contenedor
+						 and Contenedor_viaje.Contenedor = Contenedor.idContenedor
+						 and Contenedor_viaje.Flete_idFlete = :flete';
 
 				$stmt = $PDOmysql->prepare($sql);
 	            $stmt->bindParam(':contenedor', $id);
@@ -37,26 +37,29 @@ require_once("ListaSellos.php");
 	            $stmt->execute();
 	            $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
+	            $this->id = $id;
+	            $this->flete = $flete;
+
 	            foreach ($rows as $fila) {
 
-	            	$this->id = $id;
-	            	$this->flete = $flete;
 	            	$this->tipo = $fila['Tipo'];
 	            	$this->workorder = $fila['WorkOrder'];
 	            	$this->booking = $fila['Booking'];
 
 	            }
+
 	            $this->sellos = new ListaSellos;
 	            $this->sellos->getSellosDeContenedor($id,$flete);
 
 
 			} catch(PDOException $e){
-
+				echo "Error";
 			}
 		}
 
 		public function __toString(){
-        	return $this->id;
+			$data = $this->id . "";
+        	return $data;
     	}
 
 		function insertarContenedor(){

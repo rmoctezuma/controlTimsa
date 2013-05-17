@@ -136,8 +136,20 @@ $('#confirmarReutilizarFletes').hide();
 
 		            	var reutilizarFlete = 
 		            	$('#reutilizarFlete').empty()
-		            						.append('<h1><a id="newBack"><img src="http://control.timsalzc.com/Timsa/img/back-arrow.png"></a>  Reutilizar Flete</h1>');
-		            	reutilizarFlete.append(response.forma).reutilizarFlete.show();
+		            						.append('')
+		            						.append(response.forma)
+		            						.show();
+		            	if(parametros['contenedores'] == "true"){
+		            		
+		            		 var $radios = $('#opcionesViaje').children('input:radio[name=tipoViaje]');
+							    if($radios.is(':checked') === false) {
+							        $radios.filter('[value=Full]').prop('checked', true);
+							    }
+		            	}
+		            	else{
+		            		$('#nuevosContenedores').hide();
+		            	}
+		            	
 		            },
 		            error:function(xhr, ajaxOptions, thrownError){
 		                alert(xhr.responseText);
@@ -159,43 +171,18 @@ $('#confirmarReutilizarFletes').hide();
 	//Se hace cargo del control del formulario de los contenedores,
 	//segun la accion del radio desglosa, la informacion necesaria.
 	$('input[type=radio]').live("click", function(){
-		var contenido = "";
-
-
+		$('#nuevosContenedores').show('fade');
 
 		if($(this).val() == "Sencillo" ){
-			contenido += '<div class="span4">';
-			contenido += "<label>Contenedor  <input class='required' name='contenedor1' type='text'></label>";
-			contenido += "<label>WorkOrder<input class='required' name='workorder1' type='text'></label>";
-			contenido += "<label>Booking<input class='required' name='booking1' type='text'></label>";
-			//contenido += '<label>Sellos<select numero = "1" class="sellos"><option value="1">1</option><option value="2">2</option><option value="3">3</option></select></label>';
-			contenido += '<label>Sellos <input class="sellos" numero="1" type="number" name="sellos1" min="0" max="3"></label>';
-			contenido += '<div></div>';
-			contenido += '</div>';
+			$('#contenedor1').show('fade');
+			$('#contenedor2').hide('fade');
 		}
 		else if($(this).val() == "Full"){
-			contenido += '<div class="span4">';
-			contenido += "<label>Contenedor  <input class='required' name='contenedor1' type='text'></label>";
-			contenido += "<label>WorkOrder<input class='required' name='workorder1' type='text'></label>";
-			contenido += "<label>Booking<input class='required' name='booking1' type='text'></label>";
-			//contenido += '<label>Sellos<select numero = "1" class="sellos"><option value="1">1</option><option value="2">2</option><option value="3">3</option></select></label>';
-			contenido += '<label>Sellos <input class="sellos" numero="1" type="number" name="sellos1" min="0" max="3"> </label>';
-			contenido += '<div></div>';
-			
-			contenido += '</div>';
-
-			contenido += '<div class="span4">';
-			contenido += "<label>Contenedor  <input class='required' name='contenedor2' type='text'></label>";
-			contenido += "<label>WorkOrder<input class='required' name='workorder2' type='text'></label>";
-			contenido += "<label>Booking<input class='required' name='booking2' type='text'></label>";
-			//contenido += '<label>Sellos<select numero="2" class="sellos"><option value="1">1</option><option value="2">2</option><option value="3">3</option></select></label>';
-			contenido += '<label>Sellos <input class="sellos" numero="2" type="number" name="sellos2" min="0" max="3"> </label>';
-			contenido += '<div></div>';
-			contenido += '</div>';
+			$('#contenedor2').show('fade');
+			$('#contenedor1').show('fade');
 		}
 
-		$('#nuevosContenedores').empty();
-		$('#nuevosContenedores').append(contenido);
+				
 
 	});
 
@@ -207,13 +194,14 @@ $('#confirmarReutilizarFletes').hide();
 		}
 		else{
 			contenedor = 3;
+
 		}
 
-		$(this).parent().parent().children('div').empty();
-		$(this).parent().parent().children('div').append('<h4>Sellos por contenedor</h4>');
+		$(this).parent().children('div').empty();
+		$(this).parent().children('div').append('<h4>Sellos por contenedor</h4>');
 
 		for (var i = 1; i <= $(this).val(); i++) {
-			$(this).parent().parent().children('div').append('<label>Sello<input type="text" name="sello' +( i + contenedor )+ '"></label>');
+			$(this).parent().children('div').append('<label>Sello<input type="text" name="sello' +( i + contenedor )+ '"></label>');
 		};
 
 	});

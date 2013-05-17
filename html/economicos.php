@@ -1,6 +1,5 @@
 <?php
 include('../includes/generic.connection.php');
-
 $PDOmysql = consulta();
 
 $statusTipo = array("Ocupado" => "label label-warning",

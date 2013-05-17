@@ -21,7 +21,57 @@ $pages = new Paginacion;
       body {
         padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
       }
-      </style>
+  </style>
+
+    <style type="text/css">
+    #reutilizarFlete {
+        width: 600px;
+        clear: both;
+    }
+
+    #reutilizarFlete table{
+        width: 500px;
+        clear: both;
+    }
+    #reutilizarFlete input[type="text"] {
+        width: 98%;
+        clear: both;
+    }
+
+    #reutilizarFlete select {
+        width: 100%;
+        clear: both;
+    }
+
+    #reutilizarFlete textarea{
+        width: 100%;
+        clear: both;
+    }
+
+    #reutilizarFlete input{
+        width: 100%;
+        clear: both;
+    }
+
+    #reutilizarFlete label{
+        width: 100%;
+        clear: both;
+    }
+
+    #reutilizarFlete input[type="radio"]{
+        width: 10%;
+        clear: both;
+    }
+
+    #botonCancelar {
+        width: 98%;
+        clear: both;
+    }
+
+    .inline li {
+        display: inline;
+    }
+  </style>
 
   </head>
 
@@ -70,16 +120,19 @@ $pages = new Paginacion;
   <div id="Titulo" class="container">
     <h1>Control de Fletes</h1>
 
-    <label for="tipoConsulta"> Tipo de Consulta</label>
-    <select id="tipoConsulta" ONCHANGE="location = this.options[this.selectedIndex].value;">
+    <ul class="inline">
+      <li class="span4">
+    <label style="display:inline-block"  for="tipoConsulta"> Tipo de Consulta</label>
+    <select  id="tipoConsulta" ONCHANGE="location = this.options[this.selectedIndex].value;">
       <option value="fletes.php?tipoConsulta=DIA&anio=<?php echo $pages->anio   ?> " <?php if($pages->tipoConsulta == "DIA") echo "selected" ?>  >Dia</option>
       <option value="fletes.php?tipoConsulta=SEMANA&anio=<?php echo $pages->anio   ?> "<?php if($pages->tipoConsulta == "SEMANA") echo "selected" ?> >Semana</option>
       <option value="fletes.php?tipoConsulta=MES&anio=<?php echo $pages->anio   ?>"<?php if($pages->tipoConsulta == "MES") echo "selected" ?>  >Mes</option>
       <option value="fletes.php?tipoConsulta=ANIO&anio=<?php echo $pages->anio   ?>"<?php if($pages->tipoConsulta == "ANIO") echo "selected" ?> >Año</option>
     </select>
-
-    <label for="año"> Año</label>
-    <select id="año" ONCHANGE="location = this.options[this.selectedIndex].value;">
+    </li>
+    <li  class="span4">
+    <label style="display:inline-block"  for="año"> Año</label>
+    <select  id="año" ONCHANGE="location = this.options[this.selectedIndex].value;">
       <?php
         for ($i=13; $i <= 25; $i++) { 
           $nuevoAño = '20' . $i;
@@ -89,8 +142,12 @@ $pages = new Paginacion;
         }
       ?>
     </select> 
+    </li>
+    </ul>
     <br>
   </div>
+  <br>
+  <br>
 
 
 

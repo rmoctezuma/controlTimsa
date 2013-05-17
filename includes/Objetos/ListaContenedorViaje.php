@@ -1,5 +1,6 @@
 <?php
 include_once("../includes/generic.connection.php");
+require_once("Contenedor.php");
 require_once("ListaSellos.php");
 
 	Class ListaContenedorViaje{
@@ -16,9 +17,9 @@ require_once("ListaSellos.php");
 
 				$PDOmysql = consulta();
 
-				$sql = 'SELECT contenedor_viaje.Contenedor
-						 FROM  contenedor_viaje
-						 WHERE contenedor_viaje.Flete_idFlete = :flete';
+				$sql = 'SELECT Contenedor_Viaje.Contenedor
+						 FROM  Contenedor_Viaje
+						 WHERE Contenedor_Viaje.Flete_idFlete = :flete';
 
 				$stmt = $PDOmysql->prepare($sql);
 	            $stmt->bindParam(':flete', $flete);
@@ -26,19 +27,21 @@ require_once("ListaSellos.php");
 	            $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 	            $this->flete = $flete;
-	            $this->contenedores = array();
-
+	            $Listacontenedores = array();
+	            
 	            foreach ($rows as $fila) {
 	            	$contenedor = new Contenedor;
 
 	            	$contenedor->getContenedorDeViaje($fila['Contenedor'], $flete);
 
-	            	$this->contenedores[] = $contenedor;
+	            	$Listacontenedores[] = $contenedor;
 	            }
+
+	            $this->contenedores = $Listacontenedores;
 
 
 			} catch(PDOException $e){
-
+				echo "Error";
 			}
 		}
 

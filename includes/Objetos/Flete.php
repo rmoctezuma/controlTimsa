@@ -98,7 +98,7 @@ Class Flete{
             $stmt->execute();
             $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-			foreach ($variable as $fila) {
+			foreach ($rows as $fila) {
 				$this->Sucursal  = new Sucursal;
 				$this->Sucursal->getSucursalFromID($fila['Sucursal']);
 				$this->CuotaViaje  = new CuotaViaje;
