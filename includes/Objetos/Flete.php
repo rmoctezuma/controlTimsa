@@ -33,6 +33,8 @@ Class Flete{
 
 	private $listaContenedores;
 
+	function newFlete($agencia,)
+
 
 	function createFlete($id,$fecha,$status,$comentarios,$fecha_llegada,$fecha_facturacion, $agencia, $operador,$economico,$socio,
 					$Sucursal,$cuotaViaje,$contenedores){

@@ -149,8 +149,6 @@ $pages = new Paginacion;
   <br>
   <br>
 
-
-
   <div id="results" class="container">
 
 <?php

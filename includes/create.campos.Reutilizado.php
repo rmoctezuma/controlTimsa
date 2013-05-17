@@ -20,7 +20,7 @@ require_once("Objetos/Flete.php");
                         </tr>';
             $forma .= '<tr>
                         <td><h4> Flete Raiz </h4></td>';
-            $forma .= '<td><input readonly name="fletePadre" type="text" value="'.$idFlete.'"></td>
+            $forma .= '<td colspan="2"><input readonly name="fletePadre" type="text" value="'.$idFlete.'"></td>
                       </tr>';
             #Crea una clase Flete, la cual se encarga de obtener todos los datos del flete anterios 
             #gracias al ID padre que tenemos de el.
@@ -32,10 +32,19 @@ require_once("Objetos/Flete.php");
             $forma.= '<tr>
                         <td><h4>Operador</h4></td>';
             $forma.= '<td><input readonly type="text" value="'. $operador->get_nombre().  $operador->get_apellidop(). $operador->get_apellidom().'"></td>
+                        <td><input readonly name="Operador" type="text" value="'.$operador->get_id().'"></td>
                      </tr>';
+
+
+            $forma.= '<tr>
+                        <td><h4> Socio </h4></td>';
+            $forma.= '<td><input readonly type="text" value="'. $FletePadre->get_Socio()->get_nombre() .'"></td>
+                        <td><input readonly name="Socio" type="text" value="'.$FletePadre->get_Socio()->get_idSocio().'"></td>
+                        </tr>';
+
             $forma.= '<tr>
                         <td><h4> Economico </h4></td>';
-            $forma.= '<td><input readonly type="text" value="'. $FletePadre->get_Economico()->get_id() .'"></td>
+            $forma.= '<td colspan="2"><input name="Economico" readonly type="text" value="'. $FletePadre->get_Economico()->get_id() .'"></td>
                         </tr>';
 
       	$forma .= '<tr>
@@ -95,10 +104,10 @@ require_once("Objetos/Flete.php");
                   $forma .= '<div id="nuevosContenedores">';
                   for ($i=0; $i < 2; $i++) {                      
                         $forma .= ' <div class="span3" id="contenedor'.($i+1).'">
-                                          <label>Contenedor</label>  <input  class="required" name="contenedor'.($i+1).'" type="text" value="'.$contenedores[$i].'">
-                                          <label>WorkOrder</label><input class="required" name="workorder'.($i+1).'" type="text">
-                                          <label>Booking</label>   <input class="required" name="booking'.($i+1).'" type="text">                                            
-                                          <label>Sellos </label><input class="sellos" numero="'.($i+1).'" type="number" name="sellos'.($i+1).'" min="0" max="3"> 
+                                          <label>Contenedor</label>  <input required    name="contenedor'.($i+1).'" type="text" value="'.$contenedores[$i].'">
+                                          <label>WorkOrder</label><input  required  name="workorder'.($i+1).'" type="text">
+                                          <label>Booking</label>   <input  required  name="booking'.($i+1).'" type="text">                                            
+                                          <label>Sellos </label><input  required numero="'.($i+1).'" type="number" name="sellos'.($i+1).'" min="0" max="3"> 
                                           <div id="sellos'.($i+1).'"></div>
                                     </div>';
                   }

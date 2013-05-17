@@ -1,5 +1,7 @@
 <?php
 
+require_once("Objetos/Flete.php");
+
 
 if(isset($_POST) && !empty($_POST)){
 
@@ -13,12 +15,10 @@ if(isset($_POST) && !empty($_POST)){
 
 		switch ($_POST['tipoViaje']) {
 			case 'Sencillo':
-
 				$sellosContenedores[] = validarSellosContenedor($_POST['sellos1'],1);
 				$datosContenedor[]    = capturarDatosContenedores(1);
 				break;
 			case 'Full':
-
 				$sellosContenedores[] = validarSellosContenedor($_POST['sellos1'],1);
 				$datosContenedor[]     = capturarDatosContenedores(1);
 				$sellosContenedores[] = validarSellosContenedor($_POST['sellos2'],2);
@@ -26,9 +26,15 @@ if(isset($_POST) && !empty($_POST)){
 				break;		
 		}
 
-		
+		$flete = new Flete;
+		$flete->set_Agencia($Agencia);
+		#Queda pendiente, ya que se debe mandar la sucursal, no el cliente.
+		$flete->set_Cliente($Cliente);
 
-
+		$flete->set_Operador($_POST['Operador']);
+		$flete->set_Economico($_POST['Economico']);
+		$flete->set_Socio($_POST['Socio']);
+		$flete->set_FletePadre($_POST['fletePadre']);
 
 	}
 }
