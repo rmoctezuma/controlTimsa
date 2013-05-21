@@ -24,6 +24,10 @@
                  $stmt->bindParam(':flete', $flete);
                  $stmt->execute();
 
+                 $respuesta =  $stmt->rowCount() ? true : false;
+
+                 if($respuesta){
+
                  $sql = 'UPDATE Flete set  statusA = "Activo" 
 						 where 
 						 Flete.Economico = :economico
@@ -36,12 +40,28 @@
 	            $stmt->bindParam(':economico', $economico);
 	            $stmt->execute();
 
+	            $respuesta =  $stmt->rowCount() ? true : false;
+
+	            if(! $respuesta){
+	                 $sql = 'UPDATE Economico set statusA = "Libre"
+							 where
+							 Flete.Economico = :economico';
+
+					$stmt = $PDOmysql->prepare($sql);
+		            $stmt->bindParam(':economico', $economico);
+		            $stmt->execute();
+	            }
+
 	            $mensaje = "Flete Finalizado";
+	        }
+	        else{
+	        	$mensaje = "No se pudo finalizar el Flete";
+	        }
 
 			}catch(PDOException $e){
 				$mensaje = "No se puedo finalizar el Flete";
-			}	
-		}		
+			}
+		}
 	}
 
 	$resultados =  array('mensaje' => $mensaje );

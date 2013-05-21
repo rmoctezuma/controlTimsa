@@ -149,6 +149,8 @@ $('#confirmarReutilizarFletes').hide();
 		            	else{
 		            		$('#nuevosContenedores').hide();
 		            	}
+
+		            	$('#Cliente').change();
 		            	
 		            },
 		            error:function(xhr, ajaxOptions, thrownError){
@@ -170,7 +172,7 @@ $('#confirmarReutilizarFletes').hide();
 
 	//Se hace cargo del control del formulario de los contenedores,
 	//segun la accion del radio desglosa, la informacion necesaria.
-	$('input[type=radio]').live("click", function(){
+	$('input[name=tipoViaje]').live("click", function(){
 		$('#nuevosContenedores').show('fade');
 
 		if($(this).val() == "Sencillo" ){
@@ -182,7 +184,7 @@ $('#confirmarReutilizarFletes').hide();
 			$('#contenedor1').show('fade');
 		}
 
-				
+					
 
 	});
 
@@ -201,7 +203,7 @@ $('#confirmarReutilizarFletes').hide();
 		$(this).parent().children('div').append('<h4>Sellos por contenedor</h4>');
 
 		for (var i = 1; i <= $(this).val(); i++) {
-			$(this).parent().children('div').append('<label>Sello<input type="text" name="sello' +( i + contenedor )+ '"></label>');
+			$(this).parent().children('div').append('<label>Sello<input required type="text" name="sello' +( i + contenedor )+ '"></label>');
 		};
 
 	});
@@ -209,5 +211,56 @@ $('#confirmarReutilizarFletes').hide();
 	$('#formaReutilizado').live('click', function(){
 		$('#formaReutilizado').validate();
 	});
+
+
+
+	$('#Cliente').live('change', function(){
+		var parametros = {"cliente" : $(this).val()}
+
+		$.ajax({
+		        beforeSend: function(){
+		        	$('#sucursales').empty();
+		        	$('#sucursales').append("<img class='center' src='../img/loading.gif'>");
+		        },
+		            cache: false,
+		            type: "POST",
+		            dataType: "json",
+		            url:"../includes/consulta.Sucursales.php",
+		            data: parametros,
+		            success: function(response){
+		            	$('#sucursales').empty();
+		            	$('#sucursales').append(response.contenido);
+
+		            	$("input:radio[name=sucursal]:first").click();
+		            },
+		            error:function(xhr, ajaxOptions, thrownError){
+		                alert(xhr.responseText);
+		                alert("error");
+		            }
+			});
+	});
+
+	$('input[name=sucursal]').live("click", function(){
+		var parametros = {"sucursal" : $(this).val() }
+
+		$.ajax({
+		        beforeSend: function(){
+		        },
+		            cache: false,
+		            type: "POST",
+		            dataType: "json",
+		            url:"../includes/consulta.cuota.php",
+		            data: parametros,
+		            success: function(response){
+		            	$('#numeroCuota').val(response.contenido);
+		            	$('#LugarCuota').val(response.nombre);
+		            },
+		            error:function(xhr, ajaxOptions, thrownError){
+		                alert(xhr.responseText);
+		                alert("error");
+		            }
+			});
+	})
+
 });
 

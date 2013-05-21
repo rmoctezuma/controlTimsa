@@ -33,15 +33,11 @@ Class Flete{
 
 	private $listaContenedores;
 
-	function newFlete($agencia,)
 
 
-	function createFlete($id,$fecha,$status,$comentarios,$fecha_llegada,$fecha_facturacion, $agencia, $operador,$economico,$socio,
+	function createFlete($comentarios, $agencia, $operador,$economico,$socio,
 					$Sucursal,$cuotaViaje,$contenedores){
 		#inicializar variables;
-		$this->idFlete = $id;
-		$this->fecha = $fecha;
-		$this->status = $status;
 		$this->comentarios = $comentarios;
 		$this->fecha_llegada = $fecha_llegada;
 		$this->fecha_facturacion = $fecha_facturacion;
@@ -116,6 +112,30 @@ Class Flete{
 		} catch(PDOException $e){
 
 		}
+	}
+
+	public function insertar_flete(){
+		try{
+
+			$PDOmysql = consulta();
+
+			$sql = 'INSERT INTO Flete(Agencia_idAgente,comentarios,Operador,Economico,Socio,FletePadre)
+				               VALUES(:agencia, :comentarios, :operador, :economico, :socio, :fletePadre)';
+
+			$stmt = $PDOmysql->prepare($sql);
+            $stmt->bindParam(':agencia', $this->Agencia);
+            $stmt->bindParam(':comentarios', $this->comentarios);
+            $stmt->bindParam(':operador', $this->Operador);
+            $stmt->bindParam(':economico', $this->Economico);
+            $stmt->bindParam(':socio', $this->Socio);
+            $stmt->bindParam(':fletePadre', $this->FletePadre);
+            $stmt->execute();
+
+            $this->idFlete = $PDOmysql->lastInsertId();
+
+        } catch(PDOException $e){
+
+        }
 	}
 
 	public function __toString(){

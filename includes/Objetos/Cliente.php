@@ -1,6 +1,7 @@
 <?php
 
 include_once("../includes/generic.connection.php");
+require_once("Sucursal.php");
 
 Class Cliente{
 	private  $idCliente;
@@ -43,6 +44,35 @@ Class Cliente{
 		} catch(PDOException $e){
 
 		}
+	}
+
+	public function obtenerSucursalesDeCliente($ID){
+		try {  
+		      $PDOmysql = consulta();
+
+		      $sql = 'select distinct Sucursal id from ClienteDireccion where Cliente_idCliente = :cliente';
+
+		      $stmt = $PDOmysql->prepare($sql);
+		      $stmt->bindParam(':cliente', $ID);
+		      $stmt->execute();
+		      $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+		      $sucursales = array();
+
+		      foreach ($rows as $fila) {
+
+		      	$sucursal = new Sucursal;
+		        $sucursal->getSucursalFromID($fila['id']);
+		        $sucursales[] = $sucursal;
+
+		      }
+
+		     } catch(PDOException $ex) {
+		         echo "An Error occured!"; //user friendly message
+		         echo $ex->getMessage();
+		    }
+
+		    return $sucursales;
 	}
 
 	public function __toString(){

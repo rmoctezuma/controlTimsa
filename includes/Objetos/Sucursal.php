@@ -1,6 +1,8 @@
 <?php
 
 include_once("../includes/generic.connection.php");
+require_once("Cliente.php");
+require_once("Cuota.php");
 
 Class Sucursal{
 	private $id;
@@ -45,13 +47,12 @@ Class Sucursal{
 		$this->Cuota = $Cuota;
 	}
 
-
 	function getSucursalFromID($id){
 		try{
 
 			$PDOmysql = consulta();
 
-			$sql = 'SELECT * FROM clientedireccion  WHERE clientedireccion.Sucursal = :sucursal';
+			$sql = 'SELECT * FROM ClienteDireccion  WHERE ClienteDireccion.Sucursal = :sucursal';
 
 			$stmt = $PDOmysql->prepare($sql);
             $stmt->bindParam(':sucursal', $id);
@@ -88,7 +89,7 @@ Class Sucursal{
 	}
 
 	public function __toString(){
-        return $this->id;
+        return $this->id . "";
     }
 
 	function getID(){

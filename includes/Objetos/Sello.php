@@ -5,10 +5,9 @@ Class Sello{
 	private $numero_sello;
 	private $fecha_sellado;
 
-	function createSello($sello,$numero_sello,$fecha_sellado){
+	function createSello($sello,$numero_sello){
 		$this->sello = $sello;
 		$this->numero_sello = $numero_sello;
-		$this->fecha_sellado = $fecha_sellado;
 	}
 
 	public function set_sello($sello){

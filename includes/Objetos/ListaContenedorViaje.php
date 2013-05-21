@@ -5,7 +5,7 @@ require_once("ListaSellos.php");
 
 	Class ListaContenedorViaje{
 		private $flete;
-		private $contenedores;
+		private $contenedores = array();
 
 		function createListaContenedorViaje($flete,$contenedores){
 			$this->flete = $flete;
@@ -49,8 +49,8 @@ require_once("ListaSellos.php");
         	return $this->id;
     	}
 
-		function insertarContenedor(){
-
+		function appendContenedor($contenedor){
+			array_push($this->contenedores,$contenedor);
 		}
 
 		public function get_flete(){

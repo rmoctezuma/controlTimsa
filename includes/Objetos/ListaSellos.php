@@ -45,6 +45,10 @@ require_once("Sello.php");
 			}
 		}
 
+		public function append_sello($sello){
+			array_push($this->sellos,$sello);	
+		}
+
 		public function get_flete(){
 			return $this->flete;
 		}

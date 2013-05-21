@@ -24,6 +24,11 @@ $pages = new Paginacion;
   </style>
 
     <style type="text/css">
+    .center {
+      margin-left:auto;
+      margin-right:auto;
+      }
+
     #reutilizarFlete {
         width: 600px;
         clear: both;

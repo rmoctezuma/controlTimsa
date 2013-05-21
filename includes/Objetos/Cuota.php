@@ -29,13 +29,17 @@ Class Cuota{
 
 			$PDOmysql = consulta();
 
-			$sql = 'SELECT Cuota.Lugar,CuotaDetalle.Trafico,CuotaDetalle.TipoViaje, CuotaDetalle.Viaje, CuotaDetalle.Tarifa
+			$PDOmysql->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+			$sql = 'SELECT Cuota.Lugar,CuotaDetalle.Trafico,CuotaDetalle.TipoViaje, CuotaDetalle.Tarifa
 					FROM   Cuota,CuotaDetalle  WHERE Cuota.idCuota = :cuota';
 
 			$stmt = $PDOmysql->prepare($sql);
             $stmt->bindParam(':cuota', $id);
             $stmt->execute();
             $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+            $this->id = $id;
 
             foreach ($rows as $fila) {
             	$this->lugar = $fila['Lugar'];
@@ -97,7 +101,7 @@ Class Cuota{
 	}
 
 	function set_importacionSencillo($importacion){
-		$this->importacion['Sencillo'];
+		$this->importacion['Sencillo'] = $importacion;
 	}
 
 	function get_importacionFull(){
@@ -105,7 +109,7 @@ Class Cuota{
 	}
 
 	function set_importacionFull($importacion){
-		$this->importacion['Full'];
+		$this->importacion['Full'] = $importacion;
 	}
 
 	function get_exportacionSencillo(){
@@ -113,7 +117,7 @@ Class Cuota{
 	}
 
 	function set_exportacionSencillo($exportacion){
-		$this->exportacion['Sencillo'];
+		$this->exportacion['Sencillo'] = $exportacion;
 	}
 
 	function get_exportacionFull(){
@@ -121,7 +125,7 @@ Class Cuota{
 	}
 
 	function set_exportacionFull($exportacion){
-		$this->exportacion['Full'];
+		$this->exportacion['Full'] = $exportacion;
 	}
 
 	function get_reutilizadoSencillo(){
@@ -129,15 +133,15 @@ Class Cuota{
 	}
 
 	function set_reutilizadoSencillo($reutilizado){
-		$this->reutilizado['Sencillo'];
+		$this->reutilizado['Sencillo'] = $reutilizado;
 	}
 
 	function get_reutilizadoFull(){
 		return $this->reutilizado['Full'];
 	}
 
-	function set_exportacionFull($reutilizado){
-		$this->reutilizado['Full'];
+	function set_reutilizadoFull($reutilizado){
+		$this->reutilizado['Full'] = $reutilizado;
 	}
 }
 
