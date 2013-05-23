@@ -1,4 +1,5 @@
 <?php
+
 include_once("../includes/generic.connection.php");
 require_once("Sello.php");
 
@@ -16,7 +17,6 @@ require_once("Sello.php");
 
 		function getSellosDeContenedor($contenedor,$flete){
 			try{
-
 				$PDOmysql = consulta();
 
 				$sql = 'SELECT contenedorsellos.Sello,contenedorsellos.NumeroSello, contenedorsellos.fecha_sellado
@@ -42,6 +42,26 @@ require_once("Sello.php");
 	            }
 			} catch(PDOException $e){
 
+			}
+		}
+
+		function insertar_sellos(){
+
+			$listaSellos = $this->sellos;
+
+			for($nuevoContador = 0; $nuevoContador < count($listaSellos); $nuevoContador++){
+				//insercion de sello.
+				$sello = $listaSellos[$nuevoContador];
+
+				$sql = 'insert into ContenedorSellos(Sello,NumeroSello, NumFlete, Contenedor) values(:sello, :numeroSello, :numeroFlete, :contenedor);';
+
+				$stmt = $PDOmysql->prepare($sql);
+
+				$stmt->bindParam(':sello', $sello->get_sello());
+				$stmt->bindParam(':numeroSello', $sello->get_numero_sello());
+				$stmt->bindParam(':numeroFlete', $this->flete);
+				$stmt->bindParam(':contenedor', $this->contenedor);
+				$stmt->execute();
 			}
 		}
 

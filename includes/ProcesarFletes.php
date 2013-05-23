@@ -1,13 +1,23 @@
 <?php
+require("Objetos/Flete.php");
+require_once("Objetos/Contenedor.php");
+require_once("Objetos/CuotaViaje.php");
+require_once("Objetos/ListaContenedorViaje.php");
+require_once("Objetos/ListaSellos.php");
+require_once("Objetos/Sello.php");
+
+
+#try{
+
 if(isset($_POST) && !empty($_POST)){
 		if (isset($_POST['tipoViaje'])  && !empty($_POST['tipoViaje'])) {
 
 			$flete_raiz = $_POST['fletePadre'];
 			$Agencia = $_POST['Agencia'];
 			$Sucursal = $_POST['sucursal'];
-			$datosContenedor   = new ListaContenedorViaje;
 
 			$flete = new Flete;
+
 			$flete->set_Agencia($Agencia);
 			$flete->set_Sucursal($Cliente);
 
@@ -24,13 +34,24 @@ if(isset($_POST) && !empty($_POST)){
 
 			$numeroFlete =  $flete->get_idFlete();
 
+			$cuota = new CuotaViaje;
+			$cuota->set_id_cuota($_POST['cuota']);
+			$cuota->set_trafico($_POST['tipoTrafico']);
+			$cuota->set_tipoViaje($_POST['tipoViaje']);
+
+			$cuota->getDetalleCuota();
+
+			$flete->set_CuotaViaje($cuota);
+			$flete->generar_cuota_viaje();
+
+			$datosContenedor   = new ListaContenedorViaje;
 
 			switch ($_POST['tipoViaje']) {
 				case 'Sencillo':
 
 					$listaSellos = validarSellosContenedor($_POST['sellos1'],1);
 					$contenedor = capturarDatosContenedores(1, $listaSellos);
-					$datosContenedor->append($contenedor); 
+					$datosContenedor->append($contenedor);
 
 					break;
 				case 'Full':
@@ -45,8 +66,14 @@ if(isset($_POST) && !empty($_POST)){
 					break;		
 			}
 
+			$datosContenedor->insertarContenedores();
+
+
 		}
 	}
+#} catch(Exception $e){
+	#header("Location:control.timsalzc.com");
+#}
 
 	function validarSellosContenedor($cantidad, $numero){
 		if($numero != 1){
@@ -65,7 +92,6 @@ if(isset($_POST) && !empty($_POST)){
 
 			$listaSellos->append($sello);
 		}
-
 		return $listaSellos;
 	}
 
@@ -82,8 +108,7 @@ if(isset($_POST) && !empty($_POST)){
 									 );
 
 		return $contenedor;
-	} 
+} 
 
-}
 
 ?>

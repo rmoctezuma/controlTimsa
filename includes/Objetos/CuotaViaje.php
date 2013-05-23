@@ -2,39 +2,39 @@
 
 include_once("../includes/generic.connection.php");
 
-Class Cuota{
-	private $id;
+Class CuotaViaje{
+	private $id_cuota;
 	private $valor;
 	private $trafico;
 	private $tipoViaje;
 	private $tarifa;
 
 
-	function createCuotaViaje($id,$value,$trafico,$tipoViaje,$tarifa){
-		        $this->id = $id;
+	function createCuotaViaje($id_cuota,$value,$trafico,$tipoViaje,$tarifa){
+		        $this->id_cuota = $id_cuota;
             	$this->valor = $value;
             	$this->trafico = $trafico;
             	$this->tipoViaje = $tipoViaje;
             	$this->tarifa = $tarifa;
 	}
 
-	function getCuotaFromID($id,$value){
+	function getCuotaFromid_cuota($id_cuota,$value){
 		try{
 
 			$PDOmysql = consulta();
 
 			$sql = 'SELECT Trafico,TipoViaje,Tarifa,statusA
-					FROM   CuotaDetalle  WHERE Cuota_idCuota = :cuota and numero = :value' ;
+					FROM   CuotaDetalle  WHERE Cuota_id_cuotaCuota = :cuota and numero = :value';
 
 			$stmt = $PDOmysql->prepare($sql);
-            $stmt->bindParam(':cuota', $id);
+            $stmt->bindParam(':cuota', $id_cuota);
             $stmt->bindParam(':value', $value);
             $stmt->execute();
             $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 
-            foreach ($variable as $fila ) {
-            	$this->id = $id;
+            foreach ($rows as $fila ) {
+            	$this->id_cuota = $id_cuota;
             	$this->valor = $value;
             	$this->trafico = $fila['Trafico'];
             	$this->tipoViaje = $fila['TipoViaje'];
@@ -46,16 +46,49 @@ Class Cuota{
 		}
 	}
 
-	public function __toString(){
-        return $this->id;
-    }
+	public function getDetalleCuota(){
+			#try{
 
-	function get_id(){
-		return $this->id;
+				$PDOmysql = consulta();
+
+				$PDOmysql->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+				$sql = 'SELECT Tarifa,statusA, numero
+						FROM   CuotaDetalle  
+						WHERE 
+						Cuota_idCuota = :cuota 
+						and 
+						Trafico = :trafico
+						and
+						TipoViaje = :tipo_viaje';
+
+				$stmt = $PDOmysql->prepare($sql);
+	            $stmt->bindParam(':cuota', $this->id);
+	            $stmt->bindParam(':trafico', $this->trafico);
+	            $stmt->bindParam(':tipo_viaje', $this->tipoViaje);
+	            $stmt->execute();
+	            $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+	            foreach ($rows as $fila ) {
+	            	$this->valor = $fila['numero'];
+	            	$this->tarifa = $fila['Tarifa'];
+	            }
+
+			#} catch(PDOException $e){
+
+			#}
 	}
 
-	function set_id($id){
-		$this->id = $id;
+	public function __toString(){
+        return $this->id_cuota;
+    }
+
+	function get_id_cuota(){
+		return $this->id_cuota;
+	}
+
+	function set_id_cuota($id_cuota){
+		$this->id_cuota = $id_cuota;
 	}
 
 	function get_valor(){

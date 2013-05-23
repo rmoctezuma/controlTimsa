@@ -74,6 +74,8 @@ Class Cuota{
 		} catch(PDOException $e){
 
 		}
+
+		
 	}
 
 	public function __toString(){

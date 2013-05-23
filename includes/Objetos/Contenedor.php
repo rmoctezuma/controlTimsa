@@ -17,6 +17,9 @@ require_once("ListaSellos.php");
 			$this->workorder = $workorder;
 			$this->booking = $booking;
 			$this->sellos = $sellos;
+
+			$this->sellos->set_flete($this->get_flete());
+			$this->sellos->set_contenedor($this->get_id());
 		}
 
 		function getContenedorDeViaje($id,$flete){
@@ -61,10 +64,6 @@ require_once("ListaSellos.php");
 			$data = $this->id . "";
         	return $data;
     	}
-
-		function insertarContenedor(){
-
-		}
 
 		public function get_id(){
 			return $this->id;

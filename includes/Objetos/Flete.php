@@ -5,6 +5,7 @@ require_once("Economico.php");
 require_once("Socio.php");
 require_once("Operador.php");
 require_once("ListaContenedorViaje.php");
+require_once("CuotaViaje.php");
 
 
 Class Flete{
@@ -54,9 +55,11 @@ Class Flete{
 	}
 
 	function getFleteFromID($id){
-		try{
+		#try{
 
 			$PDOmysql = consulta();
+
+			$PDOmysql->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
 			$sql = 'SELECT * FROM Flete  WHERE Flete.idFlete = :flete';
 
@@ -89,7 +92,7 @@ Class Flete{
 			}
 
 			#Cuota para el Flete
-			$sql = 'SELECT * FROM cuota_flete,  WHERE NumFlete = :flete';
+			$sql = 'SELECT * FROM Cuota_Flete  WHERE NumFlete = :flete';
 
 			$stmt = $PDOmysql->prepare($sql);
             $stmt->bindParam(':flete', $id);
@@ -100,7 +103,7 @@ Class Flete{
 				$this->Sucursal  = new Sucursal;
 				$this->Sucursal->getSucursalFromID($fila['Sucursal']);
 				$this->CuotaViaje  = new CuotaViaje;
-				$this->CuotaViaje->getCuotaFromID($fila['Cuota'] , $fila['tipoCuota']); 
+				$this->CuotaViaje->getCuotaFromid_cuota($fila['Cuota'] , $fila['tipoCuota']); 
 			}
 
 			#Contenedores
@@ -109,15 +112,16 @@ Class Flete{
 			$this->listaContenedores->getContenedoresDeViaje($id);
 			
             
-		} catch(PDOException $e){
+		#} catch(PDOException $e){
 
-		}
+		#}
 	}
 
 	public function insertar_flete(){
 		try{
 
 			$PDOmysql = consulta();
+			$PDOmysql->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
 			$sql = 'INSERT INTO Flete(Agencia_idAgente,comentarios,Operador,Economico,Socio,FletePadre)
 				               VALUES(:agencia, :comentarios, :operador, :economico, :socio, :fletePadre)';
@@ -136,6 +140,28 @@ Class Flete{
         } catch(PDOException $e){
 
         }
+	}
+
+	public function generar_cuota_viaje(){
+			#try{
+
+				$PDOmysql = consulta();
+
+				$PDOmysql->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+				$sql = 'INSERT INTO cuota_flete(NumFlete, tipoCuota,Cuota,Sucursal)
+					                     VALUES(:flete, :tipo_cuota, :cuota, :agencia)';
+
+				$stmt = $PDOmysql->prepare($sql);
+	            $stmt->bindParam(':flete', $this->idFlete);
+	            $stmt->bindParam(':tipo_cuota', $this->CuotaViaje->get_valor());
+	            $stmt->bindParam(':cuota', $this->CuotaViaje->get_id_cuota());
+	            $stmt->bindParam(':sucursal', $this->Sucursal);
+	            $stmt->execute();
+
+	        #} catch(PDOException $e){
+
+	       # }
 	}
 
 	public function __toString(){

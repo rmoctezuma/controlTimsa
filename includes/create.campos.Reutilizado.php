@@ -12,7 +12,7 @@ require_once("Objetos/Flete.php");
 		$idFlete = $_POST['flete'];
 		$contenedores = $_POST['contenedores'];
             #Crea los espacios para el formulario, y los estiliza en forma de tabla.
-            $forma .= '<form id="formaReutilizado" style="display: block;"  method="POST" action="../includes/FleteReutilizado.php">';
+            $forma .= '<form id="formaReutilizado" style="display: block;"  method="POST" action="../includes/ProcesarFletes.php">';
              $forma .='<h1><a id="newBack"><img src="http://control.timsalzc.com/Timsa/img/back-arrow.png"></a>  Reutilizar Flete</h1>';
             $forma .= '<div class="datosFleteReutilizado">';
             $forma .= '<table> <tbody>';
@@ -122,12 +122,26 @@ require_once("Objetos/Flete.php");
                         $forma .= ' <div class="span3" id="contenedor'.($i+1).'">
                                           <label>Contenedor</label>  <input required    name="contenedor'.($i+1).'" type="text" value="'.$contenedores[$i].'">
                                           <label>Tamaño </label> 
-                                          <select name="tamaño'.($i+1).'" > 
-                                                <option value="40HC"> 40HC</option>
-                                                <option value="40DC"> 40DC</option>
-                                                <option value="20HC"> 20HC</option>
-                                                <option value="20DC"> 20DC</option>  
-                                          </select>
+                                          <select name="tamaño'.($i+1).'" >';
+
+                                          $valores = array("40HC", "40DC", "20HC", "20DC");
+                                          if(is_object($contenedores[$i])) {
+                                                $tipoContenedor = $contenedores[$i]->get_tipo();
+                                              }
+                                              else{
+                                                $tipoContenedor = "40HC";
+                                              }
+
+                                          for ($e=0; $e < count($valores); $e++) {
+                                                if($tipoContenedor == $valores[$e]){ 
+                                                      $forma.= '<option value="'.$valores[$e].'" selected> '.$valores[$e].'</option>';
+                                                }
+                                                else{
+                                                      $forma.= '<option value="'.$valores[$e].'"> '.$valores[$e].'</option>';  
+                                                }
+                                          }
+                                                 
+                         $forma .= '</select>
                                           <label>WorkOrder</label><input  required  name="workorder'.($i+1).'" type="text">
                                           <label>Booking</label>   <input  required  name="booking'.($i+1).'" type="text">                                            
                                           <label>Sellos </label><input  required numero="'.($i+1).'" type="number" name="sellos'.($i+1).'" min="0" max="3" class="sellos"> 
@@ -150,10 +164,7 @@ require_once("Objetos/Flete.php");
             $forma .= '</div>';
             
             $forma .= '<br><input type="submit" class="btn btn-primary" >';
-            $forma .= '<br><input type="reset" class="btn" class="btn btn-primary" >';
             $forma .= '</form>';
-
-
 
             for ($i=0; $i < count($mensajesError); $i++) { 
                   $forma .= '<div class="alert">
