@@ -63,11 +63,18 @@ Class CuotaViaje{
 						TipoViaje = :tipo_viaje';
 
 				$stmt = $PDOmysql->prepare($sql);
-	            $stmt->bindParam(':cuota', $this->id);
+	            $stmt->bindParam(':cuota', $this->id_cuota);
 	            $stmt->bindParam(':trafico', $this->trafico);
 	            $stmt->bindParam(':tipo_viaje', $this->tipoViaje);
 	            $stmt->execute();
 	            $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+	            $respuesta =  $stmt->rowCount() ? true : false;
+
+	            if($respuesta == false){
+	            	throw new Exception("No recibe datos de la consulta", 1);
+	            	
+	            }
 
 	            foreach ($rows as $fila ) {
 	            	$this->valor = $fila['numero'];

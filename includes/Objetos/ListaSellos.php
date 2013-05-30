@@ -46,14 +46,24 @@ require_once("Sello.php");
 		}
 
 		function insertar_sellos(){
-
+			
+			$PDOmysql = consulta();
+			$PDOmysql->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 			$listaSellos = $this->sellos;
 
 			for($nuevoContador = 0; $nuevoContador < count($listaSellos); $nuevoContador++){
 				//insercion de sello.
 				$sello = $listaSellos[$nuevoContador];
 
-				$sql = 'insert into ContenedorSellos(Sello,NumeroSello, NumFlete, Contenedor) values(:sello, :numeroSello, :numeroFlete, :contenedor);';
+				echo $sello->get_sello();
+				echo "<br>";
+				echo  $sello->get_numero_sello();
+				echo "<br>";
+				echo  $this->flete;
+				echo "<br>";
+				echo  $this->contenedor;
+
+				$sql = 'INSERT into ContenedorSellos(Sello,NumeroSello, NumFlete, Contenedor) values(:sello, :numeroSello, :numeroFlete, :contenedor);';
 
 				$stmt = $PDOmysql->prepare($sql);
 
@@ -65,7 +75,7 @@ require_once("Sello.php");
 			}
 		}
 
-		public function append_sello($sello){
+		public function append($sello){
 			array_push($this->sellos,$sello);	
 		}
 

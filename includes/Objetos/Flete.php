@@ -6,6 +6,7 @@ require_once("Socio.php");
 require_once("Operador.php");
 require_once("ListaContenedorViaje.php");
 require_once("CuotaViaje.php");
+require_once("Sucursal.php");
 
 
 Class Flete{
@@ -35,9 +36,8 @@ Class Flete{
 	private $listaContenedores;
 
 
-
 	function createFlete($comentarios, $agencia, $operador,$economico,$socio,
-					$Sucursal,$cuotaViaje,$contenedores){
+					     $Sucursal,$cuotaViaje,$contenedores){
 		#inicializar variables;
 		$this->comentarios = $comentarios;
 		$this->fecha_llegada = $fecha_llegada;
@@ -98,9 +98,9 @@ Class Flete{
             $stmt->bindParam(':flete', $id);
             $stmt->execute();
             $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            $this->Sucursal  = new Sucursal;
 
 			foreach ($rows as $fila) {
-				$this->Sucursal  = new Sucursal;
 				$this->Sucursal->getSucursalFromID($fila['Sucursal']);
 				$this->CuotaViaje  = new CuotaViaje;
 				$this->CuotaViaje->getCuotaFromid_cuota($fila['Cuota'] , $fila['tipoCuota']); 
@@ -149,8 +149,8 @@ Class Flete{
 
 				$PDOmysql->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-				$sql = 'INSERT INTO cuota_flete(NumFlete, tipoCuota,Cuota,Sucursal)
-					                     VALUES(:flete, :tipo_cuota, :cuota, :agencia)';
+				$sql = 'INSERT INTO Cuota_Flete(NumFlete, tipoCuota,Cuota,Sucursal)
+					                     VALUES(:flete, :tipo_cuota, :cuota, :sucursal)';
 
 				$stmt = $PDOmysql->prepare($sql);
 	            $stmt->bindParam(':flete', $this->idFlete);
@@ -240,10 +240,10 @@ Class Flete{
 		$this->Sucursal = $Sucursal;
 	}
 	function get_Sucursal(){
-		return $this->FletePadre;
+		return $this->Sucursal;
 	}
 	function set_CuotaViaje($Cuota){
-		$this->Cuota = $Cuota;
+		$this->CuotaViaje = $Cuota;
 	}
 	function get_CuotaViaje(){
 		return $this->CuotaViaje;

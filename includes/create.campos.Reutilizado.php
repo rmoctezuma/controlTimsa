@@ -84,7 +84,7 @@ require_once("Objetos/Flete.php");
 
       	for ($i=0; $i < count($ListaClientes); $i++) {
       		$cliente = $ListaClientes[$i];
-      		$forma .= '<option value= "'. $cliente->getID() .'" >' . $cliente->getNombre() . '</option>';
+      		$forma .= '<option value= "'. $cliente->get_id() .'" >' . $cliente->get_nombre() . '</option>';
       	}
 
       	$forma .= '</select></td>

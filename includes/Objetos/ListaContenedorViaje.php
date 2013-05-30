@@ -48,12 +48,21 @@ require_once("Contenedor.php");
 
 		#Este metodo inserta los contenedores del objeto a la base de datos.
 		public function insertarContenedores(){
-			try{
+			#try{
 
 				$PDOmysql = consulta();
+				$PDOmysql->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
 				#Itera entre el array Contenedores, para insertarlo uno por uno.
 				for ($i=0; $i < count($this->contenedores); $i++) {
 					$contenedor = $this->contenedores[$i]; #obtiene un contenedor.
+
+					/*echo $contenedor->get_id();
+					echo $contenedor->get_flete();
+					echo $contenedor->get_tipo();
+					echo $contenedor->get_workorder();
+					echo $contenedor->get_booking();
+					*/
 
 					#Se comprueba si el contenedor esta en la base de datos.
 					$sql = 'select idContenedor from Contenedor where idContenedor = :contenedor';
@@ -73,6 +82,7 @@ require_once("Contenedor.php");
 						$stmt->execute();
 					}
 
+
 					#Incicializa el viaje para el flete, asignando contenedores al flete.
 					$sql = 'insert into Contenedor_Viaje(WorkOrder,Booking,Flete_idFlete, Contenedor) values(:workorder, :booking, :flete, :contenedor);';
 					$stmt = $PDOmysql->prepare($sql);
@@ -89,16 +99,16 @@ require_once("Contenedor.php");
 						$listaSellos->insertar_sellos();
 
 				}
-			}catch(Exception $e){
+			#}catch(Exception $e){
 
-			}
+			#}
 		}
 
 		public function __toString(){
         	return $this->id;
     	}
 
-		function appendContenedor($contenedor){
+		function append($contenedor){
 			array_push($this->contenedores,$contenedor);
 		}
 

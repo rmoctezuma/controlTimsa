@@ -1,5 +1,7 @@
 <?php
 include_once("../includes/generic.connection.php");
+require_once("Marca.php");
+require_once("TipoVehiculo.php");
 
 Class Economico{
 	private $id;
@@ -28,7 +30,7 @@ Class Economico{
 	}
 
 	function createEconomicoFromID($id){
-		try{
+		#try{
 
 			$PDOmysql = consulta();
 
@@ -47,13 +49,21 @@ Class Economico{
 				$this->fecha_deprecated = $fila['fecha_deprecated'];
 				$this->serie = $fila['NumeroSerie'];
 				$this->modelo = $fila['Modelo'];
-				$this->marca = $fila['marca'];
-				$this->tipoVehiculo = $fila['tipoVehiculo'];
+
+				$marca = new Marca;
+				$marca->getFromID($fila['marca']);
+
+				$this->marca = $marca;
+
+				$tipoVehiculo = new TipoVehiculo;
+				$tipoVehiculo->getFromID($fila['tipoVehiculo']);
+
+				$this->tipoVehiculo = $tipoVehiculo;
 				$this->transponder = $fila['Transponder'];
             }
-		} catch(PDOException $e){
+		#} catch(PDOException $e){
 
-		}
+		#}
 	}
 
 	public function __toString(){

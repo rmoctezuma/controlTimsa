@@ -7,6 +7,7 @@ require_once("Objetos/ListaSellos.php");
 require_once("Objetos/Sello.php");
 
 
+
 #try{
 
 if(isset($_POST) && !empty($_POST)){
@@ -33,6 +34,7 @@ if(isset($_POST) && !empty($_POST)){
 			$flete->insertar_flete();
 
 			$numeroFlete =  $flete->get_idFlete();
+			#echo "El numero es :   " . $numeroFlete;
 
 			$cuota = new CuotaViaje;
 			$cuota->set_id_cuota($_POST['cuota']);
@@ -50,7 +52,7 @@ if(isset($_POST) && !empty($_POST)){
 				case 'Sencillo':
 
 					$listaSellos = validarSellosContenedor($_POST['sellos1'],1);
-					$contenedor = capturarDatosContenedores(1, $listaSellos);
+					$contenedor = capturarDatosContenedores(1, $listaSellos, $numeroFlete);
 					$datosContenedor->append($contenedor);
 
 					break;
@@ -60,7 +62,7 @@ if(isset($_POST) && !empty($_POST)){
 					$datosContenedor->append($contenedor); 
 
 					$listaSellos = validarSellosContenedor($_POST['sellos2'],2);
-					$contenedor = capturarDatosContenedores(2, $listaSellos);
+					$contenedor = capturarDatosContenedores(2, $listaSellos, $numeroFlete);
 					$datosContenedor->append($contenedor); 
 
 					break;		
@@ -95,17 +97,25 @@ if(isset($_POST) && !empty($_POST)){
 		return $listaSellos;
 	}
 
-	function capturarDatosContenedores($numero,$listaSellos){
+	function capturarDatosContenedores($numero,$listaSellos, $flete){
 
-		$contenedor = new Conenedor;
+		$contenedor = new Contenedor;
 		$contenedor->createContenedor(
 									   $_POST['contenedor'. $numero],
-									   $numeroFlete,
+									   $flete,
 									   $_POST['tamaño'. $numero] ,
 									   $_POST['workorder' . $numero],
 									   $_POST['booking'. $numero],
 									   $listaSellos
 									 );
+
+		
+		/*echo $contenedor->get_id();
+		echo $contenedor->get_flete();
+		echo $contenedor->get_tipo();
+		echo $contenedor->get_workorder();
+		echo $contenedor->get_booking();
+		*/
 
 		return $contenedor;
 } 

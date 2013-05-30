@@ -15,7 +15,7 @@ $(function(){
 		            cache: false,
 		            type: "POST",
 		            dataType: "json",
-		            url:"../includes/detalles.flete.php",
+		            url:"../includes/Flete.Detallado.php",
 		            data: parametros,
 		            success: function(response){
 
@@ -120,7 +120,7 @@ $('#confirmarReutilizarFletes').hide();
 		if($(this).val() != "cancelar"){
 
 		parametros = { "flete" 		  : $('#titulo').val(),
-					   "contenedores" : $(this).val() 
+					   "contenedores" : $(this).val()
 					 };
 
 		$.ajax({

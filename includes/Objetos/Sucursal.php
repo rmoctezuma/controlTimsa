@@ -51,6 +51,7 @@ Class Sucursal{
 		try{
 
 			$PDOmysql = consulta();
+			$PDOmysql->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
 			$sql = 'SELECT * FROM ClienteDireccion  WHERE ClienteDireccion.Sucursal = :sucursal';
 
@@ -203,7 +204,7 @@ Class Sucursal{
 	}
 
 	function get_Cliente(){
-		return $this->long;
+		return $this->Cliente;
 	}
 
 	function set_Cliente($Cliente){

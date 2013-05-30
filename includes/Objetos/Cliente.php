@@ -79,19 +79,19 @@ Class Cliente{
         return $this->idCliente;
     }
 
-	function getID(){
+	function get_id(){
 		return $this->idCliente;
 	}
 
-	function setID($id){
+	function set_id($id){
 		$this->idCliente = $id;
 	}
 
-	function getNombre(){
+	function get_nombre(){
 		return $this->nombre;
 	}
 
-	function setNombre($nombre){
+	function set_nombre($nombre){
 		$this->nombre = $nombre;
 	}
 
@@ -119,7 +119,7 @@ Class Cliente{
 		$this->fechaSalida = $fecha;
 	}
 
-	function getImagen(){
+	function get_imagen(){
 		return $this->imagen;
 	}
 

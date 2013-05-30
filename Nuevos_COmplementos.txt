@@ -1,0 +1,9 @@
+1.- En el form de registro de Operador, crear los campos de licencia y fecha limite de licencia.
+
+2.- Cambiar la imagen de default del socio, para que sea diferente a la del operador. X
+
+3.- Editar La forma en que se ven los operadores, economicos y socios.
+
+4.- Crear un apartado para especificar la direccion de los clientes.
+
+5.- Terminar fletes de forma correcta, y liberar operadores y economicos.

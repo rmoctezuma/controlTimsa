@@ -33,7 +33,7 @@ try {
 		}
 
 		if($ruta == "" ){
-			$ruta = "../img/descarga.jpg";
+			$ruta = "../img/user2.png";
 		}
 
         $mysqli = new PDO('mysql:host=www.timsalzc.com;dbname=timsalzc_ControlTimsa;charset=utf8', 'timsalzc_Raul', 'f203e21387');
