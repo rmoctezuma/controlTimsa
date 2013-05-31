@@ -15,7 +15,7 @@ try {
 	 $stmt->execute();
 	 $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-	 $result .= "<select id='cuotas'>";
+	 $result .= "<select id='cuotas' name='cuota'>";
 
 	 foreach ($rows as $fila) {
 	 	$result .= "<option value= '". $fila['idCuota'] ."'> ".  $fila['Lugar'] ."</option>";

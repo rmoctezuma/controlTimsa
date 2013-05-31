@@ -86,7 +86,7 @@ function placeMarker(imagen, location, nombreSucursal ,id) {
                 url      : "../includes/detalles.sucursal.php",
                 data : parametros,
                 success: function(response){
-                  content = '<h5>' +  objeto.get("nombre") +  ' <img src = "' + objeto.getIcon().url +'" height="60" width="60" > </h5> <h5>' + response.results + '</h5> ';   
+                  content = '<h5> <img src = "' + objeto.getIcon().url +'" height="60" width="60" >'+  objeto.get("nombre")+' </h5> <p>' + response.results + '</p> ';   
                    infoWindow.setContent(content);
                    infoWindow.open(map, objeto);              
                 },
@@ -141,8 +141,55 @@ function placeMarker(imagen, location, nombreSucursal ,id) {
 
          temporalMarker.set("value" , idCliente);
 
-         var html = "<h5> DATOS NUEVA SUCURSAL </h5> <form id='formSucursal'> <label> Nombre </label> <input type='text' class='required' id='nombre' placeholder='Nombre de la sucursal'> <br> <label>Telefono</label><input type='text' class='required' id='telefono' placeholder='Telefono de la sucursal'>  <label><b>Direccion</b></label>";
-         var html2 = "<hr style='height:70px; width: 280px'><button class='btn btn-primary' id='newSucursal' type='submit'> Crear </button></form>";
+          
+
+
+         var html = "<h5> DATOS NUEVA SUCURSAL </h5> \
+                       <form id='formSucursal' method='post' action='../includes/validar.cliente.php'> \
+                        <input type='hidden' name='lat' value='" + getLatLongTemporal().lat() + "'> \
+                        <input type='hidden' name='long' value='" + getLatLongTemporal().lng() + "'>\
+                        <input type='hidden' name='cliente' value='" + getIdFromMarker() + "'>\
+                        <tr><td><n </td><td> </td> </tr>\
+                        <table>\
+                        <tr>\
+                          <td><label> Nombre </label></td> \
+                          <td><input required name='nombre' type='text' id='nombre' placeholder='Nombre de la sucursal'> </td>\
+                        </tr>\
+                        <tr>\
+                          <td><label>Telefono</label>\
+                          <td><input required type='text' name='telefono' id='telefono' placeholder='Telefono de la sucursal'></td>\
+                        </tr>\
+                        </table>\
+                          <label><b>Direccion</b></label>";
+                 
+          var contenidoHTML =  "<table>\
+                                <tr>\
+                                  <td><label>Calle</label></td>\
+                                  <td><input required type='text' name='calle'></td>\
+                                </tr>\
+                                <tr>\
+                                  <td><label>Numero</label></td>\
+                                  <td><input required type='number' min='0' name='numero'></td>\
+                                </tr>\
+                                <tr>\
+                                  <td><label>Colonia</label></td>\
+                                  <td><input required type='text' name='colonia'></td>\
+                                </tr>\
+                                <tr>\
+                                  <td><label>Loalidad</label></td>\
+                                  <td><input required  type='text' name='localidad'></td>\
+                                </tr>\
+                                <tr>\
+                                  <td><label>Ciudad</label></td>\
+                                  <td><input required  type='text' name='ciudad'></td>\
+                                </tr>\
+                                <tr>\
+                                  <td><label>Estado</label></td>\
+                                  <td><input required  type='text' name='estado'></td>\
+                                </tr>\
+                                </table>";
+
+          var html2 = "<hr style='height:70px; width: 280px'><input class='btn btn-primary' type='submit' value='Crear'>  </form>";
 
          geocoder.geocode({'latLng': temporalMarker.getPosition()}, function(result, status){
                   if(status == google.maps.GeocoderStatus.OK){
@@ -152,7 +199,7 @@ function placeMarker(imagen, location, nombreSucursal ,id) {
 
                       $.get("../includes/cuotas.sucursales.php",
                          function(data) {
-                            newhtml =  html+ contenidoNuevo + data.respuesta + html2;
+                            newhtml =  html+ contenidoNuevo +   contenidoHTML +  data.respuesta + html2;
                             temporalInfoWindow = new google.maps.InfoWindow({
                             content : newhtml
                             });
@@ -250,7 +297,7 @@ function placeMarker(imagen, location, nombreSucursal ,id) {
 
                       $.get("../includes/cuotas.sucursales.php",
                          function(data) {
-                            newhtml = html + contenidoNuevo  +  data.respuesta + html2;
+                            newhtml = html + contenidoNuevo  + contenidoHTML +  data.respuesta + html2;
                             temporalInfoWindow.setContent(newhtml);
                             temporalInfoWindow.open(map,temporalMarker);
 

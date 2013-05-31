@@ -89,6 +89,45 @@ Class Sucursal{
 
 	}
 
+	public function insert(){
+			$PDOmysql = consulta();
+			$PDOmysql->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+			$PDOmysql->beginTransaction();
+
+			$sql = 'INSERT INTO ClienteDireccion(NombreSucursal, Calle, Numero, Colonia, Localidad,
+												 Ciudad, Estado, Telefono, Cliente_idCliente,
+												 Cuota_idCuota, Lat, Lon)
+
+						values(:nombre, :calle, :numero, :colonia,
+							  :localidad, :ciudad, :estado, :telefono, :cliente,
+							   :cuota, :lat, :lon)';
+
+                  $nwestmt = $PDOmysql->prepare($sql);
+
+                  $nwestmt->bindParam(':nombre',$this->nombreSucursal);
+                  $nwestmt->bindParam(':calle',$this->calle);
+                  $nwestmt->bindParam(':numero',$this->numero);
+                  $nwestmt->bindParam(':colonia',$this->colonia);
+                  $nwestmt->bindParam(':localidad',$this->localidad);
+                  $nwestmt->bindParam(':ciudad',$this->ciudad);
+                  $nwestmt->bindParam(':estado',$this->estado);
+
+                  $nwestmt->bindParam(':telefono',$this->telefono);
+
+                  $nwestmt->bindParam(':cliente',$this->Cliente->get_id());
+
+                  $nwestmt->bindParam(':cuota',$this->Cuota->get_id());
+
+                  $nwestmt->bindParam(':lat',$this->lat);
+                  $nwestmt->bindParam(':lon',$this->long);
+                  $nwestmt->execute();
+
+                  $result = "correcto";
+
+            $PDOmysql->commit();
+	}
+
 	public function __toString(){
         return $this->id . "";
     }

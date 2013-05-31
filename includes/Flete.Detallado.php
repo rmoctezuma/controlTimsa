@@ -13,6 +13,13 @@ $contenido = "";
        	$flete = new Flete;
        	$flete->getFleteFromID($value);
 
+              $contenido.= '<div id="panelBotones">
+                                <button class="btn btn-success" id="reutilizar" '. $newDisabled .'> Reutilizar Flete </button>
+                                <button class="btn btn-danger" id="finalizarFlete" '. $newDisabled .'> Terminar Flete </button> 
+                                <button class="btn btn-primary" id="facturarFlete" '.$disabled.'> Facturar </button> 
+                                <h4></h4>
+                              </div>';
+
        	$operador = $flete->get_Operador();
 
        	#Contenido de Operador
@@ -120,13 +127,6 @@ $contenido = "";
        				                  </div>
        				                </div>
        	       				   </div>';
-
-       	$contenido.= '<div id="panelBotones">
-       	                  <button class="btn btn-success" id="reutilizar" '. $newDisabled .'> Reutilizar Flete </button>
-       	                  <button class="btn btn-danger" id="finalizarFlete" '. $newDisabled .'> Terminar Flete </button> 
-       	                  <button class="btn btn-primary" id="facturarFlete" '.$disabled.'> Facturar </button> 
-       	                  <h4></h4>
-       	                </div>';
 
 
 

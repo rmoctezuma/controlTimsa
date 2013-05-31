@@ -173,12 +173,6 @@ $pages = new Paginacion;
 <div id="detallesFlete" class="container">
         <h1 id="titulo"> <a href="#" id="back"><img src="http://control.timsalzc.com/Timsa/img/back-arrow.png" class="img-rounded"></a> Detalles de Flete </h1>
         <br>
-          <div class="row-fluid span10">
-            <div class="container span9">
-               <div class="accordion" id="accordion3">
-               </div>
-            </div>
-        </div>
         <div id="confirmacionFlete">
           <h4>¿Realmente desea finalizar este flete?</h4>
           <button id="cancelar" class="btn">Cancelar</button>
@@ -190,6 +184,15 @@ $pages = new Paginacion;
           <button class="contenedoresAcceso btn btn-primary" value="true">Si</button>
           <button class="contenedoresAcceso btn btn" value="cancelar">Cancelar</button>
         </div>
+
+        
+          <div class="row-fluid span10">
+            <div class="container span9">
+               <div class="accordion" id="accordion3">
+               </div>
+            </div>
+        </div>
+
 
 </div>
 <div id="reutilizarFlete" class="container">

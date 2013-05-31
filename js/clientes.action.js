@@ -132,7 +132,7 @@ $(function(){
 		});
 	});
 
-	$('#newSucursal').live('click', function(){
+	/*$('#newSucursal').live('click', function(){
 
 		if(! $('#formSucursal').valid()){
 
@@ -187,7 +187,7 @@ $(function(){
 				}
 			});
 		}
-	});
+	});*/
 	$('#mensajeCreacion').delay(900).fadeOut(300);
 	$('#mensajes').hide();
 

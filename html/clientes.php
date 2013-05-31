@@ -2,7 +2,6 @@
 
 include("../includes/generic.connection.php");
 
-
 ?>
 
 <!DOCTYPE html>
@@ -55,7 +54,7 @@ include("../includes/generic.connection.php");
                 <a href="./economicos.php">Economicos <i class="icon-road icon-white"> </i> </a>
               </li>
               <li class="">
-                <a href=".#">Clientes <i class="icon-list icon-white"> </i> </a>
+                <a href="#">Clientes <i class="icon-list icon-white"> </i> </a>
               </li>
               <li class="">
                 <a href="./socios.php">Socios <i class="icon-bookmark icon-white"> </i> </a>

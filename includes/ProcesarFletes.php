@@ -6,8 +6,6 @@ require_once("Objetos/ListaContenedorViaje.php");
 require_once("Objetos/ListaSellos.php");
 require_once("Objetos/Sello.php");
 
-
-
 #try{
 
 if(isset($_POST) && !empty($_POST)){
@@ -58,7 +56,7 @@ if(isset($_POST) && !empty($_POST)){
 					break;
 				case 'Full':
 					$listaSellos = validarSellosContenedor($_POST['sellos1'],1);
-					$contenedor = capturarDatosContenedores(1, $listaSellos);
+					$contenedor = capturarDatosContenedores(1, $listaSellos, $numeroFlete);
 					$datosContenedor->append($contenedor); 
 
 					$listaSellos = validarSellosContenedor($_POST['sellos2'],2);
@@ -70,7 +68,7 @@ if(isset($_POST) && !empty($_POST)){
 
 			$datosContenedor->insertarContenedores();
 
-
+			header("Location:../html/fletes.php");
 		}
 	}
 #} catch(Exception $e){

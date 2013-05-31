@@ -22,7 +22,14 @@ if(isset($_POST) && !empty($_POST)){
 	 $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 	 foreach ($rows as $fila) {
-	 	$direccion .= 'Calle '. $fila['Calle']. ' Numero ' . $fila['Numero']. ' Colonia ' . $fila['Colonia'] . ', '. $fila['Localidad']. ' '. $fila['Ciudad']. ', '. $fila['Estado']. ' Telefono '. $fila['Telefono'];
+	 	$direccion .= 'Calle 
+	 				  '. $fila['Calle']. 
+	 				  ' # ' . $fila['Numero']. 
+	 				  '<br> Colonia ' . $fila['Colonia'] . 
+	 				  '.<br> '. $fila['Localidad']. 
+	 				  ', '. $fila['Ciudad']. 
+	 				  ', '. $fila['Estado']. 
+	 				  '<br> Telefono '. $fila['Telefono'];
 	 }
 
 	 } catch(PDOException $ex) {
