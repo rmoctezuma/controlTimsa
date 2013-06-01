@@ -128,8 +128,34 @@ $contenido = "";
        				                </div>
        	       				   </div>';
 
+                              $contenedores =    $flete->get_listaContenedores()->get_contenedores();
 
+                              $contenidoContenedores = "";
 
+                              for ($i=0; $i < count($contenedores); $i++) {
+                                    $contenidoContenedores .= '<div class="span4">
+                                                                  <p>'.$contenedores[$i]->get_id().'</p>
+                                                                  <p>'.$contenedores[$i]->get_tipo().'</p>
+                                                                  <p>'.$contenedores[$i]->get_workorder().'</p>
+                                                                  <p>'.$contenedores[$i]->get_booking().'</p>
+                                                              </div>';
+                              }
+
+                              $contenido .= '<div class="accordion-group">
+                                                    <div class="accordion-heading">
+                                                      <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseCliente">
+                                                        Contenedores
+                                                      </a>
+                                                    </div>
+                                                      <div id="collapseCliente" class="accordion-body collapse in">
+                                                        <div class="accordion-inner">
+                                                              '.$contenidoContenedores.'
+                                                      </div>
+
+                                                        
+                                                      </div>
+                                                    </div>
+                                                   </div>';
 
        }
        else{

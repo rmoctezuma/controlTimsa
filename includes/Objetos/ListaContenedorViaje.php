@@ -15,8 +15,10 @@ require_once("Contenedor.php");
 		#Se envia el numero de flete del cual se quieren obtener los contenedores.
 		function getContenedoresDeViaje($flete){
 			try{
+			$flete = (int) $flete;
 
 				$PDOmysql = consulta();
+				$PDOmysql->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
 				$sql = 'SELECT Contenedor_Viaje.Contenedor
 						 FROM  Contenedor_Viaje
@@ -42,7 +44,7 @@ require_once("Contenedor.php");
 
 
 			} catch(PDOException $e){
-				echo "Error";
+				echo $e;
 			}
 		}
 

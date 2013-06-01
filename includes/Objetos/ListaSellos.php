@@ -17,12 +17,16 @@ require_once("Sello.php");
 
 		function getSellosDeContenedor($contenedor,$flete){
 			try{
-				$PDOmysql = consulta();
+			$contenedor =  $contenedor;
+			$flete = (int) $flete;
 
-				$sql = 'SELECT contenedorsellos.Sello,contenedorsellos.NumeroSello, contenedorsellos.fecha_sellado
-						 FROM contenedorsellos
-						 WHERE contenedorsellos.Contenedor = :contenedor
-						 and contenedorsellos.NumFlete = :flete';
+				$PDOmysql = consulta();
+				$PDOmysql->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+				$sql = 'SELECT ContenedorSellos.Sello,ContenedorSellos.NumeroSello, ContenedorSellos.fecha_sellado
+						 FROM ContenedorSellos
+						 WHERE ContenedorSellos.Contenedor = :contenedor
+						 and ContenedorSellos.NumFlete = :flete';
 
 				$stmt = $PDOmysql->prepare($sql);
 	            $stmt->bindParam(':contenedor', $contenedor);
@@ -40,8 +44,8 @@ require_once("Sello.php");
 	            	$this->sellos[] = $sello;
 
 	            }
-			} catch(PDOException $e){
-
+			} catch(Exception $e){
+				echo $e;
 			}
 		}
 
@@ -55,15 +59,7 @@ require_once("Sello.php");
 				//insercion de sello.
 				$sello = $listaSellos[$nuevoContador];
 
-				echo $sello->get_sello();
-				echo "<br>";
-				echo  $sello->get_numero_sello();
-				echo "<br>";
-				echo  $this->flete;
-				echo "<br>";
-				echo  $this->contenedor;
-
-				$sql = 'INSERT into ContenedorSellos(Sello,NumeroSello, NumFlete, Contenedor) values(:sello, :numeroSello, :numeroFlete, :contenedor);';
+				$sql = 'INSERT into ContenedorSellos(Sello,NumeroSello, NumFlete, Contenedor) values(:sello, :numeroSello, :numeroFlete, :contenedor)';
 
 				$stmt = $PDOmysql->prepare($sql);
 

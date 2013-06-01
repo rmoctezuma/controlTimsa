@@ -24,15 +24,20 @@ require_once("ListaSellos.php");
 
 		function getContenedorDeViaje($id,$flete){
 			try{
+			
+			$id =  $id;
+			$flete = (int) $flete;
+			
 
 				$PDOmysql = consulta();
+				$PDOmysql->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
 				$sql = 'SELECT Contenedor.idContenedor,Contenedor.Tipo, Contenedor_Viaje.WorkOrder,
 								Contenedor_Viaje.Booking
-						 FROM Contenedor, Contenedor_viaje
+						 FROM Contenedor, Contenedor_Viaje
 						 WHERE Contenedor.idContenedor = :contenedor
-						 and Contenedor_viaje.Contenedor = Contenedor.idContenedor
-						 and Contenedor_viaje.Flete_idFlete = :flete';
+						 and Contenedor_Viaje.Contenedor = Contenedor.idContenedor
+						 and Contenedor_Viaje.Flete_idFlete = :flete';
 
 				$stmt = $PDOmysql->prepare($sql);
 	            $stmt->bindParam(':contenedor', $id);
@@ -55,8 +60,8 @@ require_once("ListaSellos.php");
 	            $this->sellos->getSellosDeContenedor($id,$flete);
 
 
-			} catch(PDOException $e){
-				echo "Error";
+			} catch(Exception $e){
+				echo $e;
 			}
 		}
 

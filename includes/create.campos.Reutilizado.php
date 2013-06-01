@@ -98,12 +98,11 @@ require_once("Objetos/Flete.php");
                   #Se crean los formularios para los contenedores.
                   #Se crean las opciones para seleccionar tipos de viaje.
                   
-                  $contenedores;
                   if($contenedores == "true"){
                         $contenedores = $FletePadre->get_listaContenedores()->get_contenedores();
                   }
                   else{
-                      $contenedores = array("","");  
+                      $contenedores = array("","");
                   }
 
                   $forma .= '<h4>Tipo de Viaje </h4>';

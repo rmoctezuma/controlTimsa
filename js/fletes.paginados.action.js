@@ -3,8 +3,9 @@ $(function(){
 
 	//Boton de detalle en tabla de fletes.
 	//Se despliega el detalle de los fletes, y las acciones a realizar sobre este.
-	$('.demo').click(function(){
+	$('.demo').click(function(e){
 
+			e.preventDefault();
 			var value =  $(this).parent().parent().children('td:eq(0)').text();//toma el id de la casilla
 
 			var parametros = { "value" : value}; //segun el id, se realiza la consulta del flete
@@ -39,7 +40,9 @@ $(function(){
 
 		            	$('#loader .ajaxLoader').hide();
 		                $('#accordion2').append('Error general del sistema, intente mas tarde');	
-		                alert(xhr.responseText);               
+		                $('#accordion3').empty();
+		                $('#accordion3').append( xhr.responseText);               
+
 		            }
 		        });
 

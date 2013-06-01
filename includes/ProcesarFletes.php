@@ -32,7 +32,6 @@ if(isset($_POST) && !empty($_POST)){
 			$flete->insertar_flete();
 
 			$numeroFlete =  $flete->get_idFlete();
-			#echo "El numero es :   " . $numeroFlete;
 
 			$cuota = new CuotaViaje;
 			$cuota->set_id_cuota($_POST['cuota']);
@@ -106,15 +105,6 @@ if(isset($_POST) && !empty($_POST)){
 									   $_POST['booking'. $numero],
 									   $listaSellos
 									 );
-
-		
-		/*echo $contenedor->get_id();
-		echo $contenedor->get_flete();
-		echo $contenedor->get_tipo();
-		echo $contenedor->get_workorder();
-		echo $contenedor->get_booking();
-		*/
-
 		return $contenedor;
 } 
 
