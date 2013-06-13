@@ -39,6 +39,7 @@ require_once("Sello.php");
 
 	            foreach ($rows as $fila) {
 	            	$sello = new Sello;
+	            	//Esta funcion esta mal, no se obtienen los sellos. Mal numeor de argumentos.
 	            	$sello->createSello($fila['Sello'], $fila['NumeroSello'], $fila['fecha_sellado']);
 
 	            	$this->sellos[] = $sello;
@@ -93,7 +94,17 @@ require_once("Sello.php");
 		public function set_sellos($sellos){
 			 $this->sellos = $sellos;
 		}
-
+		public function shift(){
+			return array_shift($this->sellos);
+		}
+		public function hasNext(){
+			if (count($this->sellos) > 0 ){
+				return true;
+			}
+			else{
+				return false;
+			}
+		}
 
 	}
 ?>

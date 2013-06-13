@@ -164,6 +164,32 @@ Class Flete{
 	       # }
 	}
 
+	public function update($campo,$nuevoValor){
+		$PDOmysql = consulta();
+		$sql = 'update Flete set $campo = :value where idFlete = :flete';
+		$stmt = $PDOmysql->prepare($sql);
+        $stmt->bindParam(':value', $nuevoValor);
+        $stmt->bindParam(':flete', $this->idFlete);
+        $stmt->execute();
+	}
+
+	public function updateMany($diccionario){
+		$PDOmysql = consulta();
+		$sql = 'update Flete set';
+
+		foreach ($diccionario as $key => $value) {
+			$sql = ' :value where idFlete = :flete';
+		}
+
+		$sql = 'where idFlete = :flete';
+		
+
+		$stmt = $PDOmysql->prepare($sql);
+        $stmt->bindParam(':value', $nuevoValor);
+        $stmt->bindParam(':flete', $this->idFlete);
+        $stmt->execute();
+	}
+
 	public function __toString(){
         return $this->idFlete;
     }

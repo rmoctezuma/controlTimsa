@@ -7,6 +7,7 @@ require_once("Objetos/Flete.php");
 
 	$forma = ""; # Formulario para la creacion de los fletes reutilizados.
       $mensajesError = array();
+      $tipoDeViaje = "";
 
 	if(isset($_POST) && !empty($_POST)){
 		$idFlete = $_POST['flete'];
@@ -100,9 +101,16 @@ require_once("Objetos/Flete.php");
                   
                   if($contenedores == "true"){
                         $contenedores = $FletePadre->get_listaContenedores()->get_contenedores();
+                        if(count($contenedores) > 1){
+                             $tipoDeViaje = "Full";
+                        }
+                        else{
+                            $tipoDeViaje = "Sencillo";  
+                        }
                   }
                   else{
                       $contenedores = array("","");
+                      $tipoDeViaje = "Sin contenedores";
                   }
 
                   $forma .= '<h4>Tipo de Viaje </h4>';
@@ -117,7 +125,7 @@ require_once("Objetos/Flete.php");
 
                   #Se itera para obtener la cantidad de contenedores.
                   $forma .= '<div id="nuevosContenedores" class="container">';
-                  for ($i=0; $i < 2; $i++) {                      
+                  for ($i=0; $i < 2; $i++){
                         $forma .= ' <div class="span3" id="contenedor'.($i+1).'">
                                           <label>Contenedor</label>  <input required    name="contenedor'.($i+1).'" type="text" value="'.$contenedores[$i].'">
                                           <label>Tamaño </label> 
@@ -165,16 +173,20 @@ require_once("Objetos/Flete.php");
             $forma .= '<br><input type="submit" class="btn btn-primary" >';
             $forma .= '</form>';
 
+            $forma.= '<div id="alertas">';
+
             for ($i=0; $i < count($mensajesError); $i++) { 
                   $forma .= '<div class="alert">
                                <button type="button" class="close" data-dismiss="alert">&times;</button>
                                <strong>Observacion.</strong> '.$mensajesError[$i] .'.
                               </div>';
             }
+            $forma.= '<div>';
 
 	}
 
-	$resultados = array('forma' => $forma );
+	$resultados = array('forma' => $forma,
+                          'viaje' => $tipoDeViaje);
 
 	echo json_encode($resultados);
 

@@ -5,6 +5,7 @@ require_once("Objetos/CuotaViaje.php");
 require_once("Objetos/ListaContenedorViaje.php");
 require_once("Objetos/ListaSellos.php");
 require_once("Objetos/Sello.php");
+require_once("Objetos/Update.php");
 
 #try{
 
@@ -32,6 +33,8 @@ if(isset($_POST) && !empty($_POST)){
 			$flete->insertar_flete();
 
 			$numeroFlete =  $flete->get_idFlete();
+
+			$update = new Update();
 
 			$cuota = new CuotaViaje;
 			$cuota->set_id_cuota($_POST['cuota']);

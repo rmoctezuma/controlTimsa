@@ -7,8 +7,10 @@ $(function(){
 
 			e.preventDefault();
 			var value =  $(this).parent().parent().children('td:eq(0)').text();//toma el id de la casilla
+			var viaje =  $(this).parent().parent().children('td:eq(7)').text();
 
-			var parametros = { "value" : value}; //segun el id, se realiza la consulta del flete
+			var parametros = { "value" : value,
+								"viaje" : viaje}; //segun el id, se realiza la consulta del flete
 
 			$.ajax({
 		        beforeSend: function(){
@@ -146,7 +148,20 @@ $('#confirmarReutilizarFletes').hide();
 		            		
 		            		 var $radios = $('#opcionesViaje').children('input:radio[name=tipoViaje]');
 							    if($radios.is(':checked') === false) {
-							        $radios.filter('[value=Full]').prop('checked', true);
+							    	if(response.viaje == "Sencillo"){
+							    		$radios.filter('[value=Sencillo]').prop('checked', true);
+							    		$radios.filter('[value=Sencillo]').click();
+							    	}
+							    	else if (response.viaje == "Full") {
+							        	$radios.filter('[value=Full]').prop('checked', true);
+							        }
+							        else{
+							        	$('#alertas').append("<div class='alert'>\
+								                               <button type='button' class='close' data-dismiss='alert'>&times;</button>\
+								                               <strong>Observacion.</strong> El flete no llevaba contenedores\
+								                              </div>'"
+							                              	);
+							        }
 							    }
 		            	}
 		            	else{

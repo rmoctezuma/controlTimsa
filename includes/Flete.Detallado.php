@@ -9,9 +9,19 @@ $contenido = "";
 
         $PDOmysql = consulta();
        	$value = $_POST['value'];
+        $viaje = $_POST['viaje'];
+
+        if (strpos($viaje,'Importacion') !== false) {
+          $newDisabled = "";     
+        }
+        else{
+           $newDisabled = "disabled= 'disabled'"; 
+        }
 
        	$flete = new Flete;
        	$flete->getFleteFromID($value);
+
+        $contenido .= '<div class="span9">';
 
               $contenido.= '<div id="panelBotones">
                                 <button class="btn btn-success" id="reutilizar" '. $newDisabled .'> Reutilizar Flete </button>
@@ -45,8 +55,6 @@ $contenido = "";
 				                      </div>
 				                    </div>
 
-
-			                  </div>
 			                </div>
        				   </div>';
 
@@ -88,8 +96,7 @@ $contenido = "";
        					                      </div>
        					                    </div>
 
-       				                    
-       				                  </div>
+       				                 
        				                </div>
        	       				   </div>';
 
@@ -124,7 +131,6 @@ $contenido = "";
        					                    </div>
 
        				                    
-       				                  </div>
        				                </div>
        	       				   </div>';
 
@@ -133,12 +139,48 @@ $contenido = "";
                               $contenidoContenedores = "";
 
                               for ($i=0; $i < count($contenedores); $i++) {
-                                    $contenidoContenedores .= '<div class="span4">
-                                                                  <p>'.$contenedores[$i]->get_id().'</p>
-                                                                  <p>'.$contenedores[$i]->get_tipo().'</p>
-                                                                  <p>'.$contenedores[$i]->get_workorder().'</p>
-                                                                  <p>'.$contenedores[$i]->get_booking().'</p>
-                                                              </div>';
+                                    $contenidoContenedores .= '<div>
+                                                                <dl class="dl-horizontal">
+                                                                  <dt>Contenedor</dt>
+                                                                  <dd>'.$contenedores[$i]->get_id().'</dd>
+                                                                  <dt>Tipo</dt>
+                                                                  <dd>'.$contenedores[$i]->get_tipo().'</dd>
+                                                                  <dt>WorkOrder</dt>
+                                                                  <dd>'.$contenedores[$i]->get_workorder().'</dd>
+                                                                  <dt>Booking</dt>
+                                                                  <dd>'.$contenedores[$i]->get_booking().'</dd>
+                                                                </dl>';
+
+                                                                $sellos = $contenedores[$i]->get_sellos();
+
+                                                                $contenidoDeSellos = '<div>
+                                                                                      <table class="table">
+                                                                                        <thead>
+                                                                                          <th>#</th>
+                                                                                          <th>Sello</th>
+                                                                                          <th>Fecha</th>
+                                                                                        </thead>
+                                                                                        <tbody>';
+
+                                                                while($sellos->hasNext()){
+                                                                  $sello = $sellos->shift();
+
+                                                                  $contenidoDeSellos .= '<tr>
+                                                                                           <td>'.$sello->get_numero_sello().'</td>
+                                                                                           <td>'.$sello->get_sello() .'</td>
+                                                                                           <td><input type="datetime" readonly value="'. $sello->get_fecha_sellado() .'"</td>
+                                                                                        </tr>';
+                                                                }
+
+                                                                $contenidoDeSellos .= ' </tbody>
+                                                                                      </table>
+                                                                                      </div>';
+
+                                                                $contenidoContenedores .= $contenidoDeSellos;
+
+                                                                
+                                                                      
+                                      $contenidoContenedores .= '</div>';
                               }
 
                               $contenido .= '<div class="accordion-group">
@@ -153,9 +195,50 @@ $contenido = "";
                                                       </div>
 
                                                         
-                                                      </div>
                                                     </div>
                                                    </div>';
+
+                            $contenido .='</div><br>';
+
+                            $contenido .='<div class="span3">';
+
+                            $estado = $flete->get_status();
+
+                             $contenido .='<h2>Estado</h2>';
+
+                            switch ($estado) {
+                              case 'Programado':
+                                $contenido .='
+                                              <p><input type="radio" name="status" value="Programado" checked> Programado</p>
+                                              <p><input type="radio" name="status" value="Activo"> Activo</p>
+                                              <p><input type="radio" name="status" value="Pendiente"> Pendiente de Facturacion</p>';
+                                break;
+                              
+                              case 'Activo':
+                                $contenido .='
+                                              <p><input type="radio" name="status" value="Programado"> Programado</p>
+                                              <p><input type="radio" name="status" value="Activo" checked> Activo</p>
+                                              <p><input type="radio" name="status" value="Pendiente"> Pendiente de Facturacion</p>';                                break;
+
+                              case 'Pendiente Facturacion':
+                                $contenido .='
+                                              <p><input type="radio" name="status" value="Programado"> Programado</p>
+                                              <p><input type="radio" name="status" value="Activo"> Activo</p>
+                                              <p><input type="radio" name="status" value="Pendiente" checked> Pendiente de Facturacion</p>';                                break;
+
+                              case 'Completo':
+                                 $contenido .= '<h4> Flete Completo </h4>';
+                                break;
+
+                              case 'Cancelado':
+                                $contenido .='<h4>El flete fue cancelado</h4>';
+                                break;
+                            }
+
+                            $contenido .='<h3>Documentacion</h3>';
+
+                            $contenido .='</div>';
+
 
        }
        else{
