@@ -13,28 +13,23 @@ class Update{
 		$this->campos = $campos;
 		$this->camposWhere = $camposWhere;
 
-		$this->$sentencia = 'update '. $tabla . 'set';
-		$keys = array_keys($this->campos);
+		$this->sentencia = 'update '. $tabla . ' set ';
 
-		while(count($keys) >= 0){
-			$campo = array_shift($keys);
-			$this->sentencia .= $campo . ' = '. ':'. $campo . ' ,';
+		foreach ($this->campos as $key => $value) {
+
+			$this->sentencia .= $key . ' = '. ':'. $key . ' ,';
 		}
 
 		$this->sentencia = substr( $this->sentencia , 0, -1);
 
 		$this->sentencia .= 'where ';
 
-		$wherekeys = array_keys($this->camposWhere);
+		foreach ($this->camposWhere as $key => $value) {
 
-		while(count($wherekeys) >= 0){
-			$campo = array_shift($wherekeys);
-			$this->sentencia .= $campo . ' = '. ':'. $campo . ' and';
+			$this->sentencia .= $key . ' = '. ':'. $key . ' and ';
 		}
 
-		$this->sentencia = substr( $this->sentencia , 0, -3);
-
-		echo $this->sentencia;
+		$this->sentencia = substr( $this->sentencia , 0, -4);
 	}
 
 	public function createUpdate(){
@@ -47,6 +42,7 @@ class Update{
 
 		foreach ($this->campos as $key => $value) {
 			$valor = ":". $key;
+			echo $value;
 
 			$stmt->bindParam($valor, $value);
 		}
@@ -54,17 +50,13 @@ class Update{
 		foreach ($this->camposWhere as $key => $value) {
 			$valor = ":". $key;
 
+
 			$stmt->bindParam($valor, $value);
 		}
 
         $stmt->execute();
 
 	}
-
-
-
-
-
 }
 
 ?>

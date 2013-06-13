@@ -35,6 +35,11 @@ if(isset($_POST) && !empty($_POST)){
 			$numeroFlete =  $flete->get_idFlete();
 
 			$update = new Update();
+			$camposUpdate =  array("statusA" => 'Programado');
+			$camposWhereUpdate = array("idFlete" => $numeroFlete);
+
+			$update->prepareUpdate("Flete", $camposUpdate, $camposWhereUpdate);
+			$update->createUpdate();
 
 			$cuota = new CuotaViaje;
 			$cuota->set_id_cuota($_POST['cuota']);
