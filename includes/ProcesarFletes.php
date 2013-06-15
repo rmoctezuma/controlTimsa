@@ -11,36 +11,59 @@ require_once("Objetos/Update.php");
 
 if(isset($_POST) && !empty($_POST)){
 		if (isset($_POST['tipoViaje'])  && !empty($_POST['tipoViaje'])) {
-
+			//Se preparan las variables que se utilizaran a lo largo de este tipo de proceso.
 			$flete_raiz = $_POST['fletePadre'];
 			$Agencia = $_POST['Agencia'];
 			$Sucursal = $_POST['sucursal'];
-
+			//Se crea el objeto flete.
 			$flete = new Flete;
+			/*
+				A partir de este momento se colocaran las llaves primarias de cada objeto dentro
+				del Flete. El objeto Flete se encargara de incializar y operar conforme estos datos.
+			*/
 
+			//Se coloca El numero de agencia y el cliente dentro del flete.
 			$flete->set_Agencia($Agencia);
 			$flete->set_Sucursal($Cliente);
-
+			// Se incializan los campos dentro del flete.
 			$flete->set_Operador($_POST['Operador']);
 			$flete->set_Economico($_POST['Economico']);
 			$flete->set_Socio($_POST['Socio']);
 			$flete->set_FletePadre($_POST['fletePadre']);
-
+			//Se añaden los comentarios.
 			$flete->set_comentarios($_POST['comentarios']);
-
+			//Se añade la sucursal, para operaciones posteriores.
 			$flete->set_Sucursal($Sucursal);
 
+
+			//Este es el metodo, que se encarga de insertar toda la base del flete.
+			//Conforme a los datos antes propuestos.
 			$flete->insertar_flete();
 
+			//Obtiene el ID del flete recientemente Insertado.
 			$numeroFlete =  $flete->get_idFlete();
 
-			$update = new Update();
-			$camposUpdate =  array("statusA" => 'Programado');
-			$camposWhereUpdate = array("idFlete" => $numeroFlete);
+			//Si se envio un flete padre, es decir, se trata de un flete reutilizado
+			// Entonces se cambia el estado del flete a Programado.
+			// Y se coloca en el flete padre, una referencia a este flete reutilizado(hijo).
 
-			$update->prepareUpdate("Flete", $camposUpdate, $camposWhereUpdate);
-			$update->createUpdate();
+//****************************   OPERACIONES REUTILIZADO   *********************************
+			if($flete_raiz){
+				$update = new Update();
+				$camposUpdate =  array("statusA" => "Programado");
+				$camposWhereUpdate = array("idFlete" => $numeroFlete);
 
+				$update->prepareUpdate("Flete", $camposUpdate, $camposWhereUpdate);
+				$update->createUpdate();
+
+				$update = new Update();
+				$camposUpdate = array('FleteHijo' => $numeroFlete );
+				$camposWhereUpdate = array("idFlete" => $flete_raiz);
+
+				$update->prepareUpdate("Flete", $camposUpdate, $camposWhereUpdate);
+				$update->createUpdate();
+			}
+//*************************************************************************************
 			$cuota = new CuotaViaje;
 			$cuota->set_id_cuota($_POST['cuota']);
 			$cuota->set_trafico($_POST['tipoTrafico']);

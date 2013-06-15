@@ -32,6 +32,21 @@ Class ListaClientes{
 	function getLista(){
 		return $this->clientes;
 	}
+
+	function getElement(){
+		$operador = array_shift($this->clientes);
+
+		return $operador;
+	}
+
+	public function hasNext(){
+		if (count($this->clientes) > 0 ){
+			return true;
+		}
+		else{
+			return false;
+		}
+	}
 }
 
 

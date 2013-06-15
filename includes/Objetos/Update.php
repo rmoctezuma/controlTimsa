@@ -30,6 +30,7 @@ class Update{
 		}
 
 		$this->sentencia = substr( $this->sentencia , 0, -4);
+
 	}
 
 	public function createUpdate(){
@@ -42,16 +43,13 @@ class Update{
 
 		foreach ($this->campos as $key => $value) {
 			$valor = ":". $key;
-			echo $value;
+			$stmt->bindValue($valor, $value);
 
-			$stmt->bindParam($valor, $value);
 		}
 
 		foreach ($this->camposWhere as $key => $value) {
 			$valor = ":". $key;
-
-
-			$stmt->bindParam($valor, $value);
+			$stmt->bindValue($valor, $value);
 		}
 
         $stmt->execute();

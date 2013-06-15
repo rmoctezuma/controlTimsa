@@ -11,22 +11,33 @@ $contenido = "";
        	$value = $_POST['value'];
         $viaje = $_POST['viaje'];
 
+        $flete = new Flete;
+        $flete->getFleteFromID($value);
+
+        $contenido .= '<div class="span9">';
+
+        $contenido .= '<input id="flete" class="hidden" value="'.$value.'">';
+
         if (strpos($viaje,'Importacion') !== false) {
-          $newDisabled = "";     
+          $newDisabled = "";
+
+            if($flete->get_FleteHijo()){
+              $contenido .=    '<div class="alert span15">
+                                 <button type="button" class="close" data-dismiss="alert">&times;</button>
+                                 <strong>Este Flete ya fue Reutilizado</strong> .
+                                </div>';
+              $newDisabled = "disabled= 'disabled'";
+            }
         }
         else{
            $newDisabled = "disabled= 'disabled'"; 
         }
 
-       	$flete = new Flete;
-       	$flete->getFleteFromID($value);
-
-        $contenido .= '<div class="span9">';
-
-              $contenido.= '<div id="panelBotones">
+              $contenido.= '<div id="panelBotones span13">
                                 <button class="btn btn-success" id="reutilizar" '. $newDisabled .'> Reutilizar Flete </button>
-                                <button class="btn btn-danger" id="finalizarFlete" '. $newDisabled .'> Terminar Flete </button> 
+                                <button class="btn btn-inverse" id="finalizarFlete" > Terminar Flete </button> 
                                 <button class="btn btn-primary" id="facturarFlete" '.$disabled.'> Facturar </button> 
+                                <button class="btn btn-danger" id="cancelarFlete"> Cancelar Flete </button>
                                 <h4></h4>
                               </div>';
 
@@ -41,10 +52,12 @@ $contenido = "";
 			                </div>
 			                  <div id="collapseOne" class="accordion-body collapse in">
 			                    <div class="accordion-inner">
+                           <div id="datosOperador">
 				                    <div class="span4">
 				                    	<img src="'.$operador->get_imagen().'">
+                              <button id="cambioOperador" class="btn btn-info btn-mini text-center">Cambiar Operador</button>
 				                    </div>
-				                    <div class="span6">
+				                    <div class="span8">
 				                      <h3> '. $operador->get_nombre() . ' ' . $operador->get_apellidop() .' ' . $operador->get_apellidom() .'</h3> <hr>
 				                      <dl class="dl-horizontal">
 				                      		<dt>Numero de Operador</dt>
@@ -54,7 +67,7 @@ $contenido = "";
 				                      </dl>
 				                      </div>
 				                    </div>
-
+                        </div>
 			                </div>
        				   </div>';
 
@@ -70,8 +83,10 @@ $contenido = "";
        				                </div>
        				                  <div id="collapseEconomico" class="accordion-body collapse in">
        				                    <div class="accordion-inner">
+                                  <div id="datosEconomico">
        					                    <div class="span4">
        					                    	<img src="'.$socio->get_imagen().'">
+                                        <button id="cambioEconomico" class="btn btn-info btn-mini text-center">Cambiar Economico</button>
        					                    </div>
        					                    <div class="span6">
        					                      <h3> '. $economico->get_id()  .'</h3> <hr>
@@ -95,7 +110,7 @@ $contenido = "";
        					                      </dl>
        					                      </div>
        					                    </div>
-
+                                  </div>
        				                 
        				                </div>
        	       				   </div>';
@@ -111,23 +126,26 @@ $contenido = "";
        				                </div>
        				                  <div id="collapseCliente" class="accordion-body collapse in">
        				                    <div class="accordion-inner">
-       					                    <div class="span4">
-       					                    	<img src="'.$cliente->get_imagen().'">
-       					                    </div>
-       					                    <div class="span6">
-       					                      <h3> '. $cliente->get_nombre()  .'</h3> <hr>
-       					                      <dl class="dl-horizontal">
-       					                      		<dt>Sucursal de Viaje</dt>
-       					                      		<dd>'. $sucursal->get_nombreSucursal() . '</dd>
-       					                      </dl>
-       					                      <address>
-       					                      		'.$sucursal->get_calle() .' '.$sucursal->get_numero() .'
-       					                      		'.$sucursal->get_colonia() .'
-       					                      		'.$sucursal->get_localidad() .'
-       					                      		'.$sucursal->get_estado() .'
-       					                      		'.$sucursal->get_telefono() .'
-       					                      </address>
-       					                      </div>
+                                        <div id="datosCliente">
+               					                    <div class="span4">
+               					                    	<img src="'.$cliente->get_imagen().'">
+                                                <button id="cambioCliente" class="btn btn-info btn-mini text-center">Cambiar Cliente</button>
+               					                    </div>
+               					                    <div class="span6">
+               					                      <h3> '. $cliente->get_nombre()  .'</h3> <hr>
+               					                      <dl class="dl-horizontal">
+               					                      		<dt>Sucursal de Viaje</dt>
+               					                      		<dd>'. $sucursal->get_nombreSucursal() . '</dd>
+               					                      </dl>
+               					                      <address>
+               					                      		'.$sucursal->get_calle() .' '.$sucursal->get_numero() .'
+               					                      		'.$sucursal->get_colonia() .'
+               					                      		'.$sucursal->get_localidad() .'
+               					                      		'.$sucursal->get_estado() .'
+               					                      		'.$sucursal->get_telefono() .'
+               					                      </address>
+               					                      </div>
+                                        </div>
        					                    </div>
 
        				                    
@@ -185,11 +203,11 @@ $contenido = "";
 
                               $contenido .= '<div class="accordion-group">
                                                     <div class="accordion-heading">
-                                                      <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseCliente">
+                                                      <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseContenedor">
                                                         Contenedores
                                                       </a>
                                                     </div>
-                                                      <div id="collapseCliente" class="accordion-body collapse in">
+                                                      <div id="collapseContenedor" class="accordion-body collapse in">
                                                         <div class="accordion-inner">
                                                               '.$contenidoContenedores.'
                                                       </div>

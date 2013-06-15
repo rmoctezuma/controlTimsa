@@ -280,5 +280,141 @@ $('#confirmarReutilizarFletes').hide();
 			});
 	})
 
+	$('#cambioOperador').live("click", function(){
+		
+		var flete = $('#flete').val();
+
+		parametros = { "flete" : flete,
+						"tipo" : "Operador"}
+
+		$.ajax({
+			beforeSend: function(){
+			},
+			    cache: false,
+			    type: "POST",
+			    dataType: "json",
+			    url:"../includes/informacion.campos.php",
+			    data: parametros,
+			    success: function(response){
+			    	$('#datosOperador').data( 'tipo', "Operador" );
+			    	$('#datosOperador').data( 'contenido', $('#datosOperador').html() );
+			    	$('#datosOperador').empty();
+			    	$('#datosOperador').append(response.contenido);
+			    },
+			    error:function(xhr, ajaxOptions, thrownError){
+			        alert(xhr.responseText);
+			        alert("error");
+			    }
+		});
+	});
+
+	$('#cambioEconomico').live("click", function(){
+		var flete = $('#flete').val();
+
+		parametros = { "flete" : flete,
+						"tipo" : "Economico"}
+
+		$.ajax({
+			beforeSend: function(){
+			},
+			    cache: false,
+			    type: "POST",
+			    dataType: "json",
+			    url:"../includes/informacion.campos.php",
+			    data: parametros,
+			    success: function(response){
+			    	$('#datosEconomico').data( 'tipo', "Economico" );
+			    	$('#datosEconomico').data( 'contenido', $('#datosEconomico').html() );
+			    	$('#datosEconomico').empty();
+			    	$('#datosEconomico').data( 'cambioEconomico', response.contenido ); 
+			    	$('#datosEconomico').append(response.contenido);
+			    	$('#selectEconomicos').change();
+			    },
+			    error:function(xhr, ajaxOptions, thrownError){
+			        alert(xhr.responseText);
+			        alert("error");
+			    }
+		});
+
+
+	});
+
+	$('#cambioCliente').live("click", function(){
+		var flete = $('#flete').val();
+
+		parametros = { "flete" : flete,
+						"tipo" : "Cliente"}
+
+		$.ajax({
+			beforeSend: function(){
+			},
+			    cache: false,
+			    type: "POST",
+			    dataType: "json",
+			    url:"../includes/informacion.campos.php",
+			    data: parametros,
+			    success: function(response){
+			    	$('#datosCliente').data( 'tipo', "Cliente" );
+			    	$('#datosCliente').data( 'contenido', $('#datosCliente').html() );
+			    	$('#datosCliente').empty();
+			    	$('#datosCliente').append(response.contenido);
+			    },
+			    error:function(xhr, ajaxOptions, thrownError){
+			        alert(xhr.responseText);
+			        alert("error");
+			    }
+		});
+	});
+
+	$('#selectEconomicos').live('change', function(){
+		var value = $(this).val();
+
+		parametros = {"economico" : value,
+					  "tipo" 	  : "Operador" }
+
+		$.ajax({
+			beforeSend: function(){
+			},
+			    cache: false,
+			    type: "POST",
+			    dataType: "json",
+			    url:"../includes/informacion.campos.php",
+			    data: parametros,
+			    success: function(response){
+			    	$('#datosEconomico').empty();
+			    	$('#datosEconomico').append($('#datosEconomico').data('cambioEconomico'));
+
+			    	$('#datosEconomico').append(response.contenido);
+			    },
+			    error:function(xhr, ajaxOptions, thrownError){
+			        alert(xhr.responseText);
+			        alert("error");
+			    }
+		});
+		
+	});
+
+	$('.cancelar').live("click", function(){
+		var div =  $(this).parent().parent().parent().parent().parent().parent();
+		div.empty();
+		div.append( div.data('contenido')   );
+	});
+
+	$('.update').live('click', function(){
+		var flete = $('#flete').val();
+		var div =  $(this).parent().parent().parent().parent().parent().parent();
+		var tipo = div.data( 'tipo' );
+
+
+
+		parametros = { "tipo" 		: tipo,
+						"operador"  : "",
+						"flete"		: flete }
+
+		alert(tipo);
+		alert(flete);
+
+	});
+
 });
 

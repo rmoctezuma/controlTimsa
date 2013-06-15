@@ -25,6 +25,7 @@ Class Flete{
 	private $Economico;
 	private $Socio;
 	private $FletePadre;
+	private $FleteHijo;
 
 	#Cuota para el Flete
 
@@ -89,6 +90,8 @@ Class Flete{
 				$this->Socio->createSocioFromID( $fila['Socio']);
 
 				$this->FletePadre = $fila['FletePadre'];
+
+				$this->FleteHijo = $fila['FleteHijo'];
 			}
 
 			#Cuota para el Flete
@@ -280,6 +283,13 @@ Class Flete{
 	}
 	function get_listaContenedores(){
 		return $this->listaContenedores;
+	}
+
+	function set_FleteHijo($hijo){
+		$this->FleteHijo = $hijo;
+	}
+	function get_FleteHijo(){
+		return $this->FleteHijo;
 	}
 }
 ?>
