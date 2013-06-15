@@ -24,7 +24,7 @@ if(isset($_POST) && !empty($_POST)){
 			$update->prepareUpdate("Operador", $camposUpdate, $camposWhereUpdate);
 			$update->createUpdate();
 
-			$operadorNuevo = $_POST['operador'];
+			$operadorNuevo = $_POST['value'];
 
 			$update = new Update();
 			$camposUpdate =  array("statusA" => "Ocupado");
@@ -39,7 +39,7 @@ if(isset($_POST) && !empty($_POST)){
 				$FleteHijo = $flete->get_FleteHijo();
 
 				$update = new Update();
-				$camposUpdate =  array("Operador" => $_POST['operador'] );
+				$camposUpdate =  array("Operador" => $_POST['value'] );
 				$camposWhereUpdate = array("idFlete" => $FleteHijo);
 
 				$update->prepareUpdate("Flete", $camposUpdate, $camposWhereUpdate);
@@ -53,7 +53,7 @@ if(isset($_POST) && !empty($_POST)){
 				$padre = $flete->get_FletePadre();
 
 				$update = new Update();
-				$camposUpdate =  array("Operador" => $_POST['operador'] );
+				$camposUpdate =  array("Operador" => $_POST['value'] );
 				$camposWhereUpdate = array("idFlete" => $padre);
 
 				$update->prepareUpdate("Flete", $camposUpdate, $camposWhereUpdate);
@@ -64,7 +64,7 @@ if(isset($_POST) && !empty($_POST)){
 //*************************************************************************************************
 
 			$update = new Update();
-			$camposUpdate =  array("Operador" => $_POST['operador'] );
+			$camposUpdate =  array("Operador" => $_POST['value'] );
 			$camposWhereUpdate = array("idFlete" => $numeroFlete);
 
 			$update->prepareUpdate("Flete", $camposUpdate, $camposWhereUpdate);

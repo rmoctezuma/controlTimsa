@@ -405,14 +405,17 @@ $('#confirmarReutilizarFletes').hide();
 		var div =  $(this).parent().parent().parent().parent().parent().parent();
 		var tipo = div.data( 'tipo' );
 
-
+		var value = $(this).parent().parent().parent().children().children().children('select').val() ;
 
 		parametros = { "tipo" 		: tipo,
-						"operador"  : "",
+						"value"  	: value,
 						"flete"		: flete }
 
-		alert(tipo);
-		alert(flete);
+		if(tipo == 'Economico'){
+			var economico = $('#selectEconomicos').val();
+		}
+
+
 
 	});
 
