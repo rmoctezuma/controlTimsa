@@ -15,6 +15,14 @@ if(isset($_POST) && !empty($_POST)){
 
 			if(isset($_POST['economico']) && !empty($_POST['economico'])){
 				$economico = $_POST['economico'];
+
+				$objetoEconomico = new Economico;
+				$objetoEconomico->set_id($economico);
+
+
+				$contenido .= '<div>
+									<input id="nuevoSocio" type="hidden" value="'. $objetoEconomico->get_Socio() .'" >
+							   </div>';
 			}
 			else{
 
@@ -25,7 +33,23 @@ if(isset($_POST) && !empty($_POST)){
 			}
 			
 			$listaDeOperadores = new ListaOperadores;
-			$listaDeOperadores->createListaOperadoresWithEconomico($economico);
+			$listaDeOperadores->createListaOperadoresWithEconomicoAndFreeStatus($economico);
+
+			if(! $listaDeOperadores->hasNext() ){
+				$contenido .= ' <div> 
+									<table>
+										<tr>
+											<td>
+											No existen Operadores libres para este economico
+											Selecciona otro.
+											</td>
+											<td><button class="btn cancelar"> Cancelar </button></td>
+										</tr>
+									</table>
+								</div>';
+
+			}
+			else{
 
 			$contenido .= ' <div>
 							<table>
@@ -52,7 +76,7 @@ if(isset($_POST) && !empty($_POST)){
 			$contenido .= '<tr><td> <button class="btn btn-primary update"> Cambiar </button>';
 			$contenido .= '<button class="btn cancelar"> Cancelar </button></td></tr>
 						   </div>';
-
+			}
 
 			break;
 		
@@ -78,7 +102,6 @@ if(isset($_POST) && !empty($_POST)){
 			}
 
 			$contenido .= '</select></td></tr><table>';
-			$contenido .= '<div id="detalleOperador"></div>';
 
 			break;
 

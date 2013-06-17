@@ -384,6 +384,8 @@ $('#confirmarReutilizarFletes').hide();
 			    	$('#datosEconomico').empty();
 			    	$('#datosEconomico').append($('#datosEconomico').data('cambioEconomico'));
 
+			    	$('#selectEconomicos option[value="' + parametros.economico + '"]').prop('selected', true)
+
 			    	$('#datosEconomico').append(response.contenido);
 			    },
 			    error:function(xhr, ajaxOptions, thrownError){
@@ -411,11 +413,32 @@ $('#confirmarReutilizarFletes').hide();
 						"value"  	: value,
 						"flete"		: flete }
 
+
+
 		if(tipo == 'Economico'){
 			var economico = $('#selectEconomicos').val();
+			parametros.economico = economico;
+
+			var socio = $('#nuevoSocio').val();
+			parametros.socio = socio;
 		}
 
-
+		$.ajax({
+			beforeSend: function(){
+			},
+			    cache: false,
+			    type: "POST",
+			    dataType: "json",
+			    url:"../includes/UpdateCamposFlete.php",
+			    data: parametros,
+			    success: function(response){
+			    	alert(response.contenido);
+			    },
+			    error:function(xhr, ajaxOptions, thrownError){
+			        alert(xhr.responseText);
+			        alert("error");
+			    }
+		});
 
 	});
 

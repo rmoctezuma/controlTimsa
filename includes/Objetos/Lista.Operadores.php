@@ -55,6 +55,33 @@ Class ListaOperadores{
 			}
 		}
 
+	public	function createListaOperadoresWithEconomicoAndFreeStatus($economico){
+			$this->operadores =  array();
+
+			try{
+
+				$PDOmysql = consulta();
+
+				$sql = 'SELECT * FROM Operador, VehiculoDetalle
+						where Operador.Eco = VehiculoDetalle.Operador
+						and   VehiculoDetalle.Economico = :economico
+						and Operador.statusA = "Libre"';
+
+				$stmt = $PDOmysql->prepare($sql);
+				$stmt->bindParam(':economico', $economico);
+	            $stmt->execute();
+	            $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+	            foreach ($rows as $fila) {
+	            	$operador = new Operador();
+	            	$operador->createOperador($fila['Eco'],$fila['Nombre'],$fila['ApellidoP'],$fila['ApellidoM'],$fila['R.C.'],$fila['CURP'],$fila['fecha_ingreso'], $fila['statusA'],$fila['fecha_deprecated'], $fila['Telefono'], $fila['rutaImagen']);
+	            	array_push($this->operadores, $operador);
+	            }
+			} catch(PDOException $e){
+
+			}
+		}
+
 	function getLista(){
 		return $this->operadores;
 	}

@@ -66,6 +66,23 @@ Class Economico{
 		#}
 	}
 
+	public function get_Socio(){
+		$PDOmysql = consulta();
+
+		$sql = 'SELECT Socio FROM VehiculoDetalle WHERE VehiculoDetalle.Economico = :economico';
+
+		$stmt = $PDOmysql->prepare($sql);
+        $stmt->bindParam(':economico', $this->id);
+        $stmt->execute();
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        foreach ($rows as $fila) {
+        	$socio = $fila['Socio'];
+        }
+
+		return $socio;
+	}
+
 	public function __toString(){
         return $this->id;
     }
