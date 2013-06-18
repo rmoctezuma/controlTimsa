@@ -14,15 +14,29 @@ $contenido = "";
         $flete = new Flete;
         $flete->getFleteFromID($value);
 
-        $contenido .= '<div class="span9">';
+        $contenido .= '<div class="span8">';
 
         $contenido .= '<input id="flete" class="hidden" value="'.$value.'">';
+
+        $estado = $flete->get_status();
+
+        if ( $estado !== 'Pendiente Facturacion') {
+          $deshabilitado = "disabled= 'disabled'";
+        }
+
+        if( $estado !== 'Completo' ){
+          $deshabilitadoFacturacion = "disabled= 'disabled'";
+        }
+
+        if( $estado == 'Cancelado' || $estado == 'Completo'){
+          $disabledCancelado = "disabled= 'disabled'";
+        }
 
         if (strpos($viaje,'Importacion') !== false) {
           $newDisabled = "";
 
             if($flete->get_FleteHijo()){
-              $contenido .=    '<div class="alert span15">
+              $contenido .=    '<div class="alert span12">
                                  <button type="button" class="close" data-dismiss="alert">&times;</button>
                                  <strong>Este Flete ya fue Reutilizado</strong> .
                                 </div>';
@@ -30,21 +44,21 @@ $contenido = "";
             }
         }
         else{
-           $newDisabled = "disabled= 'disabled'"; 
+           $newDisabled = "disabled= 'disabled'";
         }
 
-              $contenido.= '<div id="panelBotones span13">
-                                <button class="btn btn-success" id="reutilizar" '. $newDisabled .'> Reutilizar Flete </button>
-                                <button class="btn btn-inverse" id="finalizarFlete" > Terminar Flete </button> 
-                                <button class="btn btn-primary" id="facturarFlete" '.$disabled.'> Facturar </button> 
-                                <button class="btn btn-danger" id="cancelarFlete"> Cancelar Flete </button>
+              $contenido.= '<div id="panelBotones">  
+                                <button class="btn btn-success" id="reutilizar" '. $newDisabled .' > Reutilizar Flete </button>
+                                <button class="btn btn-inverse" id="finalizarFlete" '.$deshabilitado.'> Terminar Flete </button> 
+                                <button class="btn btn-primary" id="facturarFlete" '.$deshabilitadoFacturacion.'> Facturar </button> 
+                                <button class="btn btn-danger" id="cancelarFlete" '.$disabledCancelado.'> Cancelar Flete </button>
                                 <h4></h4>
                               </div>';
 
        	$operador = $flete->get_Operador();
 
        	#Contenido de Operador
-       	$contenido .= '<div class="accordion-group">
+       	$contenido .= '<div class="accordion-group" >
        						<div class="accordion-heading">
 			                  <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseOne">
 			                    Operador
@@ -55,7 +69,7 @@ $contenido = "";
                            <div id="datosOperador">
 				                    <div class="span4">
 				                    	<img src="'.$operador->get_imagen().'">
-                              <button id="cambioOperador" class="btn btn-info btn-mini text-center">Cambiar Operador</button>
+                              <button '. $disabledCancelado .' id="cambioOperador" class="btn btn-info btn-mini text-center">Cambiar Operador</button>
 				                    </div>
 				                    <div class="span8">
 				                      <h3> '. $operador->get_nombre() . ' ' . $operador->get_apellidop() .' ' . $operador->get_apellidom() .'</h3> <hr>
@@ -86,7 +100,7 @@ $contenido = "";
                                   <div id="datosEconomico">
        					                    <div class="span4">
        					                    	<img src="'.$socio->get_imagen().'">
-                                        <button id="cambioEconomico" class="btn btn-info btn-mini text-center">Cambiar Economico</button>
+                                        <button '. $disabledCancelado .' id="cambioEconomico" class="btn btn-info btn-mini text-center">Cambiar Economico</button>
        					                    </div>
        					                    <div class="span6">
        					                      <h3> '. $economico->get_id()  .'</h3> <hr>
@@ -129,7 +143,7 @@ $contenido = "";
                                         <div id="datosCliente">
                					                    <div class="span4">
                					                    	<img src="'.$cliente->get_imagen().'">
-                                                <button id="cambioCliente" class="btn btn-info btn-mini text-center">Cambiar Cliente</button>
+                                                <button '. $disabledCancelado .' id="cambioCliente" class="btn btn-info btn-mini text-center">Cambiar Cliente</button>
                					                    </div>
                					                    <div class="span6">
                					                      <h3> '. $cliente->get_nombre()  .'</h3> <hr>
@@ -218,9 +232,7 @@ $contenido = "";
 
                             $contenido .='</div><br>';
 
-                            $contenido .='<div class="span3">';
-
-                            $estado = $flete->get_status();
+                            $contenido .='<div class="span4">';
 
                              $contenido .='<h2>Estado</h2>';
 
@@ -229,21 +241,25 @@ $contenido = "";
                                 $contenido .='
                                               <p><input type="radio" name="status" value="Programado" checked> Programado</p>
                                               <p><input type="radio" name="status" value="Activo"> Activo</p>
-                                              <p><input type="radio" name="status" value="Pendiente"> Pendiente de Facturacion</p>';
+                                              <p><input type="radio" name="status" value="Pendiente Facturacion"> Pendiente de Facturacion</p>
+                                              <button class="btn" id="cambiarEstado">Cambiar Status</button>';
+
                                 break;
                               
                               case 'Activo':
                                 $contenido .='
                                               <p><input type="radio" name="status" value="Programado"> Programado</p>
                                               <p><input type="radio" name="status" value="Activo" checked> Activo</p>
-                                              <p><input type="radio" name="status" value="Pendiente"> Pendiente de Facturacion</p>';                                break;
-
+                                              <p><input type="radio" name="status" value="Pendiente Facturacion"> Pendiente de Facturacion</p>
+                                              <button class="btn" id="cambiarEstado">Cambiar Status</button>';                                
+                                  break;
                               case 'Pendiente Facturacion':
                                 $contenido .='
                                               <p><input type="radio" name="status" value="Programado"> Programado</p>
                                               <p><input type="radio" name="status" value="Activo"> Activo</p>
-                                              <p><input type="radio" name="status" value="Pendiente" checked> Pendiente de Facturacion</p>';                                break;
-
+                                              <p><input type="radio" name="status" value="Pendiente Facturacion" checked> Pendiente de Facturacion</p>
+                                              <button class="btn" id="cambiarEstado">Cambiar Status</button>';                                
+                                  break;
                               case 'Completo':
                                  $contenido .= '<h4> Flete Completo </h4>';
                                 break;
@@ -256,6 +272,15 @@ $contenido = "";
                             $contenido .='<h3>Documentacion</h3>';
 
                             $contenido .='</div>';
+
+                            
+
+                            $contenido .='<div class="span4" id="comentarios">
+                                          <h4> Comentarios </h4>
+                                          <textarea style="width: 316px; heighh:91px" readonly>
+                                            '. $flete->get_comentarios() .'
+                                          </textarea>
+                                          </div>';
 
 
        }

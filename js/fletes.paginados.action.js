@@ -7,7 +7,7 @@ $(function(){
 
 			e.preventDefault();
 			var value =  $(this).parent().parent().children('td:eq(0)').text();//toma el id de la casilla
-			var viaje =  $(this).parent().parent().children('td:eq(7)').text();
+			var viaje =  $(this).parent().parent().children('td:eq(6)').text();
 
 			var parametros = { "value" : value,
 								"viaje" : viaje}; //segun el id, se realiza la consulta del flete
@@ -64,18 +64,16 @@ $(function(){
 $('#confirmacionFlete').hide();
 
 //Accion de finalizar flete. Oculta detalles de flete, y muestra un panel de confirmacion.
-	$('#finalizarFlete').live("click",function(){	
-		if($('#status').text() == "Activo"){
-			$('#panelBotones').hide("fast");
-			$('#confirmacionFlete').show("fast");
-		}
-		else{
-			$('#panelBotones h4').text('Solo se pueden finalizar Fletes Activos');
-		}
+	$('#finalizarFlete').live("click",function(){
+		$('#confirmar').data('action', 'terminar');
+		$('#textoPregunta').text("¿Realmente desea terminar el flete?");
+		$('#confirmacionFlete').show("fast");
+		$('#panelBotones').hide("fast");
 	});
 //Boton cancelar. Oculta panel de confirmacion, y muestra panel DetalleFlete.
 
 	$('#cancelar').click(function(){
+		$('#textoPregunta').text("¿Realmente desea cancelar el flete?");
 		$('#confirmacionFlete').hide("fast");
 		$('#panelBotones').show("fast");
 	});
@@ -83,31 +81,41 @@ $('#confirmacionFlete').hide();
 //Boton confirmar. Termina el flete.
  
  	$('#confirmar').click(function(){
- 		
- 		var value =  $('#titulo').val(); //obtiene el id del Flete
- 		var status =  $('#status').val();
- 		var economico =  $(this).parent().parent().children('td:eq(2)').text();
+ 		var status = "";
 
-			var parametros = { "value" : value, "status": status, "economico": economico};
+ 		if($('#confirmar').data('action') == "cancelar"){
+ 				status = "Cancelado";
+ 		}
+ 		else if($('#confirmar').data('action') == "terminar"){
+ 			status = "Completo";
+ 		}
 
-			$.ajax({
-		        beforeSend: function(){
-		        },
-		            cache: false,
-		            type: "POST",
-		            dataType: "json",
-		            url:"../includes/terminar.flete.php",
-		            data: parametros,
-		            success: function(response){
+ 			parametros = {'flete' 		: $('#titulo').val(),
+ 						  'tipo'  		: "Status",
+ 						  'nuevoStatus' :  status };
 
-		            },
-		            error:function(xhr, ajaxOptions, thrownError){
+ 			parametros.tipo_cambio = status;
 
-		            	$('#loader .ajaxLoader').hide();
-		                $('#accordion2').append('Error general del sistema, intente mas tarde');	
-		                alert(xhr.responseText);               
-		            }
-			});
+ 				$.ajax({
+ 			        beforeSend: function(){
+ 			        },
+ 			            cache: false,
+ 			            type: "POST",
+ 			            dataType: "json",
+ 			            url:"../includes/UpdateCamposFlete.php",
+ 			            data: parametros,
+ 			            success: function(response){
+ 			            	alert(response.contenido);
+ 			            },
+ 			            error:function(xhr, ajaxOptions, thrownError){
+
+ 			            	$('#loader .ajaxLoader').hide();
+ 			                $('#accordion2').append('Error general del sistema, intente mas tarde');	
+ 			                alert(xhr.responseText);               
+ 			            }
+ 				});
+
+
 	});
 
 //Acciones Reutilizar
@@ -357,7 +365,9 @@ $('#confirmarReutilizarFletes').hide();
 			    	$('#datosCliente').data( 'tipo', "Cliente" );
 			    	$('#datosCliente').data( 'contenido', $('#datosCliente').html() );
 			    	$('#datosCliente').empty();
+			    	$('#datosCliente').data('cliente' , response.contenido);
 			    	$('#datosCliente').append(response.contenido);
+			    	$('#cambio_cliente').change();
 			    },
 			    error:function(xhr, ajaxOptions, thrownError){
 			        alert(xhr.responseText);
@@ -395,6 +405,35 @@ $('#confirmarReutilizarFletes').hide();
 		});
 		
 	});
+
+	$('#cambio_cliente').live("change", function(){
+		parametros = { "cliente" : $('#cambio_cliente').val(),
+						"tipo"   : "Sucursal"  };
+
+		$.ajax({
+			beforeSend: function(){
+			},
+			    cache: false,
+			    type: "POST",
+			    dataType: "json",
+			    url:"../includes/informacion.campos.php",
+			    data: parametros,
+			    success: function(response){
+			    	$('#datosCliente').empty();
+			    	$('#datosCliente').append($('#datosCliente').data('cliente'));
+			    	$('#datosCliente').append(response.contenido);
+			    	$('#cambio_cliente option[value="' + parametros.cliente + '"]').prop('selected', true)
+
+			    },
+			    error:function(xhr, ajaxOptions, thrownError){
+			        alert(xhr.responseText);
+			        alert("error");
+			    }
+		});
+
+	});
+
+
 
 	$('.cancelar').live("click", function(){
 		var div =  $(this).parent().parent().parent().parent().parent().parent();
@@ -440,6 +479,40 @@ $('#confirmarReutilizarFletes').hide();
 			    }
 		});
 
+	});
+
+	$('#cancelarFlete').live('click', function(){
+		$('#panelBotones').hide("fast");
+		$('#confirmacionFlete').show("fast");
+
+		$('#confirmar').data('action', 'cancelar');
+	});
+
+	$('#cambiarEstado').live('click', function(){
+		var status =  $('input[name=status]:checked').val();
+
+		parametros = {'flete' 		: $('#titulo').val(),
+					  'tipo'  		: "Status",
+					  'nuevoStatus' :  status};
+
+			$.ajax({
+		        beforeSend: function(){
+		        },
+		            cache: false,
+		            type: "POST",
+		            dataType: "json",
+		            url:"../includes/UpdateCamposFlete.php",
+		            data: parametros,
+		            success: function(response){
+		            	alert(response.contenido);
+		            },
+		            error:function(xhr, ajaxOptions, thrownError){
+
+		            	$('#loader .ajaxLoader').hide();
+		                $('#accordion2').append('Error general del sistema, intente mas tarde');	
+		                alert(xhr.responseText);               
+		            }
+			});
 	});
 
 });

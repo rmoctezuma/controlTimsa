@@ -58,6 +58,19 @@ class Dia{
 	}
 
 	function formattedRequest($rows){
+		$arrayEstado  = array('Completo' => 'success',
+							  'Activo'   => 'info',
+							  'Cancelado'=> 'error',
+							  'Programado'=> 'warning'
+ 							 );
+
+		$statusTipo = array( 'Completo' => 'badge badge-success',
+							  'Activo'   => 'badge badge-info',
+							  'Cancelado'=> 'badge badge-important',
+							  'Programado'=> 'badge badge-warning',
+							  'Pendiente Facturacion' => 'badge'
+							   );
+
 		$date = $this->getDateFromDay($this->dia, $this->anio);
 
 		$this->contenido .='<div class="accordion-heading">
@@ -75,7 +88,6 @@ class Dia{
 			 								    <th>#</th>
 			 								    <th>Operador</th>
 			 								    <th>Economico</th>
-			 								    <th>Placas </th>
 			 								    <th>Cliente</th>
 			 								    <th>Sucursal</th>
 			 								    <th>Agencia</th>
@@ -90,11 +102,10 @@ class Dia{
 
 		foreach($rows as $fila) {
 			 
-			$this->contenido .= '<tr>
+			$this->contenido .= '<tr class="'. $arrayEstado[$fila['statusA']] .'">
 					                <td>'. $fila['idFlete'].' </td>
 					                <td>'. $fila['nombre']. $fila['apellidop']. $fila['apellidom'].' </td>
 					                <td>'. $fila['economico']. ' </td>
-					                <td> '. $fila['placas'].' </td>
 					                <td>'. $fila['cliente']  . ' </td>  
 					                <td>'. $fila['sucursal'] . '  </td> 
 					                <td>'. $fila['agencia']  . '  </td> 

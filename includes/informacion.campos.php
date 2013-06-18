@@ -3,6 +3,7 @@
 require_once("Objetos/Lista.Operadores.php");
 require_once("Objetos/Lista.Economicos.php");
 require_once("Objetos/ListaClientes.php");
+require_once("Objetos/ListaSucursales.php");
 require_once("Objetos/Flete.php");
 
 $contenido = "";
@@ -114,7 +115,7 @@ if(isset($_POST) && !empty($_POST)){
 							<tr>
 							<td> <label> Selecciona Cliente </label> </td>
 							<td>
-							<select>';
+							<select id="cambio_cliente">';
 
 			while ( $lista->hasNext() ) {
 
@@ -130,9 +131,38 @@ if(isset($_POST) && !empty($_POST)){
 							</td>
 							</tr>';
 
-			$contenido .= '<tr><td><button class="btn btn-primary update"> Cambiar </button>';
-			$contenido .= '<button class="btn cancelar"> Cancelar </button></td></tr>
-						   </div>';
+
+			$contenido.='</div>';
+			break;
+
+		case 'Sucursal':
+			$sucursales = new ListaSucursales;
+			$sucursales->getSucursalesFromCliente($_POST['cliente']);
+
+
+
+			if ($sucursales->hasNext()) {
+
+				$contenido .= '<select id="sucursal">';
+
+				while ($sucursales->hasNext() ) {
+					$elemento = $sucursales->getElement();
+
+					$contenido .= '<option value="'. $elemento->getID() .'">
+									'. $elemento->get_nombreSucursal() .'
+								  </option>';
+				}
+
+				$contenido .= '</select>';
+
+				$contenido .= '<tr><td><button class="btn btn-primary update"> Cambiar </button>';
+				$contenido .= '<button class="btn cancelar"> Cancelar </button></td></tr>';
+				
+			}
+			else{
+				$contenido .= "No existen Sucursales para este cliente";
+			}
+
 			break;
 	}
 }

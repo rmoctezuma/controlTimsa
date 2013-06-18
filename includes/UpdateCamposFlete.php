@@ -35,7 +35,7 @@ if(isset($_POST) && !empty($_POST)){
 			$update->createUpdate();
 
 //********************************** Actualizar Flete Padre e HIjo ******************
-			if ($flete->get_FleteHijo) {
+			if ( $flete->get_FleteHijo() ) {
 
 				$FleteHijo = $flete->get_FleteHijo();
 
@@ -49,7 +49,7 @@ if(isset($_POST) && !empty($_POST)){
 			}
 
 
-			if ($flete->get_FletePadre) {
+			if ( $flete->get_FletePadre() ) {
 
 				$padre = $flete->get_FletePadre();
 
@@ -117,7 +117,7 @@ if(isset($_POST) && !empty($_POST)){
 
 
 //********************************** Actualizar Flete Padre o HIjo **************
-			if ($flete->get_FleteHijo) {
+			if ( $flete->get_FleteHijo() ) {
 
 				$FleteHijo = $flete->get_FleteHijo();
 
@@ -134,7 +134,7 @@ if(isset($_POST) && !empty($_POST)){
 			}
 
 
-			if ($flete->get_FletePadre) {
+			if ( $flete->get_FletePadre() ) {
 
 				$padre = $flete->get_FletePadre();
 
@@ -157,7 +157,7 @@ if(isset($_POST) && !empty($_POST)){
 								   "Economico" => $_POST['economico'],
 								   "Socio" 	  =>  $_POST['socio'] 
 								   );
-			
+
 			$camposWhereUpdate = array("idFlete" => $numeroFlete);
 
 			$update->prepareUpdate("Flete", $camposUpdate, $camposWhereUpdate);
@@ -170,9 +170,59 @@ if(isset($_POST) && !empty($_POST)){
 		case 'Cliente':
 
 			$clienteActual = $flete->get_Sucursal();
-
-			
 			$contenido .= "Flete Actualizado";
+			break;
+
+		case 'Status':
+			$statusNuevo = $_POST['nuevoStatus'];
+			$numeroFlete = $_POST['flete'];
+
+			//Cambiar el status del flete
+
+			$flete = new Flete;
+			$flete->getFleteFromID($numeroFlete);
+
+			cambiarStatusFlete( $flete, $statusNuevo );
+
+			if($_POST['tipo_cambio'] == "Cancelado" || $_POST['tipo_cambio'] == "Completo"){
+
+				if( $flete->get_FleteHijo() ){
+					if($_POST['tipo_cambio'] == "Cancelado"){
+
+						$hijo = new Flete;
+						$hijo->getFleteFromID( $flete->get_FleteHijo() );
+
+						cambiarStatusFlete( $hijo, $statusNuevo );
+
+						releaseEconomicoAndOperador($flete);
+					}
+					/*
+					else if( $_POST['tipo_cambio'] == "Completo" ){
+						Si el flete a completar tiene hijos, no se liberan operador y economico.
+					}
+					*/
+				}
+
+				else if( $flete->get_FletePadre() ){
+					if($_POST['tipo_cambio'] == "Cancelado" || $_POST['tipo_cambio'] == "Completo" ){
+						$padre = new Flete;
+						$padre->getFleteFromID( $flete->get_FletePadre() );
+						// Comprobar si el flete padre esta completo, para
+						// proceder al liberar economico y operador.
+						if($padre->get_status() == 'Completo'){
+							releaseEconomicoAndOperador($flete);
+						}
+					}
+				}
+
+				else{
+					releaseEconomicoAndOperador($flete);
+				}
+				
+			}
+
+			$contenido .= "Flete Actualizado";
+
 			break;
 	}
 }
@@ -180,5 +230,41 @@ if(isset($_POST) && !empty($_POST)){
 $resultados  = array('contenido' => $contenido);
 
 echo json_encode($resultados);
+
+
+	function releaseEconomicoAndOperador($flete){
+		// Liberar Economico
+
+		$economicoActual = $flete->get_Economico();
+
+		$update = new Update();
+		$camposUpdate =  array("statusA" => "Libre");
+		$camposWhereUpdate = array("Economico" => $economicoActual->get_id() );
+
+		$update->prepareUpdate("Economico", $camposUpdate, $camposWhereUpdate);
+		$update->createUpdate();
+
+		//Liberar Operador
+
+		$operadorActual = $flete->get_Operador();
+
+		$update = new Update();
+		$camposUpdate =  array("statusA" => "Libre");
+		$camposWhereUpdate = array("Eco" => $operadorActual->get_id() );
+
+		$update->prepareUpdate("Operador", $camposUpdate, $camposWhereUpdate);
+		$update->createUpdate();
+	}
+
+	function cambiarStatusFlete($flete, $status){
+
+		$update = new Update();
+		$camposUpdate =  array( "statusA" => $status );
+
+		$camposWhereUpdate = array("idFlete" => $flete->get_idFlete() );
+
+		$update->prepareUpdate("Flete", $camposUpdate, $camposWhereUpdate);
+		$update->createUpdate();
+	}
 
 ?>
