@@ -48,7 +48,7 @@ $contenido = "";
         }
 
               $contenido.= '<div id="panelBotones">  
-                                <button class="btn btn-success" id="reutilizar" '. $newDisabled .' > Reutilizar Flete </button>
+                                <button class="btn btn-success" id="reutilizar" '. $newDisabled .' '.$disabledCancelado.' > Reutilizar Flete </button>
                                 <button class="btn btn-inverse" id="finalizarFlete" '.$deshabilitado.'> Terminar Flete </button> 
                                 <button class="btn btn-primary" id="facturarFlete" '.$deshabilitadoFacturacion.'> Facturar </button> 
                                 <button class="btn btn-danger" id="cancelarFlete" '.$disabledCancelado.'> Cancelar Flete </button>
