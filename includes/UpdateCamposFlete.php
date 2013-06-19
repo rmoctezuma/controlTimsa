@@ -196,11 +196,17 @@ if(isset($_POST) && !empty($_POST)){
 
 						releaseEconomicoAndOperador($flete);
 					}
-					/*
+					
 					else if( $_POST['tipo_cambio'] == "Completo" ){
-						Si el flete a completar tiene hijos, no se liberan operador y economico.
+						// Si el flete posee un hijo, comprobar si esta completo.
+						// Si esta completo liberar economico y Operador.
+						$hijo = new Flete;
+						$hijo->getFleteFromID( $flete->get_FleteHijo() );
+						if($hijo->get_status() == 'Completo' || $hijo->get_status() == 'Cancelado'){
+							releaseEconomicoAndOperador($flete);
+						}
 					}
-					*/
+					
 				}
 
 				else if( $flete->get_FletePadre() ){
@@ -209,7 +215,7 @@ if(isset($_POST) && !empty($_POST)){
 						$padre->getFleteFromID( $flete->get_FletePadre() );
 						// Comprobar si el flete padre esta completo, para
 						// proceder al liberar economico y operador.
-						if($padre->get_status() == 'Completo'){
+						if($padre->get_status() == 'Completo' || $padre->get_status() == 'Cancelado' ){
 							releaseEconomicoAndOperador($flete);
 						}
 					}

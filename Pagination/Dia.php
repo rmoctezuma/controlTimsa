@@ -7,6 +7,7 @@ class Dia{
 	var $dia;
 
 	var $contenido;
+	var $contenidoFletes;
 
 	function Dia(){
 	}
@@ -74,15 +75,15 @@ class Dia{
 		$date = $this->getDateFromDay($this->dia, $this->anio);
 
 		$this->contenido .='<div class="accordion-heading">
-						      <a class="accordion-toggle" data-toggle="collapse" href="#dia'.$this->dia .'">
+						      <a class="accordion-toggle" data-toggle="collapse" href="#'.$this->dia .'">
 						         	'.$date->format('j F Y') .'
 						      </a>
 						    </div>';
 
-		$this->contenido .=	 '<div id="dia'. $this->dia .'" class="accordion-body collapse">
+		$this->contenido .=	 '<div anio="' . $this->anio . '" id="'. $this->dia .'" class="accordion-body collapse">
 						    		<div class="accordion-inner">';
 
-		$this->contenido .= '<table class="table table-hover">
+		$this->contenidoFletes .= '<table class="table table-hover">
 			 							<thead>
 			 								<tr>
 			 								    <th>#</th>
@@ -102,7 +103,7 @@ class Dia{
 
 		foreach($rows as $fila) {
 			 
-			$this->contenido .= '<tr class="'. $arrayEstado[$fila['statusA']] .'">
+			$this->contenidoFletes .= '<tr class="'. $arrayEstado[$fila['statusA']] .'">
 					                <td>'. $fila['idFlete'].' </td>
 					                <td>'. $fila['nombre']. $fila['apellidop']. $fila['apellidom'].' </td>
 					                <td>'. $fila['economico']. ' </td>
@@ -119,8 +120,10 @@ class Dia{
 			
 		}
 
-		$this->contenido .= '</tbody>
-			 				 </table>';
+		$this->contenidoFletes .= '</tbody>
+			 				 	   </table>';
+
+		$this->contenido .= $this->contenidoFletes;
 
 		$this->contenido.= ' <br>';
 
@@ -133,6 +136,10 @@ class Dia{
 	function getDateFromDay($dayOfYear, $year) {
 		  $date = DateTime::createFromFormat('z Y', strval($dayOfYear-1) . ' ' . strval($year));
 		  return $date;
+	}
+
+	function get_contenidoFletes(){
+		return $this->contenidoFletes;
 	}
 
 

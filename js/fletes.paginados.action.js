@@ -3,9 +3,13 @@ $(function(){
 
 	//Boton de detalle en tabla de fletes.
 	//Se despliega el detalle de los fletes, y las acciones a realizar sobre este.
-	$('.demo').click(function(e){
+	$('body').on('click', '.demo',   function(e){
 
 			e.preventDefault();
+
+			dia = $(this).parent().parent().parent().parent().parent().parent().attr('id');
+			anio = $(this).parent().parent().parent().parent().parent().parent().attr('anio');
+
 			var value =  $(this).parent().parent().children('td:eq(0)').text();//toma el id de la casilla
 			var viaje =  $(this).parent().parent().children('td:eq(6)').text();
 
@@ -14,6 +18,8 @@ $(function(){
 
 			$.ajax({
 		        beforeSend: function(){
+		        	$('#accordion3').empty();
+		            $('#accordion3').append("<img class='text-center' src='../img/loading.gif'>");
 		        },
 		            cache: false,
 		            type: "POST",
@@ -31,9 +37,12 @@ $(function(){
 		                	// Validad tipo de acción	                	
 		                	$('#accordion3').empty();
 		                	$('#accordion3').append(response.contenido);
-		                	$('#titulo').empty();//Se rellena el acordeon y se agrega un comando de navegacion
-		                	$('#titulo').append('<a href="#" id="back"><img src="http://control.timsalzc.com/Timsa/img/back-arrow.png" class="img-rounded"></a>  Detalles de Flete ' + value);
-		                	$('#titulo').val(value);
+		                	//Se rellena el acordeon y se agrega un comando de navegacion
+		                	$('#titulo').empty()
+		                				.append('<a href="#" id="back"><img src="http://control.timsalzc.com/Timsa/img/back-arrow.png" class="img-rounded"></a>  Detalles de Flete ' + value)
+		                				.val(value)
+		                				.data('dia', dia)
+		                				.data('anio', anio);
 
 						}
 
@@ -105,7 +114,37 @@ $('#confirmacionFlete').hide();
  			            url:"../includes/UpdateCamposFlete.php",
  			            data: parametros,
  			            success: function(response){
- 			            	alert(response.contenido);
+ 			            	$('#reutilizar').attr('disabled', true);
+ 			            	$('#finalizarFlete').attr('disabled', true);
+ 			            	$('#cancelarFlete').attr('disabled', true);
+ 			            	$('#definicionEstados').empty();
+ 			            	$('#confirmacionFlete').hide("fast");
+ 			            	$('#panelBotones').show("fast");
+
+
+ 			            	if($('#confirmar').data('action') == "cancelar"){
+ 			            		$('#textoEstado').attr('class', 'label label-important');
+ 			            		$('#textoEstado').empty();
+ 			            		$('#textoEstado').append('<h4>El Flete fue Cancelado</h4>');
+ 			            		$('#facturarFlete').attr('disabled', true);
+
+ 			            	}
+ 			            	else if($('#confirmar').data('action') == "terminar"){
+ 			            		$('#facturarFlete').attr('disabled', false);
+ 			            		$('#textoEstado').attr('class', 'label label-success');
+ 			            		$('#textoEstado').empty();
+ 			            		$('#textoEstado').append('<h4>Flete Completo</h4>');
+ 			            	}
+
+		            		 $('.botonesUpdate').each(function (index){
+		            		 	 	$(this).attr('disabled', true);
+		            		 	 	
+		            			});
+ 			            	
+
+ 			            	refrescarEstadoFlete();
+
+
  			            },
  			            error:function(xhr, ajaxOptions, thrownError){
 
@@ -504,7 +543,27 @@ $('#confirmarReutilizarFletes').hide();
 		            url:"../includes/UpdateCamposFlete.php",
 		            data: parametros,
 		            success: function(response){
-		            	alert(response.contenido);
+		            	if(status == 'Activo'){
+		            		$('#textoEstado').attr('class', 'label label-info');
+		            		$('#textoEstado').empty();
+		            		$('#textoEstado').append('<h4>Flete Activo</h4>');
+		            		$('#finalizarFlete').attr('disabled', true);
+		            	}
+		            	else if(status == 'Programado'){
+		            		$('#textoEstado').attr('class', 'label label-warning');
+		            		$('#textoEstado').empty();
+		            		$('#textoEstado').append('<h4>Flete Programado</h4>');
+		            		$('#finalizarFlete').attr('disabled', true);
+		            	}
+		            	else if(status == 'Pendiente Facturacion'){
+		            		$('#textoEstado').attr('class', 'label');
+		            		$('#textoEstado').empty();
+		            		$('#textoEstado').append('<h4>Flete Pendiente</h4>');
+		            		$('#finalizarFlete').attr('disabled', false);
+		            	}
+
+
+		            	refrescarEstadoFlete();
 		            },
 		            error:function(xhr, ajaxOptions, thrownError){
 
@@ -516,4 +575,35 @@ $('#confirmarReutilizarFletes').hide();
 	});
 
 });
+
+function refrescarEstadoFlete(){
+
+	parametros = { "dia" : $('#titulo').data('dia') ,
+				   "anio": $('#titulo').data('anio')
+				 }
+
+	$.ajax({
+        beforeSend: function(){
+        },
+            cache: false,
+            type: "POST",
+            dataType: "json",
+            url:"../includes/RefrescarEstadoFletes.php",
+            data: parametros,
+            success: function(response){
+
+            	var dia = $('#' + parametros.dia);
+            	dia.empty();
+            	dia.append(response.contenido);
+
+            },
+            error:function(xhr, ajaxOptions, thrownError){
+
+            	$('#loader .ajaxLoader').hide();
+                $('#accordion2').append('Error general del sistema, intente mas tarde');	
+                alert(xhr.responseText);               
+            }
+	});
+
+}
 

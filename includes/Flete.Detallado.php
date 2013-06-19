@@ -69,7 +69,7 @@ $contenido = "";
                            <div id="datosOperador">
 				                    <div class="span4">
 				                    	<img src="'.$operador->get_imagen().'">
-                              <button '. $disabledCancelado .' id="cambioOperador" class="btn btn-info btn-mini text-center">Cambiar Operador</button>
+                              <button '. $disabledCancelado .' id="cambioOperador" class="btn btn-info btn-mini text-center botonesUpdate">Cambiar Operador</button>
 				                    </div>
 				                    <div class="span8">
 				                      <h3> '. $operador->get_nombre() . ' ' . $operador->get_apellidop() .' ' . $operador->get_apellidom() .'</h3> <hr>
@@ -100,7 +100,7 @@ $contenido = "";
                                   <div id="datosEconomico">
        					                    <div class="span4">
        					                    	<img src="'.$socio->get_imagen().'">
-                                        <button '. $disabledCancelado .' id="cambioEconomico" class="btn btn-info btn-mini text-center">Cambiar Economico</button>
+                                        <button '. $disabledCancelado .' id="cambioEconomico" class="btn btn-info btn-mini text-center botonesUpdate">Cambiar Economico</button>
        					                    </div>
        					                    <div class="span6">
        					                      <h3> '. $economico->get_id()  .'</h3> <hr>
@@ -143,7 +143,7 @@ $contenido = "";
                                         <div id="datosCliente">
                					                    <div class="span4">
                					                    	<img src="'.$cliente->get_imagen().'">
-                                                <button '. $disabledCancelado .' id="cambioCliente" class="btn btn-info btn-mini text-center">Cambiar Cliente</button>
+                                                <button '. $disabledCancelado .' id="cambioCliente" class="btn btn-info btn-mini text-center botonesUpdate">Cambiar Cliente</button>
                					                    </div>
                					                    <div class="span6">
                					                      <h3> '. $cliente->get_nombre()  .'</h3> <hr>
@@ -232,50 +232,58 @@ $contenido = "";
 
                             $contenido .='</div><br>';
 
-                            $contenido .='<div class="span4">';
+                            $contenido .='<div class="span4">  ';
 
                              $contenido .='<h2>Estado</h2>';
 
                             switch ($estado) {
                               case 'Programado':
                                 $contenido .='
+                                              <span class="label label-warning" id="textoEstado"> <h4>Flete Programado</h4> </span>
+                                              <div id="definicionEstados">
                                               <p><input type="radio" name="status" value="Programado" checked> Programado</p>
                                               <p><input type="radio" name="status" value="Activo"> Activo</p>
                                               <p><input type="radio" name="status" value="Pendiente Facturacion"> Pendiente de Facturacion</p>
-                                              <button class="btn" id="cambiarEstado">Cambiar Status</button>';
+                                              <button class="btn" id="cambiarEstado">Cambiar Status</button>
+                                              </div>';
 
                                 break;
                               
                               case 'Activo':
                                 $contenido .='
+                                              <span class="label label-info" id="textoEstado"> <h4>Flete Activo</h4> </span>
+                                              <div id="definicionEstados">
                                               <p><input type="radio" name="status" value="Programado"> Programado</p>
                                               <p><input type="radio" name="status" value="Activo" checked> Activo</p>
                                               <p><input type="radio" name="status" value="Pendiente Facturacion"> Pendiente de Facturacion</p>
-                                              <button class="btn" id="cambiarEstado">Cambiar Status</button>';                                
+                                              <button class="btn" id="cambiarEstado">Cambiar Status</button>
+                                              </div>';                                
                                   break;
                               case 'Pendiente Facturacion':
                                 $contenido .='
+                                              <span class="label" id="textoEstado"> <h4>Flete Pendiente</h4> </span>
+                                              <div id="definicionEstados">
                                               <p><input type="radio" name="status" value="Programado"> Programado</p>
                                               <p><input type="radio" name="status" value="Activo"> Activo</p>
                                               <p><input type="radio" name="status" value="Pendiente Facturacion" checked> Pendiente de Facturacion</p>
-                                              <button class="btn" id="cambiarEstado">Cambiar Status</button>';                                
+                                              <button class="btn" id="cambiarEstado">Cambiar Status</button>
+                                              </div>';                                
                                   break;
                               case 'Completo':
-                                 $contenido .= '<h4> Flete Completo </h4>';
+                                 $contenido .= '<span id="textoEstado" class="label label-success"><h4> Flete Completo </h4></span>';
                                 break;
 
                               case 'Cancelado':
-                                $contenido .='<h4>El flete fue cancelado</h4>';
+                                $contenido .='<span id="textoEstado" class="label label-important"><h4>El flete fue cancelado</h4></span>';
                                 break;
                             }
-
-                            $contenido .='<h3>Documentacion</h3>';
 
                             $contenido .='</div>';
 
                             
 
                             $contenido .='<div class="span4" id="comentarios">
+                                          <h3>Documentacion</h3>
                                           <h4> Comentarios </h4>
                                           <textarea style="width: 316px; heighh:91px" readonly>
                                             '. $flete->get_comentarios() .'
