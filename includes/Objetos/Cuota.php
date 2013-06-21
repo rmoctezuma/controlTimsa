@@ -25,14 +25,17 @@ Class Cuota{
 	}
 
 	function getCuotaFromID($id){
-		try{
 
 			$PDOmysql = consulta();
 
 			$PDOmysql->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-			$sql = 'SELECT Cuota.Lugar,CuotaDetalle.Trafico,CuotaDetalle.TipoViaje, CuotaDetalle.Tarifa
-					FROM   Cuota,CuotaDetalle  WHERE Cuota.idCuota = :cuota';
+			$sql = 'SELECT Cuota.Lugar,CuotaDetalle.Trafico,CuotaDetalle.TipoViaje, CuotaDetalle.Tarifa,CuotaDetalle.numero
+					FROM   Cuota,CuotaDetalle  
+					WHERE 
+					Cuota.idCuota = :cuota
+					AND 
+					CuotaDetalle.Cuota_idCuota = :cuota';
 
 			$stmt = $PDOmysql->prepare($sql);
             $stmt->bindParam(':cuota', $id);
@@ -47,35 +50,46 @@ Class Cuota{
             	switch ($fila['Trafico']) {
             		case 'Reutilizado':
             			if($fila['TipoViaje'] == 'Sencillo'){
-            				$this->reutilizado['Sencillo'] = $fila['Tarifa'];
+            				$this->reutilizado['Sencillo'] = $fila['numero'];
             			}
             			else if($fila['TipoViaje'] == 'Full'){
-            				$this->reutilizado['Full'] = $fila['Tarifa'];
+            				$this->reutilizado['Full'] = $fila['numero'];
             			}
             			break;
             		case 'Importacion':
             			if($fila['TipoViaje'] == 'Sencillo'){
-            				$this->importacion['Sencillo'] = $fila['Tarifa'];
+            				$this->importacion['Sencillo'] = $fila['numero'];
             			}
             			else if($fila['TipoViaje'] == 'Full'){
-            				$this->importacion['Full'] = $fila['Tarifa'];
+            				$this->importacion['Full'] = $fila['numero'];
             			}
             			break;
             		case 'Exportacion':
             			if($fila['TipoViaje'] == 'Sencillo'){
-            				$this->exportacion['Sencillo'] = $fila['Tarifa'];
+            				$this->exportacion['Sencillo'] = $fila['numero'];
             			}
             			else if($fila['TipoViaje'] == 'Full'){
-            				$this->exportacion['Full'] = $fila['Tarifa'];	
+            				$this->exportacion['Full'] = $fila['numero'];	
             			}
             			break;		
             	}
             }
-		} catch(PDOException $e){
-
-		}
 
 		
+	}
+
+	function get_trafico($string){
+
+		if($string == 'Importacion'){
+			return $this->importacion;
+		}
+		else if($string == 'Exportacion'){
+			return $this->exportacion;
+		}
+		else if($string == 'Reutilizado'){
+			return $this->reutilizado;
+		}
+
 	}
 
 	public function __toString(){

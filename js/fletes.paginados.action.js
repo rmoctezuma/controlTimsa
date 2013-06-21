@@ -14,7 +14,8 @@ $(function(){
 			var viaje =  $(this).parent().parent().children('td:eq(6)').text();
 
 			var parametros = { "value" : value,
-								"viaje" : viaje}; //segun el id, se realiza la consulta del flete
+								"viaje" : viaje
+							 }; //segun el id, se realiza la consulta del flete
 
 			$.ajax({
 		        beforeSend: function(){
@@ -447,7 +448,9 @@ $('#confirmarReutilizarFletes').hide();
 
 	$('#cambio_cliente').live("change", function(){
 		parametros = { "cliente" : $('#cambio_cliente').val(),
-						"tipo"   : "Sucursal"  };
+						"tipo"   : "Sucursal" ,
+						"flete"  : $('#titulo').val(), 
+						"trafico": $('#trafico').text() };
 
 		$.ajax({
 			beforeSend: function(){
@@ -491,14 +494,24 @@ $('#confirmarReutilizarFletes').hide();
 						"value"  	: value,
 						"flete"		: flete }
 
-
-
 		if(tipo == 'Economico'){
 			var economico = $('#selectEconomicos').val();
 			parametros.economico = economico;
 
 			var socio = $('#nuevoSocio').val();
 			parametros.socio = socio;
+		}
+
+		else if(tipo == 'Cliente'){
+			var sucursal = $('#sucursal').val();
+			parametros.sucursal = sucursal;
+
+			var trafico = $('#viaje').val();
+			if(trafico){
+				parametros.trafico = trafico;
+			}
+
+			parametros.traficoAnterior =  $('#trafico').text();
 		}
 
 		$.ajax({
@@ -510,7 +523,8 @@ $('#confirmarReutilizarFletes').hide();
 			    url:"../includes/UpdateCamposFlete.php",
 			    data: parametros,
 			    success: function(response){
-			    	alert(response.contenido);
+			    	refrescarDetalle();
+			    	refrescarEstadoFlete();
 			    },
 			    error:function(xhr, ajaxOptions, thrownError){
 			        alert(xhr.responseText);
@@ -606,4 +620,63 @@ function refrescarEstadoFlete(){
 	});
 
 }
+
+function refrescarDetalle(){
+	parametros = { "dia" : $('#titulo').data('dia') ,
+				   "anio": $('#titulo').data('anio')
+				 }
+
+		value = $('#titulo').val();
+		parametros['value'] =  value;
+
+		if( valor =  $('#viaje').val()){
+			viaje = valor;
+		}
+		else{
+			viaje = $('#trafico').text();
+		}
+
+		parametros.viaje 	=  viaje;
+
+		$.ajax({
+	        beforeSend: function(){
+	        	$('#accordion3').empty();
+	            $('#accordion3').append("<img class='text-center' src='../img/loading.gif'>");
+	        },
+	            cache: false,
+	            type: "POST",
+	            dataType: "json",
+	            url:"../includes/Flete.Detallado.php",
+	            data: parametros,
+	            success: function(response){
+
+	            	// Validar mensaje de error
+
+	            		// si es exitosa la operación
+	                	// alert(response.contenido)		                	
+	                	// Validad tipo de acción	                	
+	                	$('#accordion3').empty();
+	                	$('#accordion3').append(response.contenido);
+	                	//Se rellena el acordeon y se agrega un comando de navegacion
+	                	$('#titulo').empty()
+	                				.append('<a href="#" id="back"><img src="http://control.timsalzc.com/Timsa/img/back-arrow.png" class="img-rounded"></a>  Detalles de Flete ' + value)
+	                				.val(value)
+	                				.data('dia', parametros.dia)
+	                				.data('anio', parametros.anio);
+
+					
+
+	            },
+	            error:function(xhr, ajaxOptions, thrownError){
+
+	            	$('#loader .ajaxLoader').hide();
+	                $('#accordion2').append('Error general del sistema, intente mas tarde');	
+	                $('#accordion3').empty();
+	                $('#accordion3').append( xhr.responseText);               
+
+	            }
+	        });
+
+}
+
 

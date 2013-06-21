@@ -106,7 +106,7 @@ Class Flete{
 			foreach ($rows as $fila) {
 				$this->Sucursal->getSucursalFromID($fila['Sucursal']);
 				$this->CuotaViaje  = new CuotaViaje;
-				$this->CuotaViaje->getCuotaFromid_cuota($fila['Cuota'] , $fila['tipoCuota']); 
+				$this->CuotaViaje->getCuotaFromid_cuota($fila['Cuota'] , $fila['TipoCuota']); 
 			}
 
 			#Contenedores

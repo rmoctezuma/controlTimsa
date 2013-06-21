@@ -27,7 +27,7 @@ $ruta = "";
 		      	move_uploaded_file($_FILES["archivo"]["tmp_name"],
           							"../img/". $num  . $_FILES["archivo"]["name"]  );
 
-		      	$mensaje = "Imagen de operador subida Correctamente";
+		      	$mensaje = "Imagen de cliente subida Correctamente";
 		      	$ruta .= '../img/' . $num .  $_FILES["archivo"]["name"];
 		      }
 
@@ -37,7 +37,7 @@ $ruta = "";
 		}
 
 		if($ruta == "" ){
-			$ruta = "../img/descarga.jpg";
+			$ruta = "../img/user3.png";
 		}
 
 

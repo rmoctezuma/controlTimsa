@@ -19,12 +19,14 @@ Class CuotaViaje{
 	}
 
 	function getCuotaFromid_cuota($id_cuota,$value){
-		try{
+	
 
 			$PDOmysql = consulta();
 
+			$PDOmysql->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
 			$sql = 'SELECT Trafico,TipoViaje,Tarifa,statusA
-					FROM   CuotaDetalle  WHERE Cuota_id_cuotaCuota = :cuota and numero = :value';
+					FROM   CuotaDetalle  WHERE Cuota_idCuota = :cuota and numero = :value';
 
 			$stmt = $PDOmysql->prepare($sql);
             $stmt->bindParam(':cuota', $id_cuota);
@@ -41,9 +43,6 @@ Class CuotaViaje{
             	$this->tarifa = $fila['Tarifa'];
             }
 
-		} catch(PDOException $e){
-
-		}
 	}
 
 	public function getDetalleCuota(){

@@ -22,7 +22,7 @@ $status = $_POST['status'];
  
 $mysqli = consulta(); //recibe la conexion a la base de datos.
 
-	try {
+	
 		$mysqli->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION); // pone el conector a producir errores.
 																		  // de esta manera se puede colocar el rollback en 
 																		 //  la transaccion.	
@@ -83,7 +83,8 @@ $mysqli = consulta(); //recibe la conexion a la base de datos.
 
 						//Comprueba los resultados obtenidos en la consulta. Al ser diferente de null,
 						//el contenedor existe y no se hace nada, de otra manera se inserta.
-						if($rows != null){
+						$respuesta =  $stmt->rowCount() ? true : false;
+						if($respuesta){
 
 						}
 						else{
@@ -122,12 +123,12 @@ $mysqli = consulta(); //recibe la conexion a la base de datos.
 			//Creacion de flete Correcta, se inserta todo lo establecido.
 			$mysqli->commit();
 
-	} catch(PDOException $ex) {
+	/*} catch(PDOException $ex) {
 	    //Something went wrong rollback!
 	    $mysqli->rollBack();
 	    $ex->getMessage();
 	    $respuestaOK = $ex;
-	}
+	}*/
 
 }
 $salidaJson = array("agencia" => $agencia,

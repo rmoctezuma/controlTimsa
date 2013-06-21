@@ -5,6 +5,7 @@ require_once("Objetos/Economico.php");
 require_once("Objetos/Cliente.php");
 require_once("Objetos/Flete.php");
 require_once("Objetos/Update.php");
+require_once("Objetos/Sucursal.php");
 
 $contenido = "";
 
@@ -168,9 +169,39 @@ if(isset($_POST) && !empty($_POST)){
 			break;
 
 		case 'Cliente':
+			// Obtiene la cuota anterior del flete
+			$cuota = $flete->get_CuotaViaje();
 
-			$clienteActual = $flete->get_Sucursal();
+			//Coloca el trafico a como el usuario desee, sino lo pone como estaba en el flete.
+			$trafico = "";
+
+			if (isset($_POST['trafico']) && !empty($_POST['trafico'])) {
+				$trafico = $_POST['trafico'];
+			}
+			else{
+				$trafico = $cuota->get_trafico();
+			}
+			//Obtiene el tipo de viaje
+			$tipoViaje = $cuota->get_tipoViaje();
+			//Crea un objeto sucursal con los datos obtenidos, para obtener su cuota.
+			$sucursal = new Sucursal;
+			$sucursal->getSucursalFromID( $_POST['sucursal'] );
+			//Obtiene la cuota que ira en el flete.
+			$nuevaCuota = $sucursal->get_Cuota();
+			$viaje = $nuevaCuota->get_trafico( $trafico );
+
+			//Estos son los numeros que iran en la cuota del flete.
+			$numero = $viaje[$tipoViaje];
+			$cuotaNueva .=  $nuevaCuota->get_id() ;
+
+			$camposUpdate = array('TipoCuota' => $numero,
+			 					  'Cuota'     => $cuotaNueva,
+			 					  'Sucursal'  => $_POST['sucursal'] 
+			 					  );
+			cambiarCuota($camposUpdate, $flete);
+
 			$contenido .= "Flete Actualizado";
+
 			break;
 
 		case 'Status':
@@ -217,6 +248,10 @@ if(isset($_POST) && !empty($_POST)){
 						// proceder al liberar economico y operador.
 						if($padre->get_status() == 'Completo' || $padre->get_status() == 'Cancelado' ){
 							releaseEconomicoAndOperador($flete);
+						}
+
+						if($_POST['tipo_cambio'] == "Cancelado"){
+							removerHijo($padre);
 						}
 					}
 				}
@@ -270,6 +305,25 @@ echo json_encode($resultados);
 		$camposWhereUpdate = array("idFlete" => $flete->get_idFlete() );
 
 		$update->prepareUpdate("Flete", $camposUpdate, $camposWhereUpdate);
+		$update->createUpdate();
+	}
+
+	function removerHijo($flete){
+		$update = new Update();
+		$camposUpdate =  array( "FleteHijo" => null );
+
+		$camposWhereUpdate = array("idFlete" => $flete->get_idFlete() );
+
+		$update->prepareUpdate("Flete", $camposUpdate, $camposWhereUpdate);
+		$update->createUpdate();
+	}
+
+	function cambiarCuota($camposUpdate, $flete){
+		$update = new Update;
+		
+		$camposWhereUpdate = array("NumFlete" => $flete->get_idFlete() );
+
+		$update->prepareUpdate("Cuota_Flete", $camposUpdate, $camposWhereUpdate);
 		$update->createUpdate();
 	}
 

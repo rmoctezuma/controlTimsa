@@ -290,6 +290,19 @@ $contenido = "";
                                           </textarea>
                                           </div>';
 
+                            $cuota = $flete->get_CuotaViaje();
+
+                            $contenido .='<div class="span4" id="datosViaje">
+                                            <dl>
+                                              <dt>Tipo de Viaje </dt>
+                                              <dd id="tipoViaje">'. $cuota->get_tipoViaje() .'</dd>
+                                              <dt>Trafico</dt>
+                                              <dd id="trafico">'. $cuota->get_trafico() .'</dd>
+                                              <dt> Tarifa </dt>
+                                              <dd> '. $cuota->get_tarifa() .' </dd>
+                                            </dl>
+                                          </div>';
+
 
        }
        else{

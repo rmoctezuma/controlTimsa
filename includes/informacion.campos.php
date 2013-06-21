@@ -102,7 +102,7 @@ if(isset($_POST) && !empty($_POST)){
 
 			}
 
-			$contenido .= '</select></td></tr><table>';
+			$contenido .= '</select></td></tr></table>';
 
 			break;
 
@@ -129,7 +129,8 @@ if(isset($_POST) && !empty($_POST)){
 
 			$contenido .= '</select>
 							</td>
-							</tr>';
+							</tr>
+							</table>';
 
 
 			$contenido.='</div>';
@@ -143,7 +144,12 @@ if(isset($_POST) && !empty($_POST)){
 
 			if ($sucursales->hasNext()) {
 
-				$contenido .= '<select id="sucursal">';
+				$contenido .= '<div>
+								<table>
+									<tr>
+									<td> <label> Selecciona Sucursal </label> </td>
+									<td>
+									<select id="sucursal">';
 
 				while ($sucursales->hasNext() ) {
 					$elemento = $sucursales->getElement();
@@ -153,14 +159,39 @@ if(isset($_POST) && !empty($_POST)){
 								  </option>';
 				}
 
-				$contenido .= '</select>';
+				$contenido .= '</select></td>';
+
+				if($_POST['trafico'] !== 'Reutilizado'){
+					$flete = new Flete;
+					$flete->getFleteFromID($_POST['flete']);
+
+					if(! $flete->get_FleteHijo() ){
+
+						$contenido .= '<tr>
+										<td> <label> Selecciona Tipo de Viaje </label> </td>
+										<td>
+										<select id="viaje">
+											<option value ="Importacion"> Importacion </option>
+											<option value ="Exportacion"> Exportacion </option>
+										</select><td>
+										</tr>';
+					}
+					
+				}
+
+				
 
 				$contenido .= '<tr><td><button class="btn btn-primary update"> Cambiar </button>';
 				$contenido .= '<button class="btn cancelar"> Cancelar </button></td></tr>';
+
+				$contenido .= '</table>
+								</div>';
 				
 			}
 			else{
 				$contenido .= "No existen Sucursales para este cliente";
+				$contenido .= '<div>
+							<table><tr><td><button class="btn cancelar"> Cancelar </button></td></tr></table></div>';
 			}
 
 			break;
