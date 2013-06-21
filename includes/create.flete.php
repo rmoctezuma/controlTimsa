@@ -27,7 +27,7 @@ $mysqli = consulta(); //recibe la conexion a la base de datos.
 																		  // de esta manera se puede colocar el rollback en 
 																		 //  la transaccion.	
 
-		$mysqli->beginTransaction(); // comienza transaccion.
+		//$mysqli->beginTransaction(); // comienza transaccion.
 
 		// Coloca el estatus del operador a ocupado. (se encuentra en un flete)
 
@@ -73,11 +73,13 @@ $mysqli = consulta(); //recibe la conexion a la base de datos.
 				if($contenedor[$contador] == null || $contenedor[$contador] == "" ){
 					continue;
 				}
+					
+						$referencia = $contenedor[$contador];
 
 						// Busca en la base de datos, para saber si el contenedor a manejar, ya esta registrado.
 						$sql = 'select idContenedor from Contenedor where idContenedor = :contenedor';
 						$stmt = $mysqli->prepare($sql);
-						$stmt->bindParam(':contenedor', $contenedor[$contador]);
+						$stmt->bindParam(':contenedor', $referencia);
 						$stmt->execute();
 						$rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
@@ -88,6 +90,7 @@ $mysqli = consulta(); //recibe la conexion a la base de datos.
 
 						}
 						else{
+							
 								$sql = 'insert into Contenedor(idContenedor,Tipo) values(:contenedor, :tipo);';
 								$stmt = $mysqli->prepare($sql);
 								$stmt->bindParam(':contenedor', $contenedor[$contador]);
@@ -103,7 +106,7 @@ $mysqli = consulta(); //recibe la conexion a la base de datos.
 				$stmt->bindParam(':workorder', $workOrder[$contador]);
 				$stmt->bindParam(':booking', $booking[$contador]);
 				$stmt->bindParam(':flete', $insertId);
-				$stmt->bindParam(':contenedor', $contenedor[$contador]);
+				$stmt->bindParam(':contenedor', $contenedor[$contador] );
 				$stmt->execute();
 						//Itera para saber el numero de sellos.
 					for($nuevoContador = 0; $nuevoContador < count($sello[$contador]); $nuevoContador++){
@@ -121,7 +124,7 @@ $mysqli = consulta(); //recibe la conexion a la base de datos.
 					}
 			}
 			//Creacion de flete Correcta, se inserta todo lo establecido.
-			$mysqli->commit();
+			//$mysqli->commit();
 
 	/*} catch(PDOException $ex) {
 	    //Something went wrong rollback!

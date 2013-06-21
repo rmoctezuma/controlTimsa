@@ -36,7 +36,7 @@ if(isset($_POST) && !empty($_POST)){
 		$contenido.='<div>';
 		$contenido.='<div span4>';
 		$contenido.='<h4>Datos Principales </h4>';
-		$contenido.='<input type="text" name="contenedor'.($contador +1).'" class="contenedorInput" placeholder="Nombre Contenedor">';
+		$contenido.='<input type="text" maxlength="15" name="contenedor'.($contador +1).'" class="contenedorInput" placeholder="Nombre Contenedor">';
 		$contenido.='<input type="text" name="workorder'.($contador +1).'" class="contenedorInput" placeholder="WorkOrder">';
 		$contenido.='</div>';
 		$contenido.='<div span4>';
