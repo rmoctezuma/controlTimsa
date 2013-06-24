@@ -134,6 +134,8 @@ require_once("Objetos/Flete.php");
                                           $valores = array("40HC", "40DC", "20HC", "20DC");
                                           if(is_object($contenedores[$i])) {
                                                 $tipoContenedor = $contenedores[$i]->get_tipo();
+                                                $pieces = explode(" ", $tipoContenedor);
+                                                $tipoContenedor = $pieces[1];
                                               }
                                               else{
                                                 $tipoContenedor = "40HC";

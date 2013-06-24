@@ -7,6 +7,7 @@ require_once("Objetos/ListaSucursales.php");
 require_once("Objetos/Flete.php");
 
 $contenido = "";
+$tipoDeViaje = "";
 
 if(isset($_POST) && !empty($_POST)){
 	switch ($_POST['tipo']) {
@@ -136,11 +137,88 @@ if(isset($_POST) && !empty($_POST)){
 			$contenido.='</div>';
 			break;
 
+		case 'Viaje':
+
+		$contenido .= '<div class="container">';
+
+			$contenido .= '<form id="contenedores">';
+			$contenido .= '<input type="hidden" value="Contenedor" name="tipo">';
+			$contenido .= '<input type="hidden" value="'. $_POST['flete'] .'" name="flete">';
+
+			$flete = new Flete;
+			$flete->getFleteFromID( $_POST['flete'] );
+			$cuota = $flete->get_CuotaViaje();
+
+			$trafico = $cuota->get_trafico();
+
+			$contenedores = $flete->get_listaContenedores()->get_contenedores();
+			if(count($contenedores) > 1){
+			     $tipoDeViaje = "Full";
+			}
+			else{
+			    $tipoDeViaje = "Sencillo";  
+			}
+
+			$contenido .= '<h2>Tipo de Viaje </h2>';
+			$contenido .= '<table><tr>';
+			$contenido .= '<td><input name="tipoTrafico" type="text" value="'. $trafico .'" readonly></td><td></td>';
+			$contenido .= '</tr></table>';
+			$contenido .= '<div id="opcionesViaje">';
+			$contenido .= '<label style="display:inline"> &nbspSencillo  </label><input required  type="radio" name="tipoViaje" value="Sencillo" >';
+			$contenido .= '<label style="display:inline"> &nbsp Full  </label> <input  required type="radio" name="tipoViaje" value="Full" >';
+			$contenido .= '</div>';
+			$contenido .= '<br><br>';
+
+			$contenido .= '<div id="nuevosContenedores" class="container">';
+			for ($i=0; $i < 2; $i++){
+			      $contenido .= ' <div class="span3" id="contenedor'.($i+1).'">
+
+			                        <label>Contenedor</label>  <input  required name="contenedor'.($i+1).'" type="text" value="'.$contenedores[$i].'">
+			                        <label>Tamaño </label> 
+			                        <select name="tamaño'.($i+1).'" >';
+
+			                        $valores = array("40HC", "40DC", "20HC", "20DC");
+			                        if(is_object($contenedores[$i])) {
+			                              $tipoContenedor = $contenedores[$i]->get_tipo();
+			                              $pieces = explode(" ", $tipoContenedor);
+			                              $tipoContenedor = $pieces[1];
+
+			                              $workorder = $contenedores[$i]->get_workorder();
+			                              $booking = $contenedores[$i]->get_booking();
+			                            }
+			                            else{
+			                              $tipoContenedor = "40HC";
+			                              $workorder = "";
+			                              $booking = "";
+			                            }
+
+			                        for ($e=0; $e < count($valores); $e++) {
+			                              if($tipoContenedor == $valores[$e]){ 
+			                                    $contenido.= '<option value="'.$valores[$e].'" selected> '.$valores[$e].'</option>';
+			                              }
+			                              else{
+			                                    $contenido.= '<option value="'.$valores[$e].'"> '.$valores[$e].'</option>';  
+			                              }
+			                        }
+			                               
+			       $contenido .= '</select>
+			                        <label>WorkOrder</label><input  required name="workorder'.($i+1).'" value="'. $workorder .'" type="text">
+			                        <label>Booking</label>   <input required name="booking'.($i+1).'" value="'. $booking .'" type="text">                                            
+			                  </div>';
+			}
+			
+
+			$contenido .= '</div>
+							<input type="submit" id="salvarContenedores"  class="btn btn-primary"  value="salvar">
+							<input type="reset" id="cancelarContenedores" class="btn" value="cancelar"> ';
+
+			$contenido .= '</form>';
+
+			break;
+
 		case 'Sucursal':
 			$sucursales = new ListaSucursales;
 			$sucursales->getSucursalesFromCliente($_POST['cliente']);
-
-
 
 			if ($sucursales->hasNext()) {
 
@@ -198,7 +276,8 @@ if(isset($_POST) && !empty($_POST)){
 	}
 }
 
-$resultados  = array('contenido' => $contenido);
+$resultados  = array('contenido' => $contenido,
+					 'viaje' => $tipoDeViaje);
 
 echo json_encode($resultados);
 

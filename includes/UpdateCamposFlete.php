@@ -7,13 +7,15 @@ require_once("Objetos/Flete.php");
 require_once("Objetos/Update.php");
 require_once("Objetos/Sucursal.php");
 
-$contenido = "";
 
 if(isset($_POST) && !empty($_POST)){
  
 	$flete = new Flete;
-	$flete->getFleteFromID($_POST['flete']);
-	$numeroFlete = $_POST['flete'];
+
+	$numeroFlete = trim($_POST['flete']);
+
+	$flete->getFleteFromID($numeroFlete);
+
 
 	switch ($_POST['tipo']) {
 		case 'Operador':
@@ -204,6 +206,34 @@ if(isset($_POST) && !empty($_POST)){
 
 			break;
 
+		case 'Contenedor':
+			if($_POST['tipoViaje'] == 'Sencillo'){
+				$contador = 1;
+			}
+			else{
+				$contador = 2;
+				//Aqui debe ir la logica de cambio de cuota.
+			}
+
+			$cuota = $flete->get_CuotaViaje();
+			$trafico = $cuota->get_trafico();
+			$contenedores = $flete->get_listaContenedores()->get_contenedores();
+
+			for($x = 1; $x <= $contador ; $x++ ){
+				$contenedor = $_POST['contenedor' . $x];
+				$workorder =  $_POST['workorder' . $x];
+				$booking    = $_POST['booking' . $x];
+				$tamanio   =  $_POST['tamaño' . $x];
+
+
+				actualizarContenedor($contenedor, $workorder, $booking, $tamanio, $contenedores[($x-1)]->get_id(), $flete);
+			}
+
+			$contenido .= 'Flete Actualizado';
+
+			
+			break;
+
 		case 'Status':
 			$statusNuevo = $_POST['nuevoStatus'];
 			$numeroFlete = $_POST['flete'];
@@ -325,6 +355,23 @@ echo json_encode($resultados);
 
 		$update->prepareUpdate("Cuota_Flete", $camposUpdate, $camposWhereUpdate);
 		$update->createUpdate();
+	}
+
+	function actualizarContenedor($contenedor, $workorder, $booking, $tamanio, $contenedorActual, $flete){
+		if($contenedor == $contenedorActual){
+
+			$update = new Update;
+			
+			$camposUpdate =  array("WorkOrder" => $workorder, "Booking" => $booking );
+			$camposWhereUpdate = array("Flete_idFlete" => $flete->get_idFlete(), "Contenedor" => $contenedorActual );
+
+			$update->prepareUpdate("Contenedor_Viaje", $camposUpdate, $camposWhereUpdate);
+			$update->createUpdate();
+
+		}
+		else{
+			
+		}
 	}
 
 ?>

@@ -251,7 +251,7 @@ function placeMarker(imagen, location, nombreSucursal ,id) {
 
                        $.get("../includes/cuotas.sucursales.php",
                          function(data) {
-                            newhtml = html + contenidoNuevo  +  data.respuesta + html2;
+                            newhtml =  html+ contenidoNuevo +   contenidoHTML +  data.respuesta + html2;
                             temporalInfoWindow.setContent(newhtml);
                             temporalInfoWindow.open(map,temporalMarker);
 

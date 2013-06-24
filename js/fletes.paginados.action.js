@@ -588,6 +588,110 @@ $('#confirmarReutilizarFletes').hide();
 			});
 	});
 
+	$('#editarViaje').live('click', function(){
+		container = $(this).parent();
+
+			parametros = { "tipo" : "Viaje",
+							"flete" : $('#titulo').val()
+						 };
+
+			$.ajax({
+		        beforeSend: function(){
+		        },
+		            cache: false,
+		            type: "POST",
+		            dataType: "json",
+		            url:"../includes/informacion.campos.php",
+		            data: parametros,
+		            success: function(response){
+		            			container.data('contenido', container.html() )
+				 						 .empty()
+				 						 .append(response.contenido);
+
+
+				 				var $radios = $('#opcionesViaje').children('input:radio[name=tipoViaje]');
+							    if($radios.is(':checked') === false) {
+							    	if(response.viaje == "Sencillo"){
+							    		$radios.filter('[value=Sencillo]').prop('checked', true);
+							    		$radios.filter('[value=Sencillo]').click();
+							    	}
+							    	else if (response.viaje == "Full") {
+							        	$radios.filter('[value=Full]').prop('checked', true);
+							        }
+							        else{
+							        	$('#alertas').append("<div class='alert'>\
+								                               <button type='button' class='close' data-dismiss='alert'>&times;</button>\
+								                               <strong>Observacion.</strong> El flete no llevaba contenedores\
+								                              </div>'"
+							                              	);
+							        }
+							    
+		            	}
+		            	else{
+		            		$('#nuevosContenedores').hide();
+		            	}
+
+
+		            },
+		            error:function(xhr, ajaxOptions, thrownError){
+
+		            	$('#loader .ajaxLoader').hide();
+		                $('#accordion2').append('Error general del sistema, intente mas tarde');	
+		                alert(xhr.responseText);               
+		            }
+			});
+
+	});
+
+	$('.editarContenedor').live('click', function(){
+		alert("edidtar");
+	});
+
+	$('.eliminarSello').live('click', function(){
+		alert("edidtar");
+	});
+
+	$('.agregarSello').live('click', function(){
+		alert("edidtar");
+	});
+
+
+	$('#salvarContenedores').live('click', function(a){
+
+
+		if($('#contenedores').valid()){
+				parametros =  $('#contenedores').serialize();	
+
+				$.ajax({
+			        beforeSend: function(){
+			        },
+			            cache: false,
+			            type: "POST",
+			            dataType: "json",
+			            url:"../includes/UpdateCamposFlete.php",
+			            data: parametros,
+			            success: function(response){
+			            	alert(response.contenido);
+			            },
+			            error:function(xhr, ajaxOptions, thrownError){
+
+			            	$('#loader .ajaxLoader').hide();
+			                $('#accordion2').append('Error general del sistema, intente mas tarde');	
+			                alert(xhr.responseText);               
+			            }
+				});
+		}
+		a.preventDefault();
+	});
+
+
+
+	$('#cancelarContenedores').live('click', function(a){
+		contenido = $('#nuevosContenedores').parent().parent().parent();
+		contenido.empty()
+				 .append(contenido.data('contenido') );
+	});
+
 });
 
 function refrescarEstadoFlete(){

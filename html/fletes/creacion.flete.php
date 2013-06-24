@@ -179,7 +179,7 @@ try {
 	                		<div id="botonGroupTrafico"  class="btn-group" data-toggle="buttons-radio">
 	                			<button type="button" class="btn btn-large" data-toggle="button">Importacion</button>
 	                			<button type="button" class="btn btn-large" data-toggle="button">Exportacion</button>
-	                			<button type="button" class="btn btn-large" data-toggle="button">Reutilizado</button>
+	                			<!--<button type="button" class="btn btn-large" data-toggle="button">Reutilizado</button>-->
 	                		</div>
 	                		<br>
 	                		<br>

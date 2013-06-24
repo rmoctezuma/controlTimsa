@@ -168,10 +168,10 @@ $contenido = "";
 
                               $contenedores =    $flete->get_listaContenedores()->get_contenedores();
 
-                              $contenidoContenedores = "";
+                              $contenidoContenedores = "<button id='editarViaje' class='btn btn-large'> Editar Viaje </button>";
 
                               for ($i=0; $i < count($contenedores); $i++) {
-                                    $contenidoContenedores .= '<div>
+                                    $contenidoContenedores .= '<div class="contenedor">
                                                                 <dl class="dl-horizontal">
                                                                   <dt>Contenedor</dt>
                                                                   <dd>'.$contenedores[$i]->get_id().'</dd>
@@ -181,6 +181,8 @@ $contenido = "";
                                                                   <dd>'.$contenedores[$i]->get_workorder().'</dd>
                                                                   <dt>Booking</dt>
                                                                   <dd>'.$contenedores[$i]->get_booking().'</dd>
+                                                                  <dt> Modificar </dt>
+                                                                  <dd> <button class="btn btn-inverse btn-mini editarContenedor"> modificar </button> </dd>
                                                                 </dl>';
 
                                                                 $sellos = $contenedores[$i]->get_sellos();
@@ -191,6 +193,7 @@ $contenido = "";
                                                                                           <th>#</th>
                                                                                           <th>Sello</th>
                                                                                           <th>Fecha</th>
+                                                                                          <th>Accion</th>
                                                                                         </thead>
                                                                                         <tbody>';
 
@@ -201,10 +204,12 @@ $contenido = "";
                                                                                            <td>'.$sello->get_numero_sello().'</td>
                                                                                            <td>'.$sello->get_sello() .'</td>
                                                                                            <td><input type="datetime" readonly value="'. $sello->get_fecha_sellado() .'"</td>
+                                                                                           <td> <button class="btn btn-mini eliminarSello" > Eliminar Sello </button> </td>
                                                                                         </tr>';
                                                                 }
 
-                                                                $contenidoDeSellos .= ' </tbody>
+                                                                $contenidoDeSellos .= '   <tr> <td> <button class="btn agregarSello">Agregar Sello</button> </td> </tr>
+                                                                                        </tbody>
                                                                                       </table>
                                                                                       </div>';
 
