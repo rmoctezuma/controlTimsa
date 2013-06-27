@@ -27,7 +27,7 @@ $mysqli = consulta(); //recibe la conexion a la base de datos.
 																		  // de esta manera se puede colocar el rollback en 
 																		 //  la transaccion.	
 
-		//$mysqli->beginTransaction(); // comienza transaccion.
+		$mysqli->beginTransaction(); // comienza transaccion.
 
 		// Coloca el estatus del operador a ocupado. (se encuentra en un flete)
 
@@ -124,7 +124,7 @@ $mysqli = consulta(); //recibe la conexion a la base de datos.
 					}
 			}
 			//Creacion de flete Correcta, se inserta todo lo establecido.
-			//$mysqli->commit();
+			$mysqli->commit();
 
 	/*} catch(PDOException $ex) {
 	    //Something went wrong rollback!

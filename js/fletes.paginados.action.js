@@ -643,16 +643,184 @@ $('#confirmarReutilizarFletes').hide();
 
 	});
 
-	$('.editarContenedor').live('click', function(){
-		alert("edidtar");
+	$('.modificarContenedor').live('click', function(){
+		that = $(this);
+
+		if(that.text() === "Cancelar"){
+			
+			that.parent().children('input').attr('readonly', true);
+			boton = that.parent().parent().children().children('.btn-info');
+			boton.removeClass('btn-info').addClass('btn-inverse').text("Modificar");
+			that.remove();
+			refrescarDetalle();
+			
+			return;
+		}
+
+		contenedor = that.parent().parent().children('dd').children('.contenedorDeViaje');
+		select = that.parent().parent().children('dd').children('select');
+		workorder = that.parent().parent().children('dd').children('.workorderDeViaje');
+		booking = that.parent().parent().children('dd').children('.bookingDeViaje');
+
+		if(contenedor.attr('readonly')){
+			that.removeClass('btn-inverse').addClass('btn-info').text("Enviar");
+			contenedor.attr('readonly', false);
+			contenedor.parent().append('<button class="btn btn-mini modificarContenedor cancelarmodificarContenedor">Cancelar</button>');
+			
+			select.attr('readonly', false);
+			select.attr('disabled', false);
+			workorder.attr('readonly', false);
+			booking.attr('readonly', false);
+		}
+		else{
+			that.removeClass('btn-info').addClass('btn-inverse').text("Modificar");
+			contenedor.attr('readonly', true);
+			select.attr('readonly', true);
+			select.attr('disabled', true);
+			workorder.attr('disabled', true);
+			booking.attr('disabled', true);
+			
+			parametros = {  "tipo" : "ModificarContenedor",
+						     "flete": $('#titulo').val(),
+						     "contenedor" : that.val(),
+						     "nuevoContenedor" : contenedor.val(),
+						     "tipoContenedor"  : select.val(),
+						     "workorder"		: workorder.val(),
+						     "booking"			: booking.val()
+						 };
+
+			$.ajax({
+				beforeSend: function(){
+				},
+				    cache: false,
+				    type: "POST",
+				    dataType: "json",
+				    url:"../includes/UpdateCamposFlete.php",
+				    data: parametros,
+				    success: function(response){
+				    	alert("Se envio");
+				    	alert(response.contenido);
+				    },
+				    error:function(xhr, ajaxOptions, thrownError){
+				        alert(xhr.responseText);
+				        alert("error");
+				    }
+			});
+
+			
+
+		}
+
 	});
 
 	$('.eliminarSello').live('click', function(){
-		alert("edidtar");
+			parametros = { "tipo" : "EliminarSello",
+							"flete" : $('#titulo').val(),
+							"contenedor" : $(this).val()
+						 };
+
+			$.ajax({
+		        beforeSend: function(){
+		        },
+		            cache: false,
+		            type: "POST",
+		            dataType: "json",
+		            url:"../includes/UpdateCamposFlete.php",
+		            data: parametros,
+		            success: function(response){
+		            	refrescarDetalle();
+		            },
+		            error:function(xhr, ajaxOptions, thrownError){   
+		            	alert("error");          
+		            }
+			});
+	});
+
+	$('.editarSello').live('click', function(){
+
+		if($(this).text() === "Cancelar"){
+			
+			that = $(this);
+			that.parent().children('input').attr('readonly', true);
+			boton =  
+			that.parent().parent().children().children('.btn-info');
+			boton.removeClass('btn-info');
+			boton.text("Modificar Sello");
+			that.remove();
+
+			refrescarDetalle();
+			
+			return;
+		}
+
+		sello = $(this).parent().parent().children('td').children('input[class=muestraSello]');
+		if(sello.attr('readonly')){
+			$(this).addClass('btn-info').text("Enviar");
+			sello.attr('readonly', false);
+			sello.parent().append('<button class="btn btn-mini editarSello cancelarEdicionSello">Cancelar</button>')
+		}
+		else{
+			$(this).removeClass('btn-info').text("Modificar Sello");
+			sello.attr('readonly', true);
+
+			contenedor = $(this).parent('td').parent('tr').parent('tbody').children('tr').children('td').children('.agregarSello');
+
+			parametros = {   "sello" : sello.val(),
+						     "tipo" : "Sello" ,
+						     "flete": $('#titulo').val(),
+						     "contenedor" : contenedor.val(),
+						     "numero" : $(this).val()
+						 };
+
+			$.ajax({
+				beforeSend: function(){
+				},
+				    cache: false,
+				    type: "POST",
+				    dataType: "json",
+				    url:"../includes/UpdateCamposFlete.php",
+				    data: parametros,
+				    success: function(response){
+				    	contenedor.attr("readonly", true);
+				    	boton = contenedor.parent().parent().parent().children().children().children('.cancelarEdicionSello');
+				    	boton.remove();
+				    },
+				    error:function(xhr, ajaxOptions, thrownError){
+				        alert(xhr.responseText);
+				        alert("error");
+				    }
+			});
+
+		}
+		
 	});
 
 	$('.agregarSello').live('click', function(){
-		alert("edidtar");
+		 
+
+		 var flete = $('#flete').val();
+
+		 parametros = { "flete" 	: flete,
+		 				"contenedor": $(this).val(),
+		 				"sello"     : $(this).parent().children('input[type=text]').val(),
+		 				"tipo" 		: "Sellos" }
+
+		 $.ajax({
+		 	beforeSend: function(){
+		 	},
+		 	    cache: false,
+		 	    type: "POST",
+		 	    dataType: "json",
+		 	    url:"../includes/UpdateCamposFlete.php",
+		 	    data: parametros,
+		 	    success: function(response){
+		 	    	refrescarDetalle();
+		 	    },
+		 	    error:function(xhr, ajaxOptions, thrownError){
+		 	        alert(xhr.responseText);
+		 	        alert("error");
+		 	    }
+		 });
 	});
 
 
@@ -672,6 +840,7 @@ $('#confirmarReutilizarFletes').hide();
 			            data: parametros,
 			            success: function(response){
 			            	alert(response.contenido);
+			            	refrescarDetalle();
 			            },
 			            error:function(xhr, ajaxOptions, thrownError){
 

@@ -168,21 +168,37 @@ $contenido = "";
 
                               $contenedores =    $flete->get_listaContenedores()->get_contenedores();
 
-                              $contenidoContenedores = "<button id='editarViaje' class='btn btn-large'> Editar Viaje </button>";
+                              $contenidoContenedores = "<button id='editarViaje' class='btn btn-large btn-info'> Editar Viaje </button>";
 
                               for ($i=0; $i < count($contenedores); $i++) {
                                     $contenidoContenedores .= '<div class="contenedor">
                                                                 <dl class="dl-horizontal">
                                                                   <dt>Contenedor</dt>
-                                                                  <dd>'.$contenedores[$i]->get_id().'</dd>
+                                                                  <dd> <input type="text" value="'.$contenedores[$i]->get_id().'" class="contenedorDeViaje" readonly></dd>
                                                                   <dt>Tipo</dt>
-                                                                  <dd>'.$contenedores[$i]->get_tipo().'</dd>
+                                                                  <dd>
+                                                                    <select class="tipoContenedorDeViaje" readonly disabled>';
+
+                                    $valores        = array("40HC", "40DC", "20HC", "20DC");                               
+                                    $tipoContenedor =   $contenedores[$i]->get_tipo();
+
+                                    for ($e=0; $e < count($valores); $e++) {
+                                          if($tipoContenedor == $valores[$e]){ 
+                                                $contenidoContenedores.= '<option value="'.$valores[$e].'" selected> '.$valores[$e].'</option>';
+                                          }
+                                          else{
+                                                $contenidoContenedores.= '<option value="'.$valores[$e].'"> '.$valores[$e].'</option>';  
+                                          }
+                                    }
+                                                                    
+                                    $contenidoContenedores .=       '</select>
+                                                                  </dd>
                                                                   <dt>WorkOrder</dt>
-                                                                  <dd>'.$contenedores[$i]->get_workorder().'</dd>
+                                                                  <dd> <input type="text" value="'.$contenedores[$i]->get_workorder().' " class="workorderDeViaje" readonly></dd>
                                                                   <dt>Booking</dt>
-                                                                  <dd>'.$contenedores[$i]->get_booking().'</dd>
+                                                                  <dd><input type="text" value="'.$contenedores[$i]->get_booking().' " class="bookingDeViaje" readonly></dd>
                                                                   <dt> Modificar </dt>
-                                                                  <dd> <button class="btn btn-inverse btn-mini editarContenedor"> modificar </button> </dd>
+                                                                  <dd> <td><button value="'.$contenedores[$i]->get_id().'" class="btn btn-mini btn-inverse modificarContenedor">Modificar</button></td> </dd>
                                                                 </dl>';
 
                                                                 $sellos = $contenedores[$i]->get_sellos();
@@ -200,15 +216,19 @@ $contenido = "";
                                                                 while($sellos->hasNext()){
                                                                   $sello = $sellos->shift();
 
-                                                                  $contenidoDeSellos .= '<tr>
+                                                                $contenidoDeSellos .= '<tr>
                                                                                            <td>'.$sello->get_numero_sello().'</td>
-                                                                                           <td>'.$sello->get_sello() .'</td>
+                                                                                           <td> <input type="text" class="muestraSello" value="'.$sello->get_sello() .'" readonly  ></td>
                                                                                            <td><input type="datetime" readonly value="'. $sello->get_fecha_sellado() .'"</td>
-                                                                                           <td> <button class="btn btn-mini eliminarSello" > Eliminar Sello </button> </td>
+                                                                                           <td> <button class="btn btn-mini editarSello" value="'.$sello->get_numero_sello().'" > Modificar Sello </button> </td>
                                                                                         </tr>';
                                                                 }
 
-                                                                $contenidoDeSellos .= '   <tr> <td> <button class="btn agregarSello">Agregar Sello</button> </td> </tr>
+                                                                $contenidoDeSellos .= '   <tr>
+                                                                                            <td></td> 
+                                                                                            <td><label>Nombre del Sello</label><input type="text"> <button value="'.$contenedores[$i]->get_id().'" class="btn agregarSello">Agregar Sello</button> </td>
+                                                                                            <td> <button value="'.$contenedores[$i]->get_id().'" class="btn btn-danger eliminarSello"> Elimnar Ultimo Sello </button> </td>
+                                                                                          </tr>
                                                                                         </tbody>
                                                                                       </table>
                                                                                       </div>';
@@ -237,9 +257,8 @@ $contenido = "";
 
                             $contenido .='</div><br>';
 
-                            $contenido .='<div class="span4">  ';
-
-                             $contenido .='<h2>Estado</h2>';
+                            $contenido .='<div class="span4">';
+                            $contenido .='<h2>Estado</h2>';
 
                             switch ($estado) {
                               case 'Programado':

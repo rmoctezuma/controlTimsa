@@ -11,6 +11,11 @@ Class Sello{
 		$this->fecha_sellado = $fecha;
 	}
 
+	function createSampleSello($sello,$numero_sello){
+		$this->sello = $sello;
+		$this->numero_sello = $numero_sello;
+	}
+
 	public function set_sello($sello){
 		$this->sello = $sello;
 	}

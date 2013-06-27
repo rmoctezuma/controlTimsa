@@ -207,26 +207,32 @@ if(isset($_POST) && !empty($_POST)){
 			break;
 
 		case 'Contenedor':
-			if($_POST['tipoViaje'] == 'Sencillo'){
-				$contador = 1;
-			}
-			else{
-				$contador = 2;
-				//Aqui debe ir la logica de cambio de cuota.
-			}
-
 			$cuota = $flete->get_CuotaViaje();
 			$trafico = $cuota->get_trafico();
 			$contenedores = $flete->get_listaContenedores()->get_contenedores();
+			$lista = $flete->get_listaContenedores();
 
-			for($x = 1; $x <= $contador ; $x++ ){
-				$contenedor = $_POST['contenedor' . $x];
-				$workorder =  $_POST['workorder' . $x];
-				$booking    = $_POST['booking' . $x];
-				$tamanio   =  $_POST['tamaño' . $x];
+			$viajeAnterior = $cuota->get_tipoViaje();
 
+			if($_POST['tipoViaje'] == 'Sencillo'){
+				$contador = 1;
+				$contenedores = crearListaContenedores($contador, $flete);
+				$lista->updateListaContenedores($contenedores);
 
-				actualizarContenedor($contenedor, $workorder, $booking, $tamanio, $contenedores[($x-1)]->get_id(), $flete);
+				if($viajeAnterior == "Full"){
+					//Borrar un contenedor del viaje.
+					cambiarCuotaSegunTrafico( $flete, 'Sencillo' );
+				}
+
+			}
+			else{
+				$contador = 2;
+				$contenedores = crearListaContenedores($contador, $flete);
+				$lista->updateListaContenedores($contenedores);
+				if($viajeAnterior == "Sencillo"){
+					//Agregar un contenedor al viaje.
+					cambiarCuotaSegunTrafico( $flete, 'Full' );
+				}
 			}
 
 			$contenido .= 'Flete Actualizado';
@@ -294,7 +300,61 @@ if(isset($_POST) && !empty($_POST)){
 
 			$contenido .= "Flete Actualizado";
 
-			break;
+				break;
+			case 'Sellos':
+				$sello = $_POST['sello'];
+				$contenedor = new Contenedor;
+				$contenedor->getContenedorDeViaje( $_POST['contenedor'], $_POST['flete']);
+
+				$listaSellos  = $contenedor->get_sellos();
+				$numeroDeSello = $listaSellos->getLastNumberOfSello();
+
+				$nuevoSello = new Sello;
+				$nuevoSello->createSampleSello($sello, $numeroDeSello);
+
+
+				$listaSellos->insertarNevoSello($nuevoSello);
+				break;
+			case 'Sello':
+				$sello = 		$_POST['sello'];
+				$numeroDeSello =  $_POST['numero'];
+
+				$contenedor = new Contenedor;
+				$contenedor->getContenedorDeViaje( $_POST['contenedor'], $_POST['flete']);
+				$listaSellos  = $contenedor->get_sellos();
+
+				$nuevoSello = new Sello;
+				$nuevoSello->createSampleSello($sello, $numeroDeSello);
+
+				$listaSellos-> actualizarSello($nuevoSello);
+
+				break;
+			case 'EliminarSello':
+				$contenedor = new Contenedor;
+				$contenedor->getContenedorDeViaje( $_POST['contenedor'], $_POST['flete']);
+				$listaSellos  = $contenedor->get_sellos();
+
+				$listaSellos->eliminarUltimoSello();
+
+				break;
+
+			case 'ModificarContenedor':
+				$contenido.="El contenedor quiere";
+
+				$contenedor = new Contenedor;
+				$contenedor->getContenedorDeViaje( $_POST['contenedor'], $_POST['flete']);
+
+				$nuevoContenedor = new Contenedor;
+				$nuevoContenedor->createSampleContenedor($_POST['nuevoContenedor'],
+														 $_POST['flete'],
+														 $_POST['tipoContenedor'],
+														 $_POST['workorder'],
+														 $_POST['booking']
+														);
+
+				$contenedor->modificarEstadoContenedor($nuevoContenedor);
+
+				break;
 	}
 }
 
@@ -370,8 +430,46 @@ echo json_encode($resultados);
 
 		}
 		else{
+
+		}
+	}
+
+	function cambiarCuotaSegunTrafico( $flete, $tipoViaje ){
+
+			$cuota = $flete->get_CuotaViaje()->get_id_cuota();
+			$trafico = $flete->get_CuotaViaje()->get_trafico();
+
+			$nuevaCuota = new Cuota;
+			$nuevaCuota->getCuotaFromID($cuota);
+
+			$trafico = $nuevaCuota->get_trafico($trafico);
+
+			$numero = $trafico[$tipoViaje];
+
+			$camposUpdate = array('TipoCuota' => $numero );
+
+			cambiarCuota($camposUpdate, $flete);
+	}
+
+	function crearListaContenedores($contador, $flete){
+		$array  = array();
+
+		for($x = 1; $x <= $contador ; $x++ ){
+			$contenedor = new Contenedor;
+
+			$IDcontenedor = $_POST['contenedor' . $x];
+			$workorder  = $_POST['workorder' . $x];
+			$booking    = $_POST['booking' . $x];
+			$tamanio    = $_POST['tamaño' . $x];
+
+			$contenedor->createSampleContenedor($IDcontenedor, $flete->get_idFlete() , $tamanio, $workorder, $booking);
+
+			$array[] = $contenedor;
 			
 		}
+		return $array;
+
+
 	}
 
 ?>

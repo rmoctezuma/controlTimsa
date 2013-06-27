@@ -1,6 +1,7 @@
 <?php
 include_once("../includes/generic.connection.php");
 require_once("ListaSellos.php");
+require_once("UpdateMany.php");
 
 	Class Contenedor{
 		private $id;
@@ -9,6 +10,14 @@ require_once("ListaSellos.php");
 		private $workorder;
 		private $booking;
 		private $sellos;
+
+		function createSampleContenedor($id,$flete,$tipo,$workorder,$booking){
+			$this->id = $id;
+			$this->flete = $flete;
+			$this->tipo = $tipo;
+			$this->workorder = $workorder;
+			$this->booking = $booking;
+		}
 
 		function createContenedor($id,$flete,$tipo,$workorder,$booking,$sellos){
 			$this->id = $id;
@@ -37,7 +46,8 @@ require_once("ListaSellos.php");
 						 FROM Contenedor, Contenedor_Viaje
 						 WHERE Contenedor.idContenedor = :contenedor
 						 and Contenedor_Viaje.Contenedor = Contenedor.idContenedor
-						 and Contenedor_Viaje.Flete_idFlete = :flete';
+						 and Contenedor_Viaje.Flete_idFlete = :flete
+						 and Contenedor_Viaje.statusA = "Activo"';
 
 				$stmt = $PDOmysql->prepare($sql);
 	            $stmt->bindParam(':contenedor', $id);
@@ -63,6 +73,66 @@ require_once("ListaSellos.php");
 			} catch(Exception $e){
 				echo $e;
 			}
+		}
+
+		public function modificarEstadoContenedor($contenedor){
+
+			$PDOmysql = consulta();
+			$PDOmysql->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+			$sql = 'select idContenedor from Contenedor where idContenedor = :contenedor';
+			$stmt = $PDOmysql->prepare($sql);
+			$stmt->bindParam(':contenedor', $contenedor->get_id());
+			$stmt->execute();
+			$rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+			#La variable respuesta comprueba si existe o no el contendor.
+			$respuesta =  $stmt->rowCount() ? true : false;
+			#Si respuesta es que no existe el contenedor aun en la base de datos.
+			if(! $respuesta){
+				#Inserta el contenedor.
+				$sql = 'insert into Contenedor(idContenedor,Tipo) values(:contenedor, :tipo);';
+				$stmt = $PDOmysql->prepare($sql);
+				$stmt->bindParam(':contenedor', $contenedor->get_id()); #get_id() y get_tipo()
+				$stmt->bindParam(':tipo', $contenedor->get_tipo());		#son metodos de la clase contenedor.
+				$stmt->execute();
+			}
+
+			$camposUpdate  = array('Contenedor' => $contenedor->get_id(),
+								   'Booking' => $contenedor->get_booking(),
+								   'WorkOrder' => $contenedor->get_workorder()
+								   );
+
+			$this->modificarContenedor($camposUpdate);
+		}
+
+		public function modificarContenedor($camposUpdate){
+
+			$update = new UpdateMany();
+			$update->beginUpdate();
+
+			$camposWhereUpdate = array(
+										"NumFlete"      => $this->flete, 
+										"Contenedor"    => $this->id,
+										"statusA"		=> 'Activo'
+									  );
+
+
+			$camposUpdates  = array('Contenedor' => $camposUpdate['Contenedor'] );
+			$update->prepareUpdate("ContenedorSellos", $camposUpdates, $camposWhereUpdate);
+			$update->createUpdate();
+
+
+			$camposWhereUpdate = array(
+										"Flete_idFlete" => $this->flete, 
+										"Contenedor"    => $this->id,
+										"statusA"		=> 'Activo'
+									  );
+
+			$update->prepareUpdate("Contenedor_Viaje", $camposUpdate, $camposWhereUpdate);
+			$update->createUpdate();
+
+			$update->finishUpdate();
+
 		}
 
 		public function __toString(){
@@ -94,7 +164,7 @@ require_once("ListaSellos.php");
 		public function get_workorder(){
 			return $this->workorder;
 		}
-		public function set_workorder(){
+		public function set_workorder($workorder){
 			$this->workorder = $workorder;
 		}
 
