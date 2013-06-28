@@ -648,11 +648,27 @@ $('#confirmarReutilizarFletes').hide();
 
 		if(that.text() === "Cancelar"){
 			
-			that.parent().children('input').attr('readonly', true);
+			
 			boton = that.parent().parent().children().children('.btn-info');
 			boton.removeClass('btn-info').addClass('btn-inverse').text("Modificar");
+
+			contenedor = that.parent().children('input');
+			select = that.parent().parent().children('dd').children('select');
+			workorder = that.parent().parent().children('dd').children('.workorderDeViaje');
+			booking = that.parent().parent().children('dd').children('.bookingDeViaje');
+
+			contenedor.val( contenedor.data("contenido" ));
+			select.val( select.data("contenido" ));
+			workorder.val( workorder.data("contenido" ));
+			booking.val(booking.data("contenido" ));
+
+			contenedor.attr('readonly', true);
+			select.attr('readonly', true);
+			select.attr('disabled', true);
+			workorder.attr('readonly', true);
+			booking.attr('readonly', true);
+
 			that.remove();
-			refrescarDetalle();
 			
 			return;
 		}
@@ -661,6 +677,7 @@ $('#confirmarReutilizarFletes').hide();
 		select = that.parent().parent().children('dd').children('select');
 		workorder = that.parent().parent().children('dd').children('.workorderDeViaje');
 		booking = that.parent().parent().children('dd').children('.bookingDeViaje');
+
 
 		if(contenedor.attr('readonly')){
 			that.removeClass('btn-inverse').addClass('btn-info').text("Enviar");
@@ -671,14 +688,19 @@ $('#confirmarReutilizarFletes').hide();
 			select.attr('disabled', false);
 			workorder.attr('readonly', false);
 			booking.attr('readonly', false);
+
+			contenedor.data("contenido", contenedor.val());
+			select.data("contenido", select.val());
+			workorder.data("contenido", workorder.val());
+			booking.data("contenido", booking.val());
 		}
 		else{
 			that.removeClass('btn-info').addClass('btn-inverse').text("Modificar");
 			contenedor.attr('readonly', true);
 			select.attr('readonly', true);
 			select.attr('disabled', true);
-			workorder.attr('disabled', true);
-			booking.attr('disabled', true);
+			workorder.attr('readonly', true);
+			booking.attr('readonly', true);
 			
 			parametros = {  "tipo" : "ModificarContenedor",
 						     "flete": $('#titulo').val(),
@@ -690,7 +712,7 @@ $('#confirmarReutilizarFletes').hide();
 						 };
 
 			$.ajax({
-				beforeSend: function(){
+				beforeSend: function(){ 
 				},
 				    cache: false,
 				    type: "POST",
@@ -698,8 +720,8 @@ $('#confirmarReutilizarFletes').hide();
 				    url:"../includes/UpdateCamposFlete.php",
 				    data: parametros,
 				    success: function(response){
-				    	alert("Se envio");
-				    	alert(response.contenido);
+				    	alert("Contenido Modificado");
+				    	refrescarDetalle();
 				    },
 				    error:function(xhr, ajaxOptions, thrownError){
 				        alert(xhr.responseText);
@@ -741,14 +763,15 @@ $('#confirmarReutilizarFletes').hide();
 		if($(this).text() === "Cancelar"){
 			
 			that = $(this);
-			that.parent().children('input').attr('readonly', true);
+			sello = that.parent().children('input');
+			sello.attr('readonly', true);
+			sello.val(sello.data("texto"));
+
 			boton =  
 			that.parent().parent().children().children('.btn-info');
 			boton.removeClass('btn-info');
 			boton.text("Modificar Sello");
 			that.remove();
-
-			refrescarDetalle();
 			
 			return;
 		}
@@ -758,6 +781,7 @@ $('#confirmarReutilizarFletes').hide();
 			$(this).addClass('btn-info').text("Enviar");
 			sello.attr('readonly', false);
 			sello.parent().append('<button class="btn btn-mini editarSello cancelarEdicionSello">Cancelar</button>')
+			sello.data("texto", sello.val());
 		}
 		else{
 			$(this).removeClass('btn-info').text("Modificar Sello");

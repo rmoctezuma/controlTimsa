@@ -173,7 +173,7 @@ if(isset($_POST) && !empty($_POST)){
 			for ($i=0; $i < 2; $i++){
 			      $contenido .= ' <div class="span3" id="contenedor'.($i+1).'">
 
-			                        <label>Contenedor</label>  <input  required name="contenedor'.($i+1).'" type="text" value="'.$contenedores[$i].'">
+			                        <label>Contenedor</label>  <input maxlength="15"  required name="contenedor'.($i+1).'" type="text" value="'.$contenedores[$i].'">
 			                        <label>Tamaño </label> 
 			                        <select name="tamaño'.($i+1).'" >';
 

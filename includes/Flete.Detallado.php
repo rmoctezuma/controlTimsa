@@ -174,7 +174,7 @@ $contenido = "";
                                     $contenidoContenedores .= '<div class="contenedor">
                                                                 <dl class="dl-horizontal">
                                                                   <dt>Contenedor</dt>
-                                                                  <dd> <input type="text" value="'.$contenedores[$i]->get_id().'" class="contenedorDeViaje" readonly></dd>
+                                                                  <dd> <input type="text" maxlength="15" value="'.$contenedores[$i]->get_id().'" class="contenedorDeViaje" readonly></dd>
                                                                   <dt>Tipo</dt>
                                                                   <dd>
                                                                     <select class="tipoContenedorDeViaje" readonly disabled>';
@@ -194,9 +194,9 @@ $contenido = "";
                                     $contenidoContenedores .=       '</select>
                                                                   </dd>
                                                                   <dt>WorkOrder</dt>
-                                                                  <dd> <input type="text" value="'.$contenedores[$i]->get_workorder().' " class="workorderDeViaje" readonly></dd>
+                                                                  <dd> <input maxlength="25" type="text" value="'.$contenedores[$i]->get_workorder().' " class="workorderDeViaje" readonly></dd>
                                                                   <dt>Booking</dt>
-                                                                  <dd><input type="text" value="'.$contenedores[$i]->get_booking().' " class="bookingDeViaje" readonly></dd>
+                                                                  <dd><input maxlength="25" type="text" value="'.$contenedores[$i]->get_booking().' " class="bookingDeViaje" readonly></dd>
                                                                   <dt> Modificar </dt>
                                                                   <dd> <td><button value="'.$contenedores[$i]->get_id().'" class="btn btn-mini btn-inverse modificarContenedor">Modificar</button></td> </dd>
                                                                 </dl>';
@@ -218,7 +218,7 @@ $contenido = "";
 
                                                                 $contenidoDeSellos .= '<tr>
                                                                                            <td>'.$sello->get_numero_sello().'</td>
-                                                                                           <td> <input type="text" class="muestraSello" value="'.$sello->get_sello() .'" readonly  ></td>
+                                                                                           <td> <input maxlength="25" type="text" class="muestraSello" value="'.$sello->get_sello() .'" readonly  ></td>
                                                                                            <td><input type="datetime" readonly value="'. $sello->get_fecha_sellado() .'"</td>
                                                                                            <td> <button class="btn btn-mini editarSello" value="'.$sello->get_numero_sello().'" > Modificar Sello </button> </td>
                                                                                         </tr>';

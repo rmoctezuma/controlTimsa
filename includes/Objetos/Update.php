@@ -54,7 +54,9 @@ class Update{
 
         $stmt->execute();
 
+        $respuesta =  $stmt->rowCount() ? true : false;
 	}
+
 }
 
 ?>

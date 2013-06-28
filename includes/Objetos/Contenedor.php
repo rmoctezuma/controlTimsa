@@ -97,43 +97,111 @@ require_once("UpdateMany.php");
 				$stmt->execute();
 			}
 
-			$camposUpdate  = array('Contenedor' => $contenedor->get_id(),
-								   'Booking' => $contenedor->get_booking(),
-								   'WorkOrder' => $contenedor->get_workorder()
-								   );
-
-			$this->modificarContenedor($camposUpdate);
-		}
-
-		public function modificarContenedor($camposUpdate){
-
-			$update = new UpdateMany();
-			$update->beginUpdate();
-
-			$camposWhereUpdate = array(
-										"NumFlete"      => $this->flete, 
-										"Contenedor"    => $this->id,
-										"statusA"		=> 'Activo'
+			if($this->get_id() == $contenedor->get_id()){
+				$camposUpdate  = array('Contenedor' => $contenedor->get_id(),
+										'Booking' => $contenedor->get_booking(),
+										'WorkOrder' => $contenedor->get_workorder()
 									  );
 
+				 $this->modificarDetalleContenedor($camposUpdate);
+			}
+			else{
 
-			$camposUpdates  = array('Contenedor' => $camposUpdate['Contenedor'] );
-			$update->prepareUpdate("ContenedorSellos", $camposUpdates, $camposWhereUpdate);
+				$this->modificarContenedor($contenedor);
+			}
+
+		}
+
+		public function modificarContenedor( $contenedor ){
+
+			
+
+			$update = new Update();
+			$camposUpdate  = array('statusA' => 'Eliminado' );
+			
+			$camposWhereUpdate = array("NumFlete"      => $this->flete, 
+										"Contenedor"    => $this->id
+									  );
+
+			$update->prepareUpdate("ContenedorSellos", $camposUpdate, $camposWhereUpdate);
 			$update->createUpdate();
 
+			$update = new Update();
 
-			$camposWhereUpdate = array(
-										"Flete_idFlete" => $this->flete, 
-										"Contenedor"    => $this->id,
-										"statusA"		=> 'Activo'
+			$camposWhereUpdate = array("Flete_idFlete"      => $this->flete, 
+										"Contenedor"   	    => $this->id
 									  );
 
 			$update->prepareUpdate("Contenedor_Viaje", $camposUpdate, $camposWhereUpdate);
 			$update->createUpdate();
 
-			$update->finishUpdate();
+
+			$PDOmysql = consulta();
+			$PDOmysql->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+			
+			$sql = 'SELECT Flete_idFlete, Contenedor 
+					from Contenedor_Viaje 
+					where 
+					Flete_idFlete = :flete
+					and
+					Contenedor = :contenedor';
+
+			$stmt = $PDOmysql->prepare($sql);
+			$stmt->bindParam(':contenedor', $contenedor->get_id());
+			$stmt->bindParam(':flete', $this->flete);
+			$stmt->execute();
+			$rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+			#La variable respuesta comprueba si existe o no el contendor.
+			$respuesta =  $stmt->rowCount() ? true : false;
+
+			if(! $respuesta){
+				#Incicializa el viaje para el flete, asignando contenedores al flete.
+				$sql = 'insert into Contenedor_Viaje(WorkOrder,Booking,Flete_idFlete, Contenedor) values(:workorder, :booking, :flete, :contenedor);';
+				$stmt = $PDOmysql->prepare($sql);
+				$stmt->bindParam(':workorder', $contenedor->get_workorder());
+				$stmt->bindParam(':booking', $contenedor->get_booking());
+				$stmt->bindParam(':flete', $contenedor->get_flete());
+				$stmt->bindParam(':contenedor', $contenedor->get_id());
+				$stmt->execute();
+			}
+
+			$listaSellos =  $this->get_sellos();
+			if($listaSellos){
+				$listaSellos->set_contenedor($contenedor->get_id());
+				$listaSellos->insertar_sellos();
+			}		
 
 		}
+
+		public function modificarDetalleContenedor($camposUpdate){
+			$update = new UpdateMany();
+						$update->beginUpdate();
+
+						$camposWhereUpdate = array(
+													"NumFlete"      => $this->flete, 
+													"Contenedor"    => $this->id,
+													"statusA"		=> "Activo"
+												  );
+
+
+						$camposUpdates  = array('Contenedor' => $camposUpdate['Contenedor'] );
+						$update->prepareUpdate("ContenedorSellos", $camposUpdates, $camposWhereUpdate);
+						$update->createUpdate();
+
+
+						$camposWhereUpdate = array(
+													"Flete_idFlete" => $this->flete, 
+													"Contenedor"    => $this->id,
+													"statusA"		=> "Activo"
+												  );
+
+						$update->prepareUpdate("Contenedor_Viaje", $camposUpdate, $camposWhereUpdate);
+						$update->createUpdate();
+
+						$update->finishUpdate();
+		}
+
 
 		public function __toString(){
 			$data = $this->id . "";

@@ -167,7 +167,14 @@ require_once("Update.php");
 			$pilaContenedoresEliminar = $contenedoresActuales;
 
 			$this->contenedores = $pilaContenedoresInsertar;
-
+/*
+			echo "Actualizar";
+			print_r($pilaContenedoresActualizar);
+			echo "Insertar";
+			print_r($pilaContenedoresInsertar);
+			echo "Eliminar";
+			print_r($pilaContenedoresEliminar);
+*/
 			if($this->contenedores){
 				$this->insertarContenedores();
 
