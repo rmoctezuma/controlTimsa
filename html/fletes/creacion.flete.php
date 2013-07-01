@@ -1,5 +1,10 @@
 <?php
 
+session_start();
+
+if( isset($_SESSION) && !empty($_SESSION)){
+  if( $_SESSION['tipo'] == "Administrador" ){
+
 try {
 	 $mysqli = new PDO('mysql:host=www.timsalzc.com;dbname=timsalzc_ControlTimsa;charset=utf8', 'timsalzc_Raul', 'f203e21387');
 				           
@@ -38,13 +43,12 @@ try {
 		<div class="navbar navbar-inverse navbar-fixed-top">
 		      <div class="navbar-inner">
 		        <div class="container">
-		          <div class="span2"></div>
 		          <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
 		            <span class="icon-bar"></span>
 		            <span class="icon-bar"></span>
 		            <span class="icon-bar"></span>
 		          </button>
-		          <a class="brand" href="../TIMSA.php">TIMSA </a>
+		          <a class="brand" href="../TIMSA.php"><img height="35" width="35" src="../../img/logo.png"> </a>
 
 		          <div class="nav-collapse collapse">
 		            <ul class="nav">
@@ -60,7 +64,7 @@ try {
 		              <li class="">
 		                <a href="../socios.php">Socios <i class="icon-bookmark icon-white"> </i> </a>
 		              </li>
-		              <li class="active">
+		              <li >
 		                <a href="../cuotas.php">Cuotas <i class="icon-fire icon-white"> </i> </a>
 		              </li>
 		                 <li class="">
@@ -68,11 +72,13 @@ try {
 		              </li>
 		            </ul>
 		          </div>
+		           <button form="form1" class="btn btn-inverse"> <i class="icon-off icon-white"></i> Cerrar Sesion </button>
 		    </div>
 		    </div>
 		  </div>
 
 		  <div class= "container">
+		  	<form action="../../includes/cerrar.sesion.php" id="form1"></form>
 		  		
 		    <div class="page-header">
 		    	<p>
@@ -284,3 +290,15 @@ try {
 	</body>
 
 </html>
+
+<?php
+  }
+  else{
+    header("Location:../../index.php");
+  }
+  }
+  else{
+    header("Location:../../index.php");
+  }
+
+?>

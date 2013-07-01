@@ -64,7 +64,6 @@ function consultaFletes(){
                               <td>'. $fila['TipoViaje'].'  </td>
                               <td> <span class="'.$statusTipo[$fila['statusA']].'">'.$fila['statusA'] .' </span>  </td>
                               <td>'. $fila['Fecha']    .'  </td>
-                              <td> <button class="demo btn btn-success btn-mini" data-toggle="modal" href="#responsive">Detalles</button> <td>
                             </tr>';
               } 
             }

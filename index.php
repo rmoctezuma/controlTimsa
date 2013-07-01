@@ -44,20 +44,34 @@
 </head>
 
 <body>
+
 <div class = "container">
-	<form class="form-signin" action="Timsa/html/TIMSA.php">
+ 
+	<form class="form-signin" action="procesarSesion.php" method="POST">
+    <?php
+      if(isset($_GET['resultado'])){
+        echo '<div class="alert span2">
+               <button type="button" class="close" data-dismiss="alert">&times;</button>
+               <strong>Login Incorrecto</strong> .
+              </div>';
+      }
+    ?>
         <h2 class="form-signin-heading">Entrada</h2>
-        <input type="text" class="input-block-level" placeholder="Email">
-        <input type="password" class="input-block-level" placeholder="Contraseña">
+       
+        <input required type="text" class="input-block-level" placeholder="Email" name="username">
+        <input required type="password" class="input-block-level" placeholder="Contraseña" name="pass">
         <label class="checkbox">
           <input type="checkbox" value="remember-me"> Recordarme
         </label>
+
         <button class="btn btn-large btn-primary" type="submit" >Entrar</button>
+
       </form>
 </div>
 
-	<script src="js/jquery.js"></script>
-    <script src="js/bootstrap-transition.js"></script>
+	  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+    <script src="Timsa/js/bootstrap.js"></script>
+    <!--
     <script src="js/bootstrap-alert.js"></script>
     <script src=".js/bootstrap-modal.js"></script>
     <script src="js/bootstrap-dropdown.js"></script>
@@ -69,5 +83,6 @@
     <script src="js/bootstrap-collapse.js"></script>
     <script src="js/bootstrap-carousel.js"></script>
     <script src="js/bootstrap-typeahead.js"></script>
+  -->
 </body>
 </html>

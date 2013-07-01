@@ -1,7 +1,11 @@
 <?php
+session_start();
 
-include("../includes/generic.connection.php");
-$PDOmysql = consulta();
+if( isset($_SESSION) && !empty($_SESSION)){
+  if( $_SESSION['tipo'] == "Administrador" ){
+
+    include("../includes/generic.connection.php");
+    $PDOmysql = consulta();
 ?>
 
 <!DOCTYPE html>
@@ -72,13 +76,12 @@ $PDOmysql = consulta();
     <div class="navbar navbar-inverse navbar-fixed-top">
       <div class="navbar-inner">
          <div class="container">
-          <div class="span2"></div>
           <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="brand" href="TIMSA.php">TIMSA </a>
+          <a class="brand" href="TIMSA.php"><img height="35" width="35" src="../img/logo.png"> </a>
 
           <div class="nav-collapse collapse">
             <ul class="nav">
@@ -101,13 +104,14 @@ $PDOmysql = consulta();
                 <a href="./fletes.php">Fletes <i class="icon-th-large icon-white"> </i> </a>
               </li>
             </ul>
+             <button form="form1" class="btn btn-inverse"> <i class="icon-off icon-white"></i> Cerrar Sesion </button>
           </div>
         </div>
     </div>
   </div>
 
   <div class="container text-center" id="principalForm">
-
+<form action="../includes/cerrar.sesion.php" id="form1"></form>
     <h1 class="text-center">Cuotas de Viajes Foraneos</h1>
     <br>
 
@@ -264,3 +268,15 @@ $PDOmysql = consulta();
 
 
 </html>
+
+<?php
+  }
+  else{
+    header("Location:../../index.php");
+  }
+}
+  else{
+    header("Location:../../index.php");
+  }
+
+?>
