@@ -90,7 +90,7 @@ class Dia{
 			 								    <th>Operador</th>
 			 								    <th>Economico</th>
 			 								    <th>Cliente</th>
-			 								    <th>Sucursal</th>
+			 								    
 			 								    <th>Agencia</th>
 			 								    <th>Trafico</th>
 			 								    <th>Tipo Viaje</th>
@@ -108,7 +108,7 @@ class Dia{
 					                <td>'. $fila['nombre']. $fila['apellidop']. $fila['apellidom'].' </td>
 					                <td>'. $fila['economico']. ' </td>
 					                <td>'. $fila['cliente']  . ' </td>  
-					                <td>'. $fila['sucursal'] . '  </td> 
+					                
 					                <td>'. $fila['agencia']  . '  </td> 
 					                <td>'. $fila['trafico']  . '  </td>
 					                <td>'. $fila['TipoViaje'].'  </td>

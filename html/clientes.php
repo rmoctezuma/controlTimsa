@@ -72,9 +72,10 @@ if( isset($_SESSION) && !empty($_SESSION)){
                <button form="form1" class="btn btn-inverse"> <i class="icon-off icon-white"></i> Cerrar Sesion </button>
             </div>
         </div>
+        <form action="../includes/cerrar.sesion.php" id="form1"></form>
       </div>
       </header>
-      <form action="../includes/cerrar.sesion.php" id="form1"></form>
+      
       <div class="row" style="width:100%; height:80%">
       <div id="Mapa" class="span5" style="width:60%; height:100%">
         

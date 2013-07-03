@@ -11,7 +11,7 @@ $(function(){
 			anio = $(this).parent().parent().parent().parent().parent().parent().attr('anio');
 
 			var value =  $(this).parent().parent().children('td:eq(0)').text();//toma el id de la casilla
-			var viaje =  $(this).parent().parent().children('td:eq(6)').text();
+			var viaje =  $(this).parent().parent().children('td:eq(5)').text();
 
 			var parametros = { "value" : value,
 								"viaje" : viaje
