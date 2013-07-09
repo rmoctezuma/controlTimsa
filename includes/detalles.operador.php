@@ -1,6 +1,7 @@
 <?php
 
 include('../includes/generic.connection.php');
+require_once('../includes/Objetos/Operador.php');
 
 $result = "";
 
@@ -25,6 +26,88 @@ if(isset($_POST) && !empty($_POST)){
 	$result .= '<br>';
 	$result .= '<br>';
 
+	$operador = new Operador;
+	$operador->getOperadorFromID($numero);
+
+	$result .= '<div class="container-fluid">';
+	$result .= '<img class="span3" src="'. $operador->get_imagen() .'">
+				<div class="span5">
+					<h2> '. $operador->get_nombre() . ' '. $operador->get_apellidop() . ' '. $operador->get_apellidom(). ' </h2>
+					<span class="'. $statusTipo2[$operador->get_status()] .'">'.$operador->get_status().'</span>
+					<button class="btn btn-info editarOperador" value="'.$numero.'" >Editar</button>
+					<h5>NC<big> '. $operador->get_id() .'</big></h5>
+				</div>';
+
+	$result .= '<div class="span5">
+				<dl class="dl-horizontal">
+					<dt> Telefono </dt> <dd> '. $operador->get_telefono() .' </dd>
+				    <dt> CURP  </dt> <dd> '. $operador->get_curp()     .' </dd>
+					<dt> RC </dt> <dd>'. $operador->get_RC()       .' </dd>
+				</dl>
+				</div>';
+
+	$result .= '</div>';
+
+	$PDOmysql = consulta();
+
+
+	$PDOmysql->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+	$sql = 'select distinct Economico.Economico, Economico.Placas,Economico.statusA 
+	from Economico,VehiculoDetalle 
+	where 
+	VehiculoDetalle.Economico = Economico.Economico
+	 and  
+	 VehiculoDetalle.Operador = :operador ';
+
+	 $stmt = $PDOmysql->prepare($sql);
+	 $stmt->bindParam(':operador', $numero);
+	 $stmt->execute();
+	 $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+	 $resultEconomicos = "";	
+
+	 $resultEconomicos .= '<table class="table table-condensed">';
+	 $resultEconomicos .= '<thead>';
+	 $resultEconomicos .= '<tr>  <th>Economico </th> <th> Placas </th> <th> Status </th>  </tr>';
+	 $resultEconomicos .= '</thead>';
+	 $resultEconomicos .= '<tbody>';
+
+	 $resultEconomicosResult = "";
+	 $optionEconomicos = "";
+
+	 foreach ($rows as $row){ 
+	 	$optionEconomicos.= '<option>'. $row['Economico'] .' </option>';
+	 	$resultEconomicosResult .= '<tr> ';   
+		$resultEconomicosResult.=  ' <td>'. $row['Economico'] .' </td>  <td> '. $row['Placas'] .'</td><td> <span class="' . $statusTipo2[$row['statusA']] .'">'. $row['statusA']  .'  </span> </td>';
+	    $resultEconomicosResult .= '</tr>';
+	}
+
+	if($resultEconomicosResult != ""){
+		$result .= '<h4 class="text-center" >Economicos que ha conducido el operador</h4>';
+		$result .= $resultEconomicos;
+		$result .= $resultEconomicosResult;
+		$result .= '</tbody>';
+	    $result .= '</table>';
+	}
+	else{
+		$result .= '<h4><i>Este Operador no ah conducido ningun Economico</i></h4>';
+	}
+
+	
+
+
+
+}
+
+$resultados = array("results" => $result);
+
+echo json_encode($resultados);
+
+	/*
+
+
+
 
 	$result .= '<h1 title="'.$numero.'" id="NombreOperador">'. $nombre .' <button class="btn btn-primary btn-large" id="EditarOperador"> Editar </button></h1>';
 	$result .= '';
@@ -34,7 +117,7 @@ if(isset($_POST) && !empty($_POST)){
 
 	$PDOmysql = consulta();
 
-try {
+
 	$PDOmysql->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
 	$sql = 'select distinct Economico.Economico, Economico.Placas,Economico.statusA 
@@ -182,12 +265,7 @@ else{
     
 
 
-} catch(PDOException $ex) {
-	    //Something went wrong rollback!
-	    $PDOmysql->rollBack();
-	    echo $ex->getMessage();
-	    $respuestaOK = false;
-	}
+
 }
 $resultados = array("results" => $result);
 
@@ -227,5 +305,7 @@ function consultaAnio(){
         }
         return $fecha;
 }
+
+*/
 
 ?>

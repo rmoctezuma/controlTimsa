@@ -150,15 +150,18 @@ if(isset($_POST) && !empty($_POST)){
 			$cuota = $flete->get_CuotaViaje();
 
 			$trafico = $cuota->get_trafico();
+			$tipoDeViaje = $cuota->get_tipoViaje();
 
 			$contenedores = $flete->get_listaContenedores()->get_contenedores();
+
+/*
 			if(count($contenedores) > 1){
 			     $tipoDeViaje = "Full";
 			}
 			else{
 			    $tipoDeViaje = "Sencillo";  
 			}
-
+*/
 			$contenido .= '<h2>Tipo de Viaje </h2>';
 			$contenido .= '<table><tr>';
 			$contenido .= '<td><input name="tipoTrafico" type="text" value="'. $trafico .'" readonly></td><td></td>';

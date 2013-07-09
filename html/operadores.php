@@ -41,6 +41,11 @@ if( isset($_SESSION) && !empty($_SESSION)){
         width: 98%;
         clear: both;
     }
+
+    .cancelarEdicion{
+      width: 98%;
+      clear: both;
+    }
   </style>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
   <script type="text/javascript" src="../js/jquery.validate.js"></script>
@@ -105,7 +110,11 @@ if( isset($_SESSION) && !empty($_SESSION)){
             $PDOmysql = new PDO('mysql:host=www.timsalzc.com;dbname=timsalzc_ControlTimsa;charset=utf8', 'timsalzc_Raul', 'f203e21387');
 
 
-       $sql = 'select distinct Eco,Nombre,ApellidoP,ApellidoM,Telefono,statusA,rutaImagen from Operador';
+       $sql = 'select distinct Eco,Nombre,ApellidoP,ApellidoM,Telefono,statusA,rutaImagen 
+                from
+                Operador
+                where
+                statusA != "Deprecated"';
 
        foreach ($PDOmysql -> query($sql) as $fila) {
            $nombre = $fila['Nombre'] .' '. $fila['ApellidoP'] .' '. $fila['ApellidoM'];
@@ -143,7 +152,7 @@ if( isset($_SESSION) && !empty($_SESSION)){
 
 </div>
 
-  <div class= "container span7" id="result">
+  <div class= "container span9" id="result">
     <?php
           if(isset($_GET['resultado']) && !empty($_GET)){
             echo '<h2 id= "mensajeCreacion">';

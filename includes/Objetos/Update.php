@@ -52,7 +52,14 @@ class Update{
 			$stmt->bindValue($valor, $value);
 		}
 
-        $stmt->execute();
+		try{
+			 $stmt->execute();
+			}catch(Exception $e){
+				echo "Error";
+				echo "$e";
+			}
+
+       
 
         $respuesta =  $stmt->rowCount() ? true : false;
 	}

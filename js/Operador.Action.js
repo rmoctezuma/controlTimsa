@@ -170,7 +170,7 @@ $(function(){
 		$('#result').hide();
 	});
 
-	$('#botonCancelar').click(function(){
+	$('body').on('click', '#botonCancelar',   function(e){
 		$('#CreacionOperador').hide("fade");
 		$('#OperadorList').show("slow");
 		$('#result').show();
@@ -203,6 +203,83 @@ $(function(){
 			}
 
 		});
+	});
+
+	$('.editarOperador').live('click', function(){
+		$('#OperadorList').hide("slow");
+		$('#result').hide();
+
+		parametros = {
+			"operador" : $(this).val(),
+			"tipo"		: "Operador"
+		};
+
+		$.ajax({
+			beforeSend: function(){
+			},
+			cache: false,
+			type: "POST",
+			dataType:"json",
+			url:"../includes/editar.data.php",
+			data: parametros,
+			success: function(response){
+				$('#CreacionOperador')
+				.data( "creacion", $('#CreacionOperador').html() )
+				.html(response.contenido)
+				.show();
+			},
+			error: function(xhr, ajaxOptions, thrownError){
+					alert("error, comprueba tu conexion a internet" + xhr.responseText);
+			}
+
+		});
+
+
+	});
+
+	$('.cancelarEdicion').live("click", function(){
+		$('#CreacionOperador').hide("fade").html( $('#CreacionOperador').data('creacion') );
+		$('#OperadorList').show("slow");
+		$('#result').show();
+	});
+
+	$('body').on('keyup', '.controlDeOperador',   function(e){
+		parametros = { 'value' : $(this).val(),
+					   'actual' : $('#actual').val(),
+					   'tipo'  : 'Operador'};
+
+		$.ajax({
+			beforeSend: function(){
+				$('.statusClave').empty();
+				$('.statusClave').append('<img height="10" width="10" src="../img/loading.gif">');
+			},
+			cache: false,
+			type: "POST",
+			dataType:"json",
+			url:"../includes/comprobar.claves.php",
+			data: parametros,
+			success: function(response){
+				$('.statusClave').empty();
+				$('.statusClave').append(response.contenido);
+			},
+			error: function(xhr, ajaxOptions, thrownError){
+					alert("error, comprueba tu conexion a internet" + xhr.responseText);
+			}
+
+		});
+		
+	});
+
+	$('body').on("submit" , "#editarOperadorForm" , function(e) {
+
+		if($('#statusClaveModificada').attr("value") === "false" ){
+			alert("Accion no permitida. \n Elija un numero de control correcto");
+			return false;
+		}
+
+			//Important. Stop the normal POST
+			//return false;
+
 	});
 
 });

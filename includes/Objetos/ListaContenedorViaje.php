@@ -144,11 +144,14 @@ require_once("Update.php");
 				$contenedoresActuales[] = $contenedorViejo->get_id();
 			}
 
-			for ($x =0; $x < count($arrayNuevosContenedores); $x++ ) {
+			$cuentaNuevosContenedores = count($arrayNuevosContenedores);
+			$cuentaContenedoresActuales = count($contenedoresActuales);
+
+			for ($x =0; $x < $cuentaNuevosContenedores; $x++ ) {
 				
 				$id =  $arrayNuevosContenedores[$x]->get_id();
 
-				for ($i=0; $i < count($contenedoresActuales) ; $i++) {
+				for ($i=0; $i < $cuentaContenedoresActuales; $i++) {
 					if( $id == $contenedoresActuales[$i] ){
 
 						$pilaContenedoresActualizar[] = $arrayNuevosContenedores[$x];
