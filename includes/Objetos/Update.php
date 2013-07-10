@@ -44,7 +44,6 @@ class Update{
 		foreach ($this->campos as $key => $value) {
 			$valor = ":". $key;
 			$stmt->bindValue($valor, $value);
-
 		}
 
 		foreach ($this->camposWhere as $key => $value) {

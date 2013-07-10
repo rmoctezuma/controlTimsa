@@ -45,7 +45,7 @@ Class Operador{
 	             $this->nombre = $fila['Nombre'];
 	             $this->apellidop = $fila['ApellidoP'];
 	             $this->apellidom = $fila['ApellidoM'];
-	           	 $this->RC = $fila['R.C.'];
+	           	 $this->RC = $fila['RC'];
 	             $this->curp = $fila['CURP'];
 	             $this->fechaIngreso = $fila['fecha_ingreso'];
 	             $this->status = $fila['statusA'];

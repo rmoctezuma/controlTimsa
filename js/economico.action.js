@@ -271,4 +271,8 @@ $(function(){
 
 	});
 
+	$('body').on("click" , "#editarEconomico" , function(e) {
+		alert("sdf");
+	});
+
 });

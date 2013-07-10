@@ -1,5 +1,6 @@
 <?php
-include('../includes/generic.connection.php');
+require_once('../includes/generic.connection.php');
+require_once('../includes/Objetos/Economico.php');
 
 $result = "";
 
@@ -21,8 +22,9 @@ if(isset($_POST) && !empty($_POST)){
                           "Fallido" => "label label-important"
                         );
 
-	$result .= '<h1 title="'.$numero.'" id="NombreOperador"><a href="#" id="back"><img src="http://control.timsalzc.com/Timsa/img/back-arrow.png" class="img-rounded"></a> <img src="http://control.timsalzc.com/Timsa/img/camion.jpg" class="img-rounded"> Economico  '. $numero .' <button class="btn btn-primary btn-large" data-toggle="button" id="EditarOperador"> Editar </button></h1>';
-	$result .= '<h5 title="'.$socio.'"> Numero de Placas '.$placas.'</h5>';
+	$result .= '<h1 title="'.$numero.'" id="NombreOperador"><a href="#" id="back"><img src="http://control.timsalzc.com/Timsa/img/back-arrow.png" class="img-rounded"></a> <img src="http://control.timsalzc.com/Timsa/img/camion.jpg" class="img-rounded"> Economico  '. $numero .' <button class="btn btn-primary btn-large" data-toggle="button" id="EditarOperador"> Agregar Operador </button></h1>';
+	$result .= '<h5 title="'.$socio.'"> Numero de Placas '.$placas.'</h5>
+				<button id="editarEconomico" class="btn btn-info">Editar Economico</button>';
 	$result .= '<hr>';
 
 	$result .= '<div id="appendOperador">';
@@ -41,12 +43,25 @@ if(isset($_POST) && !empty($_POST)){
      }
      $result .= '</select>';
      $result .=  '<span> <button id="append" class="btn btn-mini btn-primary"> agregar </button></span>';
-     $result .= '<br>';
      $result .= '<hr>';
      $result .= '</div>';
-     $result .= '<br>'; 
 
-	$result .= '<h4> Operadores que han conducido este economico </h4> <br>';
+     $economicoX = new Economico;
+     $economicoX->createEconomicoFromID($numero);
+
+     $result .=		'<div class="span5">
+     					<h2>Datos Principales</h2>
+     					<br>
+     					<dl class="dl-horizontal">
+     						<dt> Numero de Serie </dt> <dd> '. $economicoX->get_serie() .' </dd>
+     					    <dt> Modelo  </dt> <dd> '. $economicoX->get_modelo()     .' </dd>
+     						<dt> Transponder </dt> <dd>'. $economicoX->get_transponder()    .' </dd>
+     						<dt> Marca </dt> <dd>'. $economicoX->get_marca()     .' </dd>
+     						<dt> Tipo de Vehiculo </dt> <dd>'. $economicoX->get_tipoVehiculo()      .' </dd>
+     					</dl>
+     					</div>';
+
+	$result .= '<h2> Operadores </h2> <br>';
 	$result  .= '<div>';
 
 	$sql = 'select Operador.Eco Economico, Operador.Nombre, Operador.ApellidoP, Operador.ApellidoM, Operador.statusA
@@ -79,6 +94,8 @@ if(isset($_POST) && !empty($_POST)){
 	}
 
 	if($resultEconomicosResult != ""){
+
+
 		$result .= $resultEconomicos;
 		$result .= $resultEconomicosResult;
 		$result .= '</tbody>';
@@ -88,6 +105,10 @@ if(isset($_POST) && !empty($_POST)){
 	else{
 		$result .= '<h4><i>Este Socio no posee ningun Economico</i></h4>';
 	}
+
+}
+
+	/*
 		$result .= '<div class="span8">';
 	 $result .= '<h3> Fletes de Este Socio </h3>';
 
@@ -225,9 +246,6 @@ else{
  	$result .= '<hr>';
 }
 
-$resultados = array("results" => $result);
-
-echo json_encode($resultados);
 
 function consultaDia(){
 	$fecha = "";
@@ -263,6 +281,12 @@ function consultaAnio(){
         }
         return $fecha;
 }
+
+*/
+
+$resultados = array("results" => $result);
+
+echo json_encode($resultados);
 
 
 ?>

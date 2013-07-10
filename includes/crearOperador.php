@@ -6,6 +6,7 @@ $apellidoM = $_POST['ApellidoMSocio'];
 $telefono = $_POST['telefono'];
 $rc = $_POST['rc'];
 $curp = $_POST['curp'];
+$id = $_POST['numero_control'];
 $ruta = "";
 $mensaje = "";
 $mensajeImagen = "";
@@ -42,14 +43,18 @@ try {
 
         $mysqli = new PDO('mysql:host=www.timsalzc.com;dbname=timsalzc_ControlTimsa;charset=utf8', 'timsalzc_Raul', 'f203e21387');
         $mysqli->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        $sql = 'insert into Operador(Nombre, ApellidoP, ApellidoM,rutaImagen,Telefono, CURP) values(:nombre, :apellido, :apellidoM,:ruta,:tel,:curp);';
+        $sql = 'insert into Operador(Eco,Nombre, ApellidoP, ApellidoM,rutaImagen,Telefono, CURP, RC) values(:id,:nombre, :apellido, :apellidoM,:ruta,:tel,:curp, :rc);';
         $stmt = $mysqli->prepare($sql);
+        
+        $stmt->bindParam(':id', $id);
         $stmt->bindParam(':nombre', $nombre);
         $stmt->bindParam(':apellido', $apellidoP);
         $stmt->bindParam(':apellidoM', $apellidoM);
         $stmt->bindParam(':ruta', $ruta);
         $stmt->bindParam(':tel', $telefono);
         $stmt->bindParam(':curp', $curp);
+        $stmt->bindParam(':rc', $rc);
+        
         $stmt->execute();
 
         $mensaje.= "<h1> Operador Creado Correctamente </h1>";

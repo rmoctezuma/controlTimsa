@@ -1,6 +1,5 @@
 $(function(){
 
-	$('#formSocio').validate();
 
 	$('#mensajeCreacion').delay(900).fadeOut(300);
 
@@ -243,7 +242,7 @@ $(function(){
 		$('#result').show();
 	});
 
-	$('body').on('keyup', '.controlDeOperador',   function(e){
+	$('body').on('change', '.controlDeOperador',   function(e){
 		parametros = { 'value' : $(this).val(),
 					   'actual' : $('#actual').val(),
 					   'tipo'  : 'Operador'};
@@ -270,7 +269,7 @@ $(function(){
 		
 	});
 
-	$('body').on("submit" , "#editarOperadorForm" , function(e) {
+	$('body').on("submit" , "#OperadorForm" , function(e) {
 
 		if($('#statusClaveModificada').attr("value") === "false" ){
 			alert("Accion no permitida. \n Elija un numero de control correcto");

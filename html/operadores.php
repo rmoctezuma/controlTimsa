@@ -172,20 +172,23 @@ if( isset($_SESSION) && !empty($_SESSION)){
     <h1>  Nuevo Operador </h1>
     <br>
 
-    <form method="POST" action="../includes/crearOperador.php" enctype="multipart/form-data" id="formSocio">
+    <form method="POST" action="../includes/crearOperador.php" enctype="multipart/form-data" id="OperadorForm">
+      <label>Identificador</label>
+      <input type="number" name="numero_control" min="1" class="controlDeOperador">
+      <div class="statusClave"><span id="statusClaveModificada" value="false" class="label label-important">Coloca una clave</span> </div>
       <label> Nombre </label>
-      <input class="required" type="text" name="NombreSocio" placeholder="Nombre del Operador"> <br>
+      <input required type="text" name="NombreSocio" placeholder="Nombre del Operador"> <br>
       <label> Apellido Paterno </label>
-      <input class="required" type="text" name="ApellidoSocio" placeholder="Apellido Paterno"> <br>
+      <input required type="text" name="ApellidoSocio" placeholder="Apellido Paterno"> <br>
       <label> Apellido Materno </label>
-      <input class="required" type="text" name="ApellidoMSocio" placeholder="Apellido Materno"> <br>
+      <input required type="text" name="ApellidoMSocio" placeholder="Apellido Materno"> <br>
       <label> Telefono </label>
 
-      <input class="required" type="text" name="telefono" placeholder="Telefono"><br>
+      <input required type="text" name="telefono" placeholder="Telefono"><br>
       <label> R. C. </label>
-      <input class="required" type="text" name="rc" placeholder="R. C."> <br>
+      <input required type="text" name="rc" placeholder="R. C."> <br>
       <label> CURP </label>
-      <input class="required" type="text" name="curp" placeholder="CURP"> <br>
+      <input required type="text" name="curp" placeholder="CURP"> <br>
       <label> Sube una foto del Operador. Este es un campo opcional. </label>
       <input type="file" name="archivo" id="archivo" /><br>
       <input type="submit" class="btn btn-primary" name="boton" value="Subir" id="submit"/>

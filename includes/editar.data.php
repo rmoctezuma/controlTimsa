@@ -20,8 +20,7 @@ if(isset($_POST) && !empty($_POST)){
 
 								  <label> Numero de Control </label>
 								  <input type="text" name="controlOperador" id="actual" readonly value="'.$operador->get_id().'"><br>
-								  <input type="text" class="controlDeOperador" name="control" placeholder="Nuevo Numero de control"  value="'.$operador->get_id().'" required>
-								  <div class="statusClave"><span id="statusClaveModificada" value="true" class="label label-success">Se mantiene clave</span> </div>
+								  
 							      <label> Nombre </label>
 							      <input  type="text" name="NombreOperador" required value="'.$operador->get_nombre().'"> <br>
 							      <label> Apellido Paterno </label>
