@@ -1,5 +1,8 @@
 <?php
 
+include('../includes/generic.connection.php');
+require_once('../includes/Objetos/Socio.php');
+
 $result = "";
 
 if(isset($_POST) && !empty($_POST)){
@@ -23,9 +26,29 @@ if(isset($_POST) && !empty($_POST)){
 	$result .= '<br>';
 	$result .= '<br>';
 
+	$socio = new Socio;
+	$socio->createSocioFromID($numero);
 
-	$result .= '<h1 title="'.$numero.'" id="NombreOperador">'. $nombre .' <button class="btn btn-primary btn-large" id="EditarOperador"> Editar </button></h1>';
+	$result .= '<div class="container-fluid">';
+	$result .= '<img class="span3" src="'. $socio->get_imagen() .'">
+				<div class="span5">
+					<h2> '. $socio->get_Nombre() .' </h2>
+					<button class="btn btn-info editarsocio" value="'.$numero.'" >Editar</button>
+					<h5>NC<big> '. $socio->get_idSocio() .'</big></h5>
+				</div>';
+
+	$result .= '<div class="span5">
+				<dl class="dl-horizontal">
+					<dt> Telefono </dt> <dd><input type="text" readonly value='. $socio->get_telefono() .'" </dd>
+				</dl>
+				</div>';
+
+	$result .= '</div>';
+
+/*
+	$result .= '<h1 title="'.$numero.'" id="Nombresocio">'. $nombre .' <button class="btn btn-primary btn-large" id="Editarsocio"> Editar </button></h1>';
 	$result .= '<hr>';
+*/
 	$result .= '<h3> Economicos pertenecientes al Socio </h3>';
 
 	$PDOmysql = new PDO('mysql:host=www.timsalzc.com;dbname=timsalzc_ControlTimsa;charset=utf8', 'timsalzc_Raul', 'f203e21387');
@@ -68,20 +91,23 @@ if(isset($_POST) && !empty($_POST)){
 	else{
 		$result .= '<h4><i>Este Socio no posee ningun Economico</i></h4>';
 	}
+}
+
+	/*
 
 	 $result .= '<h3> Fletes de Este Socio </h3>';
 
 	 $PDOmysql = new PDO('mysql:host=www.timsalzc.com;dbname=timsalzc_ControlTimsa;charset=utf8', 'timsalzc_Raul', 'f203e21387');
 
-	 $sql = 'select distinct Flete.idFlete idFlete, Operador.Nombre nombre,
-         Operador.ApellidoP apellidop, Operador.ApellidoM apellidom, Economico.Economico economico, Economico.Placas placas, 
+	 $sql = 'select distinct Flete.idFlete idFlete, socio.Nombre nombre,
+         socio.ApellidoP apellidop, socio.ApellidoM apellidom, Economico.Economico economico, Economico.Placas placas, 
          Cliente.Nombre cliente, ClienteDireccion.Localidad sucursal,Agencia.nombre agencia, CuotaDetalle.Trafico trafico,
          CuotaDetalle.TipoViaje TipoViaje,Flete.Fecha Fecha,Flete.statusA statusA 
          from 
-         Cuota,Socio,Flete, Operador, Economico, Cliente, CuotaDetalle, ClienteDireccion, Agencia,VehiculoDetalle, Cuota_Flete
+         Cuota,Socio,Flete, socio, Economico, Cliente, CuotaDetalle, ClienteDireccion, Agencia,VehiculoDetalle, Cuota_Flete
          where
-         Operador.Eco = VehiculoDetalle.Operador and Economico.Economico = VehiculoDetalle.Economico and Socio.idSocio = VehiculoDetalle.Socio
-         and Flete.Operador = VehiculoDetalle.Operador and Flete.Economico = VehiculoDetalle.Economico and Flete.Socio = VehiculoDetalle.Socio
+         socio.Eco = VehiculoDetalle.socio and Economico.Economico = VehiculoDetalle.Economico and Socio.idSocio = VehiculoDetalle.Socio
+         and Flete.socio = VehiculoDetalle.socio and Flete.Economico = VehiculoDetalle.Economico and Flete.Socio = VehiculoDetalle.Socio
          and Flete.Agencia_idAgente = Agencia.idAgente
          and Flete.idFlete = Cuota_Flete.NumFlete and Cuota_Flete.Sucursal = ClienteDireccion.Sucursal and Cuota_Flete.TipoCuota = CuotaDetalle.numero and
           Cuota_Flete.Cuota = CuotaDetalle.Cuota_idCuota and CuotaDetalle.Cuota_idCuota = Cuota.idCuota and Cuota.idCuota = ClienteDireccion.Cuota_idCuota 
@@ -137,7 +163,7 @@ if(isset($_POST) && !empty($_POST)){
 				    <thead>
 				      <tr>
 				        <th>#</th>
-				        <th>Operador</th>
+				        <th>socio</th>
 				        <th>Economico</th>
 				        <th>Cliente</th>
 				        <th>Agencia</th>
@@ -176,10 +202,12 @@ else{
 }
  	$result .= '<hr>';
 }
-
+*/
 $resultados = array("results" => $result);
 
 echo json_encode($resultados);
+
+/*
 
 function consultaDia(){
 	$fecha = "";
@@ -215,5 +243,7 @@ function consultaAnio(){
         }
         return $fecha;
 }
+
+*/
 
 ?>

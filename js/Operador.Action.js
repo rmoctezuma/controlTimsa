@@ -249,8 +249,8 @@ $(function(){
 
 		$.ajax({
 			beforeSend: function(){
-				$('.statusClave').empty();
-				$('.statusClave').append('<img height="10" width="10" src="../img/loading.gif">');
+				$('.statusClave').empty()
+								.append('<img height="10" width="10" src="../img/loading.gif">');
 			},
 			cache: false,
 			type: "POST",
@@ -258,8 +258,8 @@ $(function(){
 			url:"../includes/comprobar.claves.php",
 			data: parametros,
 			success: function(response){
-				$('.statusClave').empty();
-				$('.statusClave').append(response.contenido);
+				$('.statusClave').empty()
+								 .append(response.contenido);
 			},
 			error: function(xhr, ajaxOptions, thrownError){
 					alert("error, comprueba tu conexion a internet" + xhr.responseText);

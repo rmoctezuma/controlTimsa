@@ -2,7 +2,12 @@ $(function(){
 
 	$('#formEconomico').hide();
 
-	$('#formEco').validate();
+	$('#formEco').submit(function(){
+		if($('#statusClaveModificada').attr("value") === "false" ){
+			alert("Accion no permitida. \n Elija un numero de control correcto");
+			return false;
+		}
+	});
 	
 	$('#nuevoEconomico').click( function(){
 		$('#formEconomico').show();
@@ -272,7 +277,68 @@ $(function(){
 	});
 
 	$('body').on("click" , "#editarEconomico" , function(e) {
-		alert("sdf");
+		numero = $('#NombreOperador').attr("title");
+
+		$('#economicoDetalle').data("info", $('#economicoDetalle').html() )
+							  .empty();
+
+		parametros = {
+			"economico" : numero,
+			"tipo"		: "Economico"
+		};
+
+		$.ajax({
+			beforeSend: function(){
+				$('#economicoDetalle').empty()
+								 .append('<img  src="../img/loading.gif">');
+			},
+			cache: false,
+			type: "POST",
+			dataType:"json",
+			url:"../includes/editar.data.php",
+			data: parametros,
+			success: function(response){
+				$('#economicoDetalle').empty()
+								 	  .append(response.contenido);
+			},
+			error: function(xhr, ajaxOptions, thrownError){
+					alert("error, comprueba tu conexion a internet" + xhr.responseText);
+			}
+
+		});
+	});
+
+	
+	$('body').on("click" , "#cancelarEdicion" , function(e) {
+		$('#economicoDetalle').empty()
+							  .html(
+									$('#economicoDetalle').data("info")
+									);
+	});
+
+	$('#number').change(function(){
+		parametros = { 'value' : $(this).val(),
+					   'tipo'  : 'Economico'};
+
+		$.ajax({
+			beforeSend: function(){
+				$('.statusClave').empty()
+								.append('<img height="10" width="10" src="../img/loading.gif">');
+			},
+			cache: false,
+			type: "POST",
+			dataType:"json",
+			url:"../includes/comprobar.claves.php",
+			data: parametros,
+			success: function(response){
+				$('.statusClave').empty()
+								 .append(response.contenido);
+			},
+			error: function(xhr, ajaxOptions, thrownError){
+					alert("error, comprueba tu conexion a internet" + xhr.responseText);
+			}
+
+		});
 	});
 
 });

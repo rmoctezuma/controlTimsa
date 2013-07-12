@@ -2,6 +2,8 @@
 
 include('../includes/generic.connection.php');
 require_once('../includes/Objetos/Operador.php');
+require_once('../includes/Objetos/Economico.php');
+require_once('../includes/Objetos/Socio.php');
 
 $resultado = "";
 
@@ -46,6 +48,81 @@ if(isset($_POST) && !empty($_POST)){
 							 <button class="btn cancelarEdicion" type="reset"> Volver</button>';
 			}
 			break;
+		case 'Economico':
+		if(isset($_POST['economico']) && !empty($_POST['economico'])){
+			$economico = new Economico;
+			$economico->createEconomicoFromID($_POST['economico']);
+			$socio = new Socio;
+			$socio->createSocioFromID( $economico->get_Socio() );
+			
+
+			$resultado .= '
+							<form method="POST" action="../includes/update.data.php" enctype="multipart/form-data" id="editarEconomicoForm">
+						      <h1>Editar Economico</h1>
+						      <input type="hidden" value="economico" name="tipo">
+						      <label> <b>Numero de Economico</b> </label> <input readonly type="text" name="numero" value="'.$economico->get_id().'"> <br>
+						      <label> <b>Placas</b> </label> <input required type="text" name="Placas" placeholder="Numero de Placas" value="'.$economico->get_placas().'"> <br>
+						        <label><b> Socio  </b> </label> 
+						        <input type="text" readonly value="'. $socio->get_Nombre() . '">
+
+						      <label> <b>Serie</b> </label> <input type="text" class="required" name="numeroSerie" placeholder="Numero de Serie" value="'.$economico->get_serie().'"> <br>
+						      <label> <b>Modelo</b> </label> <select name="modelo" id="Modelo">';
+
+		$resultado .=        consultaAnio( $economico->get_modelo() );
+
+		$resultado .=		'</select> <br>
+						      <label> <b>Transponder</b> </label> <input type="text" name="transponder" placeholder="Numero de Transponder" value="'.$economico->get_transponder().'"> <br>
+						      <label> <b> Marca </b> </label> 
+						      <select name="marca">';
+
+						          $sql = 'SELECT distinct Nombre, idMarca from Marca';
+
+						          	$PDOmysql = consulta();
+
+						            $stmt = $PDOmysql->query($sql);
+						            $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+						            foreach ($rows as $fila) {
+						            	if($fila['Nombre'] == $economico->get_marca()){
+						            		$resultado .= '<option  value="'. $fila['idMarca'].'" selected>'.$fila['Nombre'].' </option>';
+						            	}
+						            	else{
+						            		$resultado .= '<option value="'. $fila['idMarca'].'">'.$fila['Nombre'].' </option>';
+						            	}
+						            }
+
+						        $resultado .= '
+						       </select>
+						      <label><b> Tipo de Vehiculo </b> </label> 
+						      <select name="tipoVehiculo">';
+						        
+						            $sql = 'SELECT distinct Nombre, idTipoVehiculo from TipoVehiculo';
+
+						            $stmt = $PDOmysql->query($sql);
+						            $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+						            $economico->set_tipoVehiculo() ;
+
+						            foreach ($rows as $fila) {
+		
+						            		$resultado .=  '<option value="'. $fila['idTipoVehiculo'].'">'.$fila['Nombre'].' </option>';
+						            	
+						               		
+						            }
+						      $resultado .= ' 
+						      </select>
+						      
+						      <br>
+						      <br>
+						      <input type="submit" name="submit" class="btn btn-primary" name="boton"  id="submit" value="Subir"/> 
+						      <br>
+						      <button class="btn" type="reset" id="cancelarEdicion"> Cancelar</button>
+						    </form>';
+						}
+						else{
+							$resultado .= '<h4>No se puede Editar :(</h4>
+										 <button class="btn" id="cancelarEdicion" type="reset"> Volver</button>';
+						}
+			break;
 		
 		default:
 			# code...
@@ -57,5 +134,16 @@ if(isset($_POST) && !empty($_POST)){
 $array = array("contenido" => $resultado);
 
 echo json_encode($array);
+
+function consultaAnio($fechas){
+  $fecha = "";
+   for($i=date('o') + 1; $i>=1910; $i--){
+            if ($i == $fechas)
+                $fecha.= '<option value="'.$i.'" selected>'.$i.'</option>';
+            else
+               $fecha.='<option value="'.$i.'">'.$i.'</option>';
+        }
+        return $fecha;
+}
 
 ?>

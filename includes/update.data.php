@@ -75,6 +75,35 @@ if(isset($_POST) && !empty($_POST)){
 			}
 
 			break;
+
+		case 'economico':
+			$numero = $_POST['numero'];
+			$placas = $_POST['Placas'];
+			$serie = $_POST['numeroSerie'];
+			$modelo = $_POST['modelo'];
+			$marca = $_POST['marca'];
+			$tipoVehiculo = $_POST['tipoVehiculo'];
+			$numero = $_POST['numero'];
+			$transponder = $_POST['transponder'];
+
+			$update = new Update();
+			$camposUpdate =  array(
+									"Placas" => $placas,
+									"NumeroSerie" => $serie,
+									"Modelo"  => $modelo,
+									"marca"      => $marca,
+									"Transponder"    	=> $transponder
+									);
+
+
+
+			$camposWhereUpdate = array("Economico" => $numero );
+
+			$update->prepareUpdate("Economico", $camposUpdate, $camposWhereUpdate);
+			$update->createUpdate();
+
+			break;
+
 		
 		default:
 			# code...

@@ -35,6 +35,22 @@ function consultaAnio(){
     <link href="../css/bootstrap-responsive.css" rel="stylesheet">
 
   <style type="text/css">
+
+    #editarEconomicoForm{
+        width: 500px;
+        clear: both;
+    }
+
+    #editarEconomicoForm input {
+        width: 98%;
+        clear: both;
+    }
+
+    #editarEconomicoForm select {
+        width: 100%;
+        clear: both;
+    }
+
     .containerForm {
         width: 500px;
         clear: both;
@@ -50,6 +66,11 @@ function consultaAnio(){
     }
 
     #botonCancelar {
+        width: 98%;
+        clear: both;
+    }
+
+    #cancelarEdicion {
         width: 98%;
         clear: both;
     }
@@ -185,10 +206,10 @@ function consultaAnio(){
     <br>
     <h1>  Nuevo Economico </h1>
     <br>
-
     <form method="POST" action="../includes/crearEconomico.php" enctype="multipart/form-data" id="formEco">
-      <label> <b>Numero de Economico</b> </label> <input class="required number" type="text" name="numero" placeholder="Numero de Economico"> <br>
-      <label> <b>Placas</b> </label> <input class="required" type="text" name="Placas" placeholder="Numero de Placas"> <br>
+      <label> <b>Numero de Economico</b> </label> <input required id="number" type="number" min="1" name="numero" placeholder="Numero de Economico"> <br>
+      <div class="statusClave"><span id="statusClaveModificada" value="false" class="label label-important">Coloca una clave</span> </div>
+      <label> <b>Placas</b> </label> <input  type="text" name="Placas" placeholder="Numero de Placas"> <br>
       <?php
         echo '<label><b> Socio  </b> </label> <select name="socio">';
         $sql = 'select Socio.Nombre nombreSocio, Socio.idSocio
@@ -217,7 +238,7 @@ function consultaAnio(){
           echo '</select>';
       ?><br>
 
-      <label> <b>Serie</b> </label> <input type="text" class="required" name="numeroSerie" placeholder="Numero de Serie"> <br>
+      <label> <b>Serie</b> </label> <input type="text" required name="numeroSerie" placeholder="Numero de Serie"> <br>
       <label> <b>Modelo</b> </label> <select name="modelo" id="Modelo"> <?php echo consultaAnio() ?> </select> <br>
       <label> <b>Transponder</b> </label> <input type="text" name="transponder" placeholder="Numero de Transponder"> <br>
       <label> <b> Marca </b> </label> 

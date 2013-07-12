@@ -94,6 +94,9 @@ if( isset($_SESSION) && !empty($_SESSION)){
 <div class= "container span2" id="SocioList">
   <form action="../includes/cerrar.sesion.php" id="form1"></form>
   <h1> Socios </h1>
+  <button class="btn btn-primary" id="botonCrear"> Crear nuevo Socio</button>
+  <br>
+  <br>
   <br>
 
     <?php
@@ -134,11 +137,9 @@ if( isset($_SESSION) && !empty($_SESSION)){
         }
 
     ?>
-
-     <button class="btn btn-primary" id="botonCrear"> Crear nuevo Socio</button>
   </div>
 
-  <div class= "container span7" id="result">
+  <div class= "container span9" id="result">
     <br>
     <br>
     <br>
@@ -163,13 +164,13 @@ if( isset($_SESSION) && !empty($_SESSION)){
 
     <form method="POST" action="../includes/crearSocio.php" enctype="multipart/form-data" id="formSocio">
       <label> Nombre del Nuevo Socio </label>
-      <input class="required" type="text" name="NombreSocio" placeholder="Nombre del Socio"> <br>
+      <input required type="text" name="NombreSocio" placeholder="Nombre del Socio"> <br>
       <label>Apellido Paterno</label>
-      <input class="required" type="text" name="ApellidoSocio" placeholder="Apellido Paterno"> <br>
+      <input required type="text" name="ApellidoSocio" placeholder="Apellido Paterno"> <br>
       <label>Apellido Materno</label>
-      <input class="required" type="text" name="ApellidoMSocio" placeholder="Apellido Materno"> <br>
+      <input required type="text" name="ApellidoMSocio" placeholder="Apellido Materno"> <br>
       <label>Telefono</label>
-      <input class="required" type="text" name="telefono" placeholder="Telefono"><br>
+      <input required type="text" name="telefono" placeholder="Telefono"><br>
       <label> Sube una foto del Operador. Este es un campo opcional.</label>
       <input type="file" name="archivo" id="archivo" /><br>
       <input type="submit" class="btn btn-primary" name="boton" value="Subir" id="submit"/>

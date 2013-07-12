@@ -50,7 +50,6 @@ if(isset($_POST) && !empty($_POST)){
 
 	$PDOmysql = consulta();
 
-
 	$PDOmysql->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
 	$sql = 'select distinct Economico.Economico, Economico.Placas,Economico.statusA 

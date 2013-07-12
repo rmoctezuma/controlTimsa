@@ -2,6 +2,7 @@
 
 include('../includes/generic.connection.php');
 require_once('../includes/Objetos/Operador.php');
+require_once('../includes/Objetos/Economico.php');
 
 $result = "";
 
@@ -38,6 +39,32 @@ if(isset($_POST) && !empty($_POST)){
 			}
 
 			
+
+			break;
+		case 'Economico':
+
+			if(empty($_POST['value'])){
+				$result = '<span id="statusClaveModificada" value="false" class="label label-important">No permitido</span>';
+				break;
+			}
+
+				$id = $_POST['value'];
+
+				if(strstr($id, ' ')){
+					$result = '<span id="statusClaveModificada" value="false" class="label label-important">No permitido</span>';
+					break;
+				}
+
+				$operador = new Economico;
+				$operador-> createEconomicoFromID($id);
+
+					if($operador->get_id()){
+						$result = '<span id="statusClaveModificada" value="false" class="label label-important">Activo</span>';
+					}
+					else{
+						$result = '<span id="statusClaveModificada" value="true" class="label label-info">Libre<span>';
+					}
+				
 
 			break;
 		
